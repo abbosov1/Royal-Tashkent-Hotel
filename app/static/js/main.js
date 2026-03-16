@@ -71,8 +71,16 @@ document.addEventListener("DOMContentLoaded", () => {
 const menuToggle = document.querySelector('#mobile-menu');
 const navLinks = document.querySelector('.nav-links');
 
-if(menuToggle) {
+if(menuToggle && navLinks) {
     menuToggle.addEventListener('click', () => {
         navLinks.classList.toggle('active');
+    });
+    
+    // Close menu when clicking a link
+    const links = navLinks.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+        });
     });
 }
