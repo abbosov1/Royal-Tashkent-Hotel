@@ -1,5 +1,7 @@
 import os
-from fastapi import FastAPI, Request, Form, Depends, HTTPException, status, Cookie
+from fastapi import FastAPI, Request, Form, Depends, HTTPException, status, Cookie, File, UploadFile
+import shutil
+import uuid
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -180,14 +182,34 @@ async def admin_add_room(
     name: str = Form(...),
     description: str = Form(...),
     price_per_night: float = Form(...),
-    image_url: str = Form(...),
+    image: UploadFile = File(None),
+    image_url: str = Form(""),
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
     if not user or user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
-    new_room = models.Room(name=name, description=description, price_per_night=price_per_night, image_url=image_url)
+    final_image_url = image_url if image_url else "/static/images/room1.jpg"
+    
+    if image and image.filename:
+        contents = await image.read()
+        if len(contents) > 10 * 1024 * 1024:
+            pass
+        else:
+            ext = image.filename.split('.')[-1]
+            unique_filename = f"{uuid.uuid4().hex}.{ext}"
+            save_dir = os.path.join(BASE_DIR, "static", "images")
+            save_path = os.path.join(save_dir, unique_filename)
+            try:
+                with open(save_path, "wb") as f_out:
+                    f_out.write(contents)
+                final_image_url = f"/static/images/{unique_filename}"
+            except Exception as e:
+                print("Upload error:", e)
+                pass
+
+    new_room = models.Room(name=name, description=description, price_per_night=price_per_night, image_url=final_image_url)
     db.add(new_room)
     db.commit()
     return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
@@ -246,3 +268,80 @@ async def admin_delete_user(
         db.delete(target_user)
         db.commit()
     return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.post("/admin/room/edit/{room_id}")
+async def admin_edit_room(
+    request: Request,
+    room_id: int,
+    name: str = Form(...),
+    description: str = Form(...),
+    price_per_night: float = Form(...),
+    image: UploadFile = File(None),
+    db: Session = Depends(get_db)
+):
+    user = get_current_user_from_cookie(request, db)
+    if not user or user.email != ADMIN_EMAIL:
+        return RedirectResponse(url="/")
+        
+    room = db.query(models.Room).filter(models.Room.id == room_id).first()
+    if room:
+        room.name = name
+        room.description = description
+        room.price_per_night = price_per_night
+        
+        if image and image.filename:
+            contents = await image.read()
+            if len(contents) <= 10 * 1024 * 1024:
+                ext = image.filename.split('.')[-1]
+                unique_filename = f"{uuid.uuid4().hex}.{ext}"
+                try:
+                    save_path = os.path.join(BASE_DIR, "static", "images", unique_filename)
+                    with open(save_path, "wb") as f_out:
+                        f_out.write(contents)
+                    room.image_url = f"/static/images/{unique_filename}"
+                except: pass
+        db.commit()
+    return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
+
+@app.post("/dashboard/booking/cancel/{booking_id}")
+async def dashboard_cancel_booking(
+    request: Request,
+    booking_id: int,
+    db: Session = Depends(get_db)
+):
+    user = get_current_user_from_cookie(request, db)
+    if not user:
+        return RedirectResponse(url="/login")
+        
+    booking = db.query(models.Booking).filter(models.Booking.id == booking_id, models.Booking.user_id == user.id).first()
+    if booking:
+        db.delete(booking)
+        db.commit()
+    return RedirectResponse(url="/dashboard", status_code=status.HTTP_303_SEE_OTHER)
+
+@app.post("/dashboard/booking/reschedule/{booking_id}")
+async def dashboard_reschedule_booking(
+    request: Request,
+    booking_id: int,
+    new_check_in: str = Form(...),
+    new_check_out: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    user = get_current_user_from_cookie(request, db)
+    if not user:
+        return RedirectResponse(url="/login")
+        
+    booking = db.query(models.Booking).filter(models.Booking.id == booking_id, models.Booking.user_id == user.id).first()
+    if booking:
+        try:
+            in_d = datetime.strptime(new_check_in, "%Y-%m-%d")
+            out_d = datetime.strptime(new_check_out, "%Y-%m-%d")
+            if out_d > in_d:
+                booking.check_in_date = in_d
+                booking.check_out_date = out_d
+                days = (out_d - in_d).days
+                booking.total_price = days * booking.room.price_per_night
+                db.commit()
+        except: pass
+    return RedirectResponse(url="/dashboard", status_code=status.HTTP_303_SEE_OTHER)

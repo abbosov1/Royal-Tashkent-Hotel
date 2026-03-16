@@ -36,7 +36,10 @@
             {% else %}
                 <li><a href="/login" class="btn-nav">Login / Register</a></li>
             {% endif %}
-        </ul>
+        
+                <li><a href="javascript:void(0)" onclick="toggleTheme()" id="theme-icon" style="cursor:pointer; font-size: 1.2rem;">☀️</a></li>
+    
+            </ul>
     </nav>
 
     <header id="home" class="hero section">
@@ -219,6 +222,29 @@
 
 
 
+
+    <script>
+        function setTheme(theme) {
+            document.body.classList.toggle(light-mode, theme === light);
+            localStorage.setItem(theme, theme);
+            const icon = document.getElementById(theme-icon);
+            if(icon) {
+                icon.innerText = theme === light ? 🌙 : ☀️;
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = localStorage.getItem(theme) || dark;
+            const newTheme = currentTheme === light ? dark : light;
+            setTheme(newTheme);
+        }
+
+        document.addEventListener(DOMContentLoaded, () => {
+            const savedTheme = localStorage.getItem(theme) || dark;
+            setTheme(savedTheme);
+        });
+    </script>
+    
 </body>
 
 
