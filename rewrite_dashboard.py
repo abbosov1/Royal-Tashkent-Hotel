@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Royal Tashkent</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    
+import re
+
+with open("app/templates/dashboard.html", "r") as f:
+    html = f.read()
+
+# Make the Dashboard look way more premium
+new_style = """
     <style>
         body { background: var(--dark); color: var(--light); padding-top: 100px; font-family: 'Playfair Display', serif; }
         .dashboard-container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
@@ -51,50 +49,15 @@
         body.light-mode .btn-danger:hover { background: #E74C3C !important; border-color: #E74C3C !important; color: #fff !important; }
         body.light-mode .btn-primary { color: #fff; background: var(--primary); }
     </style>
+"""
 
-</head>
-<body>
-    <nav class="scrolled">
-        <div class="logo"><a href="/" style="color: var(--light);text-decoration:none;">Royal<span>Tashkent</span></a></div>
-        
-        <div class="menu-toggle" id="mobile-menu" style="display:none; flex-direction:column; cursor:pointer; z-index:1001;">
-            <span class="bar" style="width:25px; height:3px; background-color: var(--light); margin:4px 0; transition:0.4s;"></span>
-            <span class="bar" style="width:25px; height:3px; background-color: var(--light); margin:4px 0; transition:0.4s;"></span>
-            <span class="bar" style="width:25px; height:3px; background-color: var(--light); margin:4px 0; transition:0.4s;"></span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            {% if is_admin %}
-            <li><a href="/admin" style="color:var(--primary)">Admin Panel</a></li>
-            {% endif %}
-            <li><a href="/logout" class="btn-nav">Logout</a></li>
-        
-                <li><a href="javascript:void(0)" onclick="toggleTheme()" id="theme-icon" style="cursor:pointer; font-size: 1.2rem;">☀️</a></li>
-    
-            </ul>
-    </nav>
+# Apply styles
+html = re.sub(r'<style>.*?</style>', new_style, html, flags=re.DOTALL)
 
-    <div class="dashboard-container">
-        <script>
-            const urlParamsIndex = new URLSearchParams(window.location.search);
-            if(urlParamsIndex.get('success') == 'booked') document.write('<div class="alert success">Your room has been successfully booked!</div>');
-        </script>
-        
-        <div class="header-row">
-            <h2>Welcome, {{ user.full_name }}! 👋</h2>
-        </div>
+# Refactor the bookings section slightly to match new layout properly
+old_booking = r'<div style="text-align: right;">\s*<p style="font-size:1\.5rem; color:var\(--primary\)">\$\{\{ b\.total_price \}\}</p>\s*<p style="font-size:0\.8rem; color:#aaa;">Status: Confirmed</p>\s*<div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba\(255,255,255,0\.1\); text-align:left;">\s*<form action="/dashboard/booking/reschedule/\{\{ b\.id \}\}" method="POST" style="display:flex; flex-direction:column; gap:0\.5rem; margin-bottom:1rem;">\s*<label style="font-size:0\.8rem; color:#aaa; text-transform:uppercase;">Reschedule</label>\s*<div style="display:flex; gap:0\.5rem;">\s*<input type="date" name="new_check_in" required value="\{\{ b\.check_in_date\.strftime\(\'%Y-%m-%d\'\) \}\}" style="width:100\%; padding:0\.5rem; background:rgba\(255,255,255,0\.1\); border:1px solid #555; border-radius:5px;" class="theme-input">\s*<input type="date" name="new_check_out" required value="\{\{ b\.check_out_date\.strftime\(\'%Y-%m-%d\'\) \}\}" style="width:100\%; padding:0\.5rem; background:rgba\(255,255,255,0\.1\); border:1px solid #555; border-radius:5px;" class="theme-input">\s*</div>\s*<button type="submit" class="btn-primary" style="padding:0\.5rem; font-size:0\.8rem; border:none; cursor:pointer;">Update Dates</button>\s*</form>\s*<form action="/dashboard/booking/cancel/\{\{ b\.id \}\}" method="POST" onsubmit="return confirm\(\'Are you sure you want to cancel this booking\?\'\);">\s*<button type="submit" style="width:100\%; padding:0\.5rem; background: #5A1E1E; color:white; border:none; border-radius:5px; cursor:pointer;">Cancel Booking</button>\s*</form>\s*</div>\s*</div>'
 
-        <h3 style="margin-bottom:1rem; font-family:'Syncopate', sans-serif;">Your Bookings</h3>
-        
-        {% if bookings %}
-            {% for b in bookings %}
-            <div class="booking-card">
-                <div class="booking-info">
-                    <h4>{{ b.room.name }}</h4>
-                    <p>Check-in: {{ b.check_in_date.strftime('%Y-%m-%d') }}</p>
-                    <p>Check-out: {{ b.check_out_date.strftime('%Y-%m-%d') }}</p>
-                </div>
-                
+new_booking = """
                 <div style="text-align: right;">
                     <div class="price-tag">${{ b.total_price }}</div>
                     <div class="status-tag">Status: Confirmed</div>
@@ -114,43 +77,10 @@
                         </form>
                     </div>
                 </div>
+"""
 
-            </div>
-            {% endfor %}
-        {% else %}
-            <div style="text-align:center; padding: 3rem; background:rgba(255,255,255,0.02); border-radius:10px;">
-                <p style="margin-bottom:1rem; color:#aaa;">You haven't booked any rooms yet.</p>
-                <a href="/#rooms" class="btn-primary">Browse Rooms</a>
-            </div>
-        {% endif %}
-    </div>
+html = re.sub(old_booking, new_booking, html, flags=re.DOTALL)
 
-
-
-
-    <script>
-        function setTheme(theme) {
-            document.body.classList.toggle('light-mode', theme === 'light');
-            localStorage.setItem('theme', theme);
-            const icon = document.getElementById('theme-icon');
-            if(icon) {
-                icon.innerText = theme === 'light' ? '🌙' : '☀️';
-            }
-        }
-
-        function toggleTheme() {
-            const currentTheme = localStorage.getItem('theme') || 'dark';
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            setTheme(newTheme);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            setTheme(savedTheme);
-        });
-    </script>
-    
-</body>
-
-
-</html>
+with open("app/templates/dashboard.html", "w") as f:
+    f.write(html)
+print("Updated dashboard.html styled completely")
