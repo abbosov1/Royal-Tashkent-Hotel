@@ -269,7 +269,7 @@ async def admin_delete_user(
         return RedirectResponse(url="/")
         
     target_user = db.query(models.User).filter(models.User.id == user_id).first()
-    if target_user and target_not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
+    if target_user and target_user.email != ADMIN_EMAIL:
         db.query(models.Booking).filter(models.Booking.user_id == target_user.id).delete()
         db.delete(target_user)
         db.commit()
