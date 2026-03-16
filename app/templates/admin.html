@@ -32,23 +32,24 @@
         .widget-value { font-size: 2.2rem; font-weight: bold; color: var(--light); font-family: 'Playfair Display', serif; }
 
         /* Grids */
-        .grid-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 3rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3rem; }
 
         /* Form Controls */
         .form-group { margin-bottom: 1.5rem; position: relative; }
         label { display: block; font-size: 0.75rem; font-family: 'Syncopate', sans-serif; text-transform: uppercase; color: var(--primary); margin-bottom: 0.8rem; letter-spacing: 1px; }
         input[type="text"], input[type="number"], textarea { 
             width: 100%; 
-            padding: 1rem 1.2rem; 
-            background: rgba(255,255,255,0.03); 
-            border: 1px solid rgba(255,255,255,0.08); 
+            padding: 1rem 0; 
+            background: transparent; 
+            border: none;
+            border-bottom: 2px solid rgba(255,255,255,0.2); 
             color: var(--light); 
-            border-radius: 8px; 
+            border-radius: 0; 
             font-family: inherit;
             font-size: 1rem;
             transition: all 0.3s; 
         }
-        input:focus, textarea:focus { outline: none; border-color: var(--primary); background: rgba(255,255,255,0.06); box-shadow: 0 0 0 4px rgba(203, 168, 124, 0.1); }
+        input:focus, textarea:focus { outline: none; border-bottom-color: var(--primary) !important; background: transparent !important; box-shadow: none !important; }
         
         /* Tables */
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
@@ -92,7 +93,7 @@
         /* Light Mode Overrides for these specific elements handled in global stylesheet, but ensure local inputs stay neat */
         body.light-mode .card, body.light-mode .widget { background: #ffffff; border: 1px solid #E8DDD0; box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
         body.light-mode .widget-value, body.light-mode .room-title { color: #1C1008; }
-        body.light-mode input[type="text"], body.light-mode input[type="number"], body.light-mode textarea { background: #fff; border: 1px solid #E8DDD0; color: #1C1008; }
+        body.light-mode input[type="text"], body.light-mode input[type="number"], body.light-mode textarea { background: transparent !important; border: none !important; border-bottom: 2px solid #D4C4B0 !important; color: #1C1008 !important; border-radius: 0 !important; }
         body.light-mode .room-item { background: #fff; border: 1px solid #E8DDD0; }
         body.light-mode .room-item:hover { background: #fdfbf7; border-color: var(--primary); }
         body.light-mode table th { border-bottom: 1px solid #E8DDD0;}
@@ -128,23 +129,24 @@
         .widget-value { font-size: 2.2rem; font-weight: bold; color: var(--light); font-family: 'Playfair Display', serif; }
 
         /* Grids */
-        .grid-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 3rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3rem; }
 
         /* Form Controls */
         .form-group { margin-bottom: 1.5rem; position: relative; }
         label { display: block; font-size: 0.75rem; font-family: 'Syncopate', sans-serif; text-transform: uppercase; color: var(--primary); margin-bottom: 0.8rem; letter-spacing: 1px; }
         input[type="text"], input[type="number"], textarea { 
             width: 100%; 
-            padding: 1rem 1.2rem; 
-            background: rgba(255,255,255,0.03); 
-            border: 1px solid rgba(255,255,255,0.08); 
+            padding: 1rem 0; 
+            background: transparent; 
+            border: none;
+            border-bottom: 2px solid rgba(255,255,255,0.2); 
             color: var(--light); 
-            border-radius: 8px; 
+            border-radius: 0; 
             font-family: inherit;
             font-size: 1rem;
             transition: all 0.3s; 
         }
-        input:focus, textarea:focus { outline: none; border-color: var(--primary); background: rgba(255,255,255,0.06); box-shadow: 0 0 0 4px rgba(203, 168, 124, 0.1); }
+        input:focus, textarea:focus { outline: none; border-bottom-color: var(--primary) !important; background: transparent !important; box-shadow: none !important; }
         
         /* Tables */
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
@@ -188,7 +190,7 @@
         /* Light Mode Overrides for these specific elements handled in global stylesheet, but ensure local inputs stay neat */
         body.light-mode .card, body.light-mode .widget { background: #ffffff; border: 1px solid #E8DDD0; box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
         body.light-mode .widget-value, body.light-mode .room-title { color: #1C1008; }
-        body.light-mode input[type="text"], body.light-mode input[type="number"], body.light-mode textarea { background: #fff; border: 1px solid #E8DDD0; color: #1C1008; }
+        body.light-mode input[type="text"], body.light-mode input[type="number"], body.light-mode textarea { background: transparent !important; border: none !important; border-bottom: 2px solid #D4C4B0 !important; color: #1C1008 !important; border-radius: 0 !important; }
         body.light-mode .room-item { background: #fff; border: 1px solid #E8DDD0; }
         body.light-mode .room-item:hover { background: #fdfbf7; border-color: var(--primary); }
         body.light-mode table th { border-bottom: 1px solid #E8DDD0;}
