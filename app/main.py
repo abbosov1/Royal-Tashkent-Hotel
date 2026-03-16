@@ -157,7 +157,8 @@ async def admin_page(request: Request, db: Session = Depends(get_db)):
         
     rooms = db.query(models.Room).all()
     bookings = db.query(models.Booking).all()
-    return templates.TemplateResponse("admin.html", {"request": request, "user": user, "rooms": rooms, "bookings": bookings})
+    users = db.query(models.User).all()
+    return templates.TemplateResponse("admin.html", {"request": request, "user": user, "rooms": rooms, "bookings": bookings, "users": users})
 
 @app.post("/admin/room/add")
 async def admin_add_room(
@@ -197,3 +198,37 @@ async def admin_delete_room(
     return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
 
 
+
+
+@app.post("/admin/booking/delete/{booking_id}")
+async def admin_delete_booking(
+    request: Request,
+    booking_id: int,
+    db: Session = Depends(get_db)
+):
+    user = get_current_user_from_cookie(request, db)
+    if not user or user.email != "admin@royaltashkent.com":
+        return RedirectResponse(url="/")
+        
+    booking = db.query(models.Booking).filter(models.Booking.id == booking_id).first()
+    if booking:
+        db.delete(booking)
+        db.commit()
+    return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
+
+@app.post("/admin/user/delete/{user_id}")
+async def admin_delete_user(
+    request: Request,
+    user_id: int,
+    db: Session = Depends(get_db)
+):
+    user = get_current_user_from_cookie(request, db)
+    if not user or user.email != "admin@royaltashkent.com":
+        return RedirectResponse(url="/")
+        
+    target_user = db.query(models.User).filter(models.User.id == user_id).first()
+    if target_user and target_user.email != "admin@royaltashkent.com":
+        db.query(models.Booking).filter(models.Booking.user_id == target_user.id).delete()
+        db.delete(target_user)
+        db.commit()
+    return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)

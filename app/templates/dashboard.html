@@ -18,6 +18,12 @@
 <body>
     <nav class="scrolled">
         <div class="logo"><a href="/" style="color:inherit;text-decoration:none;">Royal<span>Tashkent</span></a></div>
+        
+        <div class="menu-toggle" id="mobile-menu" style="display:none; flex-direction:column; cursor:pointer; z-index:1001;">
+            <span class="bar" style="width:25px; height:3px; background-color:#fff; margin:4px 0; transition:0.4s;"></span>
+            <span class="bar" style="width:25px; height:3px; background-color:#fff; margin:4px 0; transition:0.4s;"></span>
+            <span class="bar" style="width:25px; height:3px; background-color:#fff; margin:4px 0; transition:0.4s;"></span>
+        </div>
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
             {% if is_admin %}

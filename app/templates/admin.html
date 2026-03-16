@@ -24,6 +24,12 @@
 <body>
     <nav class="scrolled">
         <div class="logo">Admin<span>Panel</span></div>
+        
+        <div class="menu-toggle" id="mobile-menu" style="display:none; flex-direction:column; cursor:pointer; z-index:1001;">
+            <span class="bar" style="width:25px; height:3px; background-color:#fff; margin:4px 0; transition:0.4s;"></span>
+            <span class="bar" style="width:25px; height:3px; background-color:#fff; margin:4px 0; transition:0.4s;"></span>
+            <span class="bar" style="width:25px; height:3px; background-color:#fff; margin:4px 0; transition:0.4s;"></span>
+        </div>
         <ul class="nav-links">
             <li><a href="/">View Site</a></li>
             <li><a href="/dashboard">Dashboard</a></li>
@@ -89,7 +95,7 @@
                             <th>Room</th>
                             <th>Check In</th>
                             <th>Check Out</th>
-                            <th>Total Price</th>
+                            <th>Total Price</th><th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,6 +106,11 @@
                             <td>{{ b.check_in_date.strftime('%Y-%m-%d') }}</td>
                             <td>{{ b.check_out_date.strftime('%Y-%m-%d') }}</td>
                             <td>${{ b.total_price }}</td>
+                            <td>
+                                <form action="/admin/booking/delete/{{ b.id }}" method="POST" onsubmit="return confirm('Delete this booking?');">
+                                    <button type="submit" class="btn-danger" style="padding:0.3rem 0.5rem; background:#e74c3c; color:white; border:none; border-radius:5px; cursor:pointer;">Del</button>
+                                </form>
+                            </td>
                         </tr>
                         {% endfor %}
                         {% if not bookings %}
@@ -109,6 +120,55 @@
                 </table>
             </div>
         </div>
+
+        <!-- Users Management -->
+        <div class="card" style="margin-top: 2rem;">
+            <h3 style="color:var(--primary); margin-bottom:1.5rem;">Registered Users</h3>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr>
+                            <td>{{ u.id }}</td>
+                            <td>{{ u.email }}</td>
+                            <td>
+                                {% if u.email != "admin@royaltashkent.com" %}
+                                <form action="/admin/user/delete/{{ u.id }}" method="POST" onsubmit="return confirm('Delete user and all their bookings?');">
+                                    <button type="submit" class="btn-danger" style="padding:0.3rem 0.5rem; background:#e74c3c; color:white; border:none; border-radius:5px; cursor:pointer;">Del</button>
+                                </form>
+                                {% else %}
+                                <span style="color: #aaa; font-size: 0.8rem;">Admin</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+
+    <script>
+        const menuToggle = document.querySelector("#mobile-menu");
+        const navLinks = document.querySelector(".nav-links");
+        if(menuToggle) {
+            menuToggle.addEventListener("click", () => {
+                navLinks.classList.toggle("active");
+                if(navLinks.classList.contains("active")){
+                    navLinks.style.right = "0";
+                    navLinks.style.display = "flex";
+                } else {
+                    navLinks.style.right = "-100%";
+                }
+            });
+        }
+    </script>
 </body>
 </html>
