@@ -14,7 +14,7 @@
     <div class="cursor"></div>
 
     <nav>
-        <div class="logo">Royal<span>Tashkent</span></div>
+        <div class="logo" style="display:flex; align-items:center;"><svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;"><path d="M2 20h20"/><path d="m8 20 4-13 4 13"/><path d="m10 14 4-13 4 13"/><path d="M3 11l4-6 4 6"/><path d="M21 11l-4-6-4 6"/></svg><span>Royal</span>Tashkent</div>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
@@ -121,7 +121,45 @@
         </div>
     </section>
 
-    <section id="contact" class="contact section">
+
+    <section id="gallery" class="gallery section dark">
+        <div class="container">
+            <h2 class="section-title text-center" data-scroll>The Royal Gallery</h2>
+            <div class="masonry-grid" data-scroll>
+                <div class="gallery-item item-1" style="background-image: url('/static/images/hero.jpg');"></div>
+                <div class="gallery-item item-2" style="background-image: url('/static/images/about.jpg');"></div>
+                <div class="gallery-item item-3" style="background-image: url('https://images.pexels.com/photos/103566/pexels-photo-103566.jpeg?auto=compress&cs=tinysrgb&w=800');"></div>
+                <div class="gallery-item item-4" style="background-image: url('https://images.pexels.com/photos/1134176/pexels-photo-1134176.jpeg?auto=compress&cs=tinysrgb&w=800');"></div>
+                <div class="gallery-item item-5" style="background-image: url('https://images.pexels.com/photos/189296/pexels-photo-189296.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials section">
+        <div class="container">
+            <h2 class="section-title text-center" data-scroll>Guest Experience</h2>
+            <div class="testimonials-track" style="display:flex; gap: 2rem; overflow-x: auto; padding-bottom: 2rem; scroll-snap-type: x mandatory;">
+                <div class="testimonial-card" style="min-width: 300px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <h3 style="color:#d4af37;">★★★★★</h3>
+                    <p style="margin: 1rem 0; font-style: italic;">"One of the most beautifully designed hotels in Central Asia. The service was impeccable."</p>
+                    <small>— Alexander V.</small>
+                </div>
+                <div class="testimonial-card" style="min-width: 300px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <h3 style="color:#d4af37;">★★★★★</h3>
+                    <p style="margin: 1rem 0; font-style: italic;">"Perfect location, incredibly accommodating staff, and the spa is just out of this world."</p>
+                    <small>— Sarah J.</small>
+                </div>
+                <div class="testimonial-card" style="min-width: 300px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <h3 style="color:#d4af37;">★★★★★</h3>
+                    <p style="margin: 1rem 0; font-style: italic;">"I will definitely return! A perfect place for a honeymoon or a business trip."</p>
+                    <small>— Timur M.</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact"
+ class="contact section">
         <div class="container auto-grid">
             <div class="contact-info" data-scroll>
                 <h2 class="section-title">Get in Touch</h2>
@@ -156,11 +194,11 @@
 
     <footer>
         <div class="footer-content">
-            <div class="logo">Royal<span>Tashkent</span></div>
+            <div class="logo" style="display:flex; align-items:center;"><svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;"><path d="M2 20h20"/><path d="m8 20 4-13 4 13"/><path d="m10 14 4-13 4 13"/><path d="M3 11l4-6 4 6"/><path d="M21 11l-4-6-4 6"/></svg><span>Royal</span>Tashkent</div>
             <div class="socials">
-                <a href="#">IG</a>
-                <a href="#">FB</a>
-                <a href="#">TW</a>
+                <a href="https://t.me/abbosovmm" target="_blank">Telegram</a>
+                <a href="https://www.instagram.com/_abbosov1_/" target="_blank">Instagram</a>
+                <a href="https://www.linkedin.com/in/abbosovm/" target="_blank">LinkedIn</a>
             </div>
         </div>
         <div class="footer-bottom">
