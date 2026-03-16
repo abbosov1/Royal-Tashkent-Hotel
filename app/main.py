@@ -66,8 +66,14 @@ async def login_page(request: Request, db: Session = Depends(get_db)):
     admin_user = db.query(models.User).filter(models.User.email == ADMIN_EMAIL).first()
     if not admin_user:
         hashed_password = auth.get_password_hash(ADMIN_PASSWORD)
-        new_admin = models.User(email=ADMIN_EMAIL, full_name="Admin", hashed_password=hashed_password)
+        new_admin = models.User(email=ADMIN_EMAIL, full_name="Admin", hashed_password=hashed_password, is_admin=True)
         db.add(new_admin)
+        try:
+            db.commit()
+        except:
+            db.rollback()
+    else:
+        admin_user.is_admin = True
         try:
             db.commit()
         except:
@@ -161,14 +167,14 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
     
     bookings = db.query(models.Booking).filter(models.Booking.user_id == user.id).all()
     # Simple check if current user is admin
-    is_admin = user.email == ADMIN_EMAIL 
+    is_admin = (getattr(user, 'is_admin', False) or (getattr(user, 'is_admin', False) or user.email == ADMIN_EMAIL)) 
     
     return templates.TemplateResponse("dashboard.html", {"request": request, "user": user, "bookings": bookings, "is_admin": is_admin, "admin_email": ADMIN_EMAIL})
 
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_page(request: Request, db: Session = Depends(get_db)):
     user = get_current_user_from_cookie(request, db)
-    if not user or user.email != ADMIN_EMAIL:
+    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
     rooms = db.query(models.Room).all()
@@ -187,7 +193,7 @@ async def admin_add_room(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or user.email != ADMIN_EMAIL:
+    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
     final_image_url = image_url if image_url else "/static/images/room1.jpg"
@@ -221,7 +227,7 @@ async def admin_delete_room(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or user.email != ADMIN_EMAIL:
+    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
     room = db.query(models.Room).filter(models.Room.id == room_id).first()
@@ -243,7 +249,7 @@ async def admin_delete_booking(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or user.email != ADMIN_EMAIL:
+    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
     booking = db.query(models.Booking).filter(models.Booking.id == booking_id).first()
@@ -259,11 +265,11 @@ async def admin_delete_user(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or user.email != ADMIN_EMAIL:
+    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
     target_user = db.query(models.User).filter(models.User.id == user_id).first()
-    if target_user and target_user.email != ADMIN_EMAIL:
+    if target_user and target_not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
         db.query(models.Booking).filter(models.Booking.user_id == target_user.id).delete()
         db.delete(target_user)
         db.commit()
@@ -281,7 +287,7 @@ async def admin_edit_room(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or user.email != ADMIN_EMAIL:
+    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
     room = db.query(models.Room).filter(models.Room.id == room_id).first()
@@ -345,3 +351,30 @@ async def dashboard_reschedule_booking(
                 db.commit()
         except: pass
     return RedirectResponse(url="/dashboard", status_code=status.HTTP_303_SEE_OTHER)
+
+@app.post("/admin/settings")
+async def admin_settings(
+    request: Request,
+    email: str = Form(...),
+    new_password: str = Form(""),
+    db: Session = Depends(get_db)
+):
+    user = get_current_user_from_cookie(request, db)
+    if not user or not (getattr(user, "is_admin", False) or (getattr(user, 'is_admin', False) or user.email == ADMIN_EMAIL)):
+        return RedirectResponse(url="/")
+        
+    user.email = email
+    if new_password:
+        user.hashed_password = auth.get_password_hash(new_password)
+    user.is_admin = True
+    db.commit()
+    
+    from datetime import timedelta
+    access_token_expires = timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = auth.create_access_token(
+        data={"sub": user.email}, expires_delta=access_token_expires
+    )
+    
+    response = RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
+    response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True)
+    return response

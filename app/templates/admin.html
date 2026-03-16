@@ -47,7 +47,7 @@
             <!-- Add Room Form -->
             <div class="card">
                 <h3 style="color:var(--primary); margin-bottom:1.5rem;">Add New Room</h3>
-                <form action="/admin/room/add" method="POST">
+                <form action="/admin/room/add" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>Room Name</label>
                         <input type="text" name="name" required placeholder="e.g. Royal Suite">
@@ -61,12 +61,31 @@
                         <input type="number" name="price_per_night" required>
                     </div>
                     <div class="form-group">
-                        <label>Image URL</label>
-                        <input type="text" name="image_url" value="/static/images/room1.jpg" required>
+                        <label>Image Upload (Max 10MB)</label>
+                        <input type="file" name="image" accept="image/*">
+                        <input type="text" name="image_url" placeholder="/static/images/room1.jpg (Fallback URL)" style="margin-top:5px;">
                     </div>
                     <button type="submit" class="btn-primary" style="width:100%; margin-top:1rem;">Add Room</button>
                 </form>
             </div>
+            <div class="card" style="margin-top:2rem;">
+                <h3 style="color:var(--primary); margin-bottom:1.5rem;">Update Admin Login</h3>
+                <form action="/admin/settings" method="POST">
+                    <div class="form-group">
+                        <label>Admin Email</label>
+                        <input type="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>New Password (leave blank to keep current)</label>
+                        <div style="position:relative;">
+                            <input type="password" name="new_password" style="padding-right:40px;">
+                            <span onclick="togglePwd(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; color:#666; font-size:1.2rem;">👁️</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%; margin-top:1rem;">Update Profile</button>
+                </form>
+            </div>
+
 
             <!-- List Rooms -->
             <div class="card">
@@ -165,24 +184,64 @@
 
     <script>
         function setTheme(theme) {
-            document.body.classList.toggle(light-mode, theme === light);
-            localStorage.setItem(theme, theme);
-            const icon = document.getElementById(theme-icon);
+            document.body.classList.toggle('light-mode', theme === 'light');
+            localStorage.setItem('theme', theme);
+            const icon = document.getElementById('theme-icon');
             if(icon) {
-                icon.innerText = theme === light ? 🌙 : ☀️;
+                icon.innerText = theme === 'light' ? '🌙' : '☀️';
             }
         }
 
         function toggleTheme() {
-            const currentTheme = localStorage.getItem(theme) || dark;
-            const newTheme = currentTheme === light ? dark : light;
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             setTheme(newTheme);
         }
 
-        document.addEventListener(DOMContentLoaded, () => {
-            const savedTheme = localStorage.getItem(theme) || dark;
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
             setTheme(savedTheme);
         });
+    </script>
+    
+
+    <!-- Edit Modal -->
+    <div id="editModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; justify-content:center; align-items:center;">
+        <div class="card" style="width:100%; max-width:500px; padding:2rem; position:relative; background:var(--dark); color:white; border: 1px solid var(--primary);">
+            <span onclick="document.getElementById('editModal').style.display='none'" style="position:absolute; right:15px; top:15px; cursor:pointer; font-size:1.5rem; color:var(--primary);">&times;</span>
+            <h3 style="color:var(--primary); margin-bottom:1.5rem;">Edit Room</h3>
+            <form id="editForm" method="POST" enctype="multipart/form-data">
+                <div class="form-group"><label>Room Name</label><input type="text" name="name" id="editName" required></div>
+                <div class="form-group"><label>Description</label><textarea name="description" id="editDesc" rows="3" required></textarea></div>
+                <div class="form-group"><label>Price Per Night ($)</label><input type="number" name="price_per_night" id="editPrice" required></div>
+                <div class="form-group"><label>New Image (optional)</label><input type="file" name="image" accept="image/*"></div>
+                <button type="submit" class="btn-primary" style="width:100%; margin-top:1rem;">Update Room</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+    function editRoom(id, name, desc, price) {
+        document.getElementById('editModal').style.display = 'flex';
+        document.getElementById('editForm').action = '/admin/room/edit/' + id;
+        document.getElementById('editName').value = name;
+        document.getElementById('editDesc').value = desc;
+        document.getElementById('editPrice').value = price;
+    }
+    </script>
+    
+
+    <script>
+    function togglePwd(el) {
+        var x = el.previousElementSibling;
+        if (x.type === "password") {
+            x.type = "text";
+            el.innerText = "🙈";
+        } else {
+            x.type = "password";
+            el.innerText = "👁️";
+        }
+    }
     </script>
     
 </body>

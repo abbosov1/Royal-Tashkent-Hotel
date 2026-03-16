@@ -225,22 +225,22 @@
 
     <script>
         function setTheme(theme) {
-            document.body.classList.toggle(light-mode, theme === light);
-            localStorage.setItem(theme, theme);
-            const icon = document.getElementById(theme-icon);
+            document.body.classList.toggle('light-mode', theme === 'light');
+            localStorage.setItem('theme', theme);
+            const icon = document.getElementById('theme-icon');
             if(icon) {
-                icon.innerText = theme === light ? 🌙 : ☀️;
+                icon.innerText = theme === 'light' ? '🌙' : '☀️';
             }
         }
 
         function toggleTheme() {
-            const currentTheme = localStorage.getItem(theme) || dark;
-            const newTheme = currentTheme === light ? dark : light;
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             setTheme(newTheme);
         }
 
-        document.addEventListener(DOMContentLoaded, () => {
-            const savedTheme = localStorage.getItem(theme) || dark;
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
             setTheme(savedTheme);
         });
     </script>

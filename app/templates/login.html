@@ -54,7 +54,10 @@
                     </div>
                     <div class="auth-input-group">
                         <label>Password</label>
-                        <input type="password" name="password" required>
+                        <div style="position:relative;">
+                            <input type="password" name="password" required style="padding-right:40px;">
+                            <span onclick="togglePwd(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; color:#666; font-size:1.2rem;">👁️</span>
+                        </div>
                     </div>
                     <button type="submit" class="auth-btn">Sign In</button>
                 </form>
@@ -72,7 +75,10 @@
                     </div>
                     <div class="auth-input-group">
                         <label>Password</label>
-                        <input type="password" name="password" required>
+                        <div style="position:relative;">
+                            <input type="password" name="password" required style="padding-right:40px;">
+                            <span onclick="togglePwd(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; color:#666; font-size:1.2rem;">👁️</span>
+                        </div>
                     </div>
                     <button type="submit" class="auth-btn">Create Account</button>
                 </form>
@@ -104,27 +110,39 @@
 
     <script>
         function setTheme(theme) {
-            document.body.classList.toggle(light-mode, theme === light);
-            localStorage.setItem(theme, theme);
-            const icon = document.getElementById(theme-icon);
+            document.body.classList.toggle('light-mode', theme === 'light');
+            localStorage.setItem('theme', theme);
+            const icon = document.getElementById('theme-icon');
             if(icon) {
-                icon.innerText = theme === light ? 🌙 : ☀️;
+                icon.innerText = theme === 'light' ? '🌙' : '☀️';
             }
         }
 
         function toggleTheme() {
-            const currentTheme = localStorage.getItem(theme) || dark;
-            const newTheme = currentTheme === light ? dark : light;
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             setTheme(newTheme);
         }
 
-        document.addEventListener(DOMContentLoaded, () => {
-            const savedTheme = localStorage.getItem(theme) || dark;
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
             setTheme(savedTheme);
         });
     </script>
     
-</body>
+<script>
+    function togglePwd(el) {
+        var x = el.previousElementSibling;
+        if (x.type === "password") {
+            x.type = "text";
+            el.innerText = "🙈";
+        } else {
+            x.type = "password";
+            el.innerText = "👁️";
+        }
+    }
+    </script>
+    </body>
 
 
 </html>
