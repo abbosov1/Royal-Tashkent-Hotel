@@ -9,7 +9,7 @@
     <style>
         .auth-container { display: flex; min-height: 100vh; align-items: center; justify-content: center; background: url('/static/images/hero.jpg') center/cover; position: relative; }
         .auth-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
-        .auth-box { position: relative; z-index: 10; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(15px); padding: 4rem; border-radius: 20px; width: 100%; max-width: 500px; color: white; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+        .auth-box { position: relative; z-index: 10; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(15px); padding: 4rem; border-radius: 20px; width: 100%; max-width: 500px; color: inherit; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
         .auth-box h2 { font-family: 'Syncopate', sans-serif; font-size: 2rem; margin-bottom: 2rem; text-align: center; }
         .auth-tabs { display: flex; justify-content: center; margin-bottom: 2rem; gap: 2rem; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 1rem; }
         .auth-tabs span { cursor: pointer; font-family: 'Syncopate', sans-serif; text-transform: uppercase; font-size: 0.9rem; color: rgba(255,255,255,0.5); transition: color 0.3s ease; }
@@ -19,7 +19,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .auth-input-group { margin-bottom: 1.5rem; }
         .auth-input-group label { display: block; font-family: 'Syncopate', sans-serif; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 0.5rem; text-transform: uppercase;}
-        .auth-input-group input { width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 10px; font-family: 'Playfair Display', serif; font-size: 1rem; outline: none; transition: border 0.3s; }
+        .auth-input-group input { width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: inherit; border-radius: 10px; font-family: 'Playfair Display', serif; font-size: 1rem; outline: none; transition: border 0.3s; }
         .auth-input-group input:focus { border-color: var(--primary); }
         .auth-btn { width: 100%; padding: 1rem; background: var(--primary); color: #000; border: none; font-family: 'Syncopate', sans-serif; font-size: 1rem; text-transform: uppercase; border-radius: 30px; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; margin-top: 1rem; }
         .auth-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(203, 168, 124, 0.4); }
@@ -85,7 +85,7 @@
             </div>
             
             <div style="text-align: center; margin-top: 2rem;">
-                <a href="/" style="color: white; font-family: 'Playfair Display', serif; text-decoration: none; border-bottom: 1px solid var(--primary);">← Back to Home</a>
+                <a href="/" style="color: inherit; font-family: 'Playfair Display', serif; text-decoration: none; border-bottom: 1px solid var(--primary);">← Back to Home</a>
             </div>
         </div>
     </div>

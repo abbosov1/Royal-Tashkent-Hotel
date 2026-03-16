@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from datetime import datetime
 
 from . import models, database, auth
@@ -16,6 +17,19 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "abbosov0605.")
 
 # Create DB tables
 models.Base.metadata.create_all(bind=engine)
+
+# Auto-migrate is_admin column for existing DBs (like on Vercel)
+try:
+    with engine.begin() as conn:
+        conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE"))
+except Exception as e:
+    print(f"Migration error (could be SQLite or already exists): {e}")
+    try:
+        # Fallback for SQLite locally if needed
+        with engine.begin() as conn:
+            conn.execute(text("ALTER TABLE users ADD COLUMN is_admin BOOLEAN DEFAULT FALSE"))
+    except:
+        pass
 
 app = FastAPI(title="Royal Tashkent Hotel")
 
