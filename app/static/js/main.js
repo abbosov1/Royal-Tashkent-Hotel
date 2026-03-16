@@ -2,22 +2,22 @@
 const cursor = document.querySelector('.cursor');
 
 document.addEventListener('mousemove', (e) => {
-    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    if(cursor) cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
 });
 
 const interactiveElements = document.querySelectorAll('a, button, input, textarea, .logo, .room-card, .service-item');
 
 interactiveElements.forEach(el => {
     el.addEventListener('mouseenter', () => {
-        cursor.style.width = '50px';
-        cursor.style.height = '50px';
-        cursor.style.background = 'rgba(203, 168, 124, 0.2)';
+        if(cursor) cursor.style.width = '50px';
+        if(cursor) cursor.style.height = '50px';
+        if(cursor) cursor.style.background = 'rgba(203, 168, 124, 0.2)';
     });
     
     el.addEventListener('mouseleave', () => {
-        cursor.style.width = '20px';
-        cursor.style.height = '20px';
-        cursor.style.background = 'transparent';
+        if(cursor) cursor.style.width = '20px';
+        if(cursor) cursor.style.height = '20px';
+        if(cursor) cursor.style.background = 'transparent';
     });
 });
 

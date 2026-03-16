@@ -155,20 +155,29 @@
         </div>
     </div>
 
-    <script>
-        const menuToggle = document.querySelector("#mobile-menu");
-        const navLinks = document.querySelector(".nav-links");
-        if(menuToggle) {
-            menuToggle.addEventListener("click", () => {
-                navLinks.classList.toggle("active");
-                if(navLinks.classList.contains("active")){
-                    navLinks.style.right = "0";
-                    navLinks.style.display = "flex";
-                } else {
-                    navLinks.style.right = "-100%";
-                }
+    
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.querySelector('#mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        if(menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+            
+            // Close menu when clicking a link
+            const links = navLinks.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
             });
         }
-    </script>
+    });
+</script>
 </body>
+
+
 </html>
