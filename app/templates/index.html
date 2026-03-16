@@ -29,6 +29,9 @@
             <li><a href="#contact">Contact</a></li>
             {% if user %}
                 <li><a href="/dashboard">Dashboard</a></li>
+                {% if user.email == admin_email %}
+                    <li><a style="color:#d4af37;" href="/admin">Admin Panel</a></li>
+                {% endif %}
                 <li><a href="/logout" class="btn-nav">Logout</a></li>
             {% else %}
                 <li><a href="/login" class="btn-nav">Login / Register</a></li>

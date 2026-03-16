@@ -139,7 +139,7 @@
                             <td>{{ u.id }}</td>
                             <td>{{ u.email }}</td>
                             <td>
-                                {% if u.email != "admin@royaltashkent.com" %}
+                                {% if u.email != admin_email %}
                                 <form action="/admin/user/delete/{{ u.id }}" method="POST" onsubmit="return confirm('Delete user and all their bookings?');">
                                     <button type="submit" class="btn-danger" style="padding:0.3rem 0.5rem; background:#e74c3c; color:white; border:none; border-radius:5px; cursor:pointer;">Del</button>
                                 </form>

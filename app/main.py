@@ -9,6 +9,9 @@ from datetime import datetime
 from . import models, database, auth
 from .database import engine, get_db
 
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "royalthotel@gmail.com")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "abbosov0605.")
+
 # Create DB tables
 models.Base.metadata.create_all(bind=engine)
 
@@ -53,10 +56,21 @@ async def home_page(request: Request, db: Session = Depends(get_db)):
         db.commit()
         rooms = db.query(models.Room).all()
 
-    return templates.TemplateResponse("index.html", {"request": request, "user": user, "rooms": rooms})
+    return templates.TemplateResponse("index.html", {"request": request, "user": user, "rooms": rooms, "admin_email": ADMIN_EMAIL})
 
 @app.get("/login", response_class=HTMLResponse)
-async def login_page(request: Request):
+async def login_page(request: Request, db: Session = Depends(get_db)):
+    # Auto-create admin user if not exists
+    admin_user = db.query(models.User).filter(models.User.email == ADMIN_EMAIL).first()
+    if not admin_user:
+        hashed_password = auth.get_password_hash(ADMIN_PASSWORD)
+        new_admin = models.User(email=ADMIN_EMAIL, full_name="Admin", hashed_password=hashed_password)
+        db.add(new_admin)
+        try:
+            db.commit()
+        except:
+            db.rollback()
+    
     return templates.TemplateResponse("login.html", {"request": request})
 
 @app.post("/login")
@@ -145,20 +159,20 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
     
     bookings = db.query(models.Booking).filter(models.Booking.user_id == user.id).all()
     # Simple check if current user is admin
-    is_admin = user.email == "admin@royaltashkent.com" 
+    is_admin = user.email == ADMIN_EMAIL 
     
-    return templates.TemplateResponse("dashboard.html", {"request": request, "user": user, "bookings": bookings, "is_admin": is_admin})
+    return templates.TemplateResponse("dashboard.html", {"request": request, "user": user, "bookings": bookings, "is_admin": is_admin, "admin_email": ADMIN_EMAIL})
 
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_page(request: Request, db: Session = Depends(get_db)):
     user = get_current_user_from_cookie(request, db)
-    if not user or user.email != "admin@royaltashkent.com":
+    if not user or user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
     rooms = db.query(models.Room).all()
     bookings = db.query(models.Booking).all()
     users = db.query(models.User).all()
-    return templates.TemplateResponse("admin.html", {"request": request, "user": user, "rooms": rooms, "bookings": bookings, "users": users})
+    return templates.TemplateResponse("admin.html", {"request": request, "user": user, "rooms": rooms, "bookings": bookings, "users": users, "admin_email": ADMIN_EMAIL})
 
 @app.post("/admin/room/add")
 async def admin_add_room(
@@ -170,7 +184,7 @@ async def admin_add_room(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or user.email != "admin@royaltashkent.com":
+    if not user or user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
     new_room = models.Room(name=name, description=description, price_per_night=price_per_night, image_url=image_url)
@@ -185,7 +199,7 @@ async def admin_delete_room(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or user.email != "admin@royaltashkent.com":
+    if not user or user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
     room = db.query(models.Room).filter(models.Room.id == room_id).first()
@@ -207,7 +221,7 @@ async def admin_delete_booking(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or user.email != "admin@royaltashkent.com":
+    if not user or user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
     booking = db.query(models.Booking).filter(models.Booking.id == booking_id).first()
@@ -223,11 +237,11 @@ async def admin_delete_user(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or user.email != "admin@royaltashkent.com":
+    if not user or user.email != ADMIN_EMAIL:
         return RedirectResponse(url="/")
         
     target_user = db.query(models.User).filter(models.User.id == user_id).first()
-    if target_user and target_user.email != "admin@royaltashkent.com":
+    if target_user and target_user.email != ADMIN_EMAIL:
         db.query(models.Booking).filter(models.Booking.user_id == target_user.id).delete()
         db.delete(target_user)
         db.commit()
