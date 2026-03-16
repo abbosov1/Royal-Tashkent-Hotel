@@ -1041,3 +1041,56 @@ body.light-mode tr:hover {
   text-overflow: ellipsis;
   max-width: 200px;
 }
+
+
+/* CONTACT FORM BORDERS IN LIGHT MODE */
+body.light-mode .input-group input,
+body.light-mode .input-group textarea {
+  border: none !important;
+  border-bottom: 2px solid #D4C4B0 !important;
+  background-color: transparent !important;
+  border-radius: 0;
+}
+body.light-mode .input-group input:focus,
+body.light-mode .input-group textarea:focus {
+  border-color: var(--primary) !important;
+  box-shadow: none !important;
+}
+
+/* NAVBAR TEXT IN HERO (LIGHT MODE) */
+body.light-mode nav:not(.scrolled) .nav-links a,
+body.light-mode nav:not(.scrolled) .logo {
+  color: #ffffff !important;
+}
+
+/* PRICE TAGS ON CARDS IN LIGHT MODE */
+body.light-mode .price {
+  background-color: var(--primary) !important;
+  color: #1C1008 !important;
+}
+body.light-mode .price span {
+  color: #1C1008 !important;
+}
+
+/* FIX DARK SECTIONS IN LIGHT MODE */
+body.light-mode .dark {
+  background-color: #F5F0E8 !important;
+  color: #1C1008 !important;
+}
+body.light-mode .dark .section-title {
+  color: #1C1008 !important;
+}
+
+/* DATE INPUT TEXT FIX */
+input[type="date"] {
+  color: #fefefe;
+}
+body.light-mode input[type="date"] {
+  color: #1C1008 !important;
+}
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+body.light-mode ::-webkit-calendar-picker-indicator {
+  filter: none;
+}
