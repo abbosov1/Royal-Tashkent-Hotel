@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Royal Tashkent</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: var(--dark); color: white; padding-top: 100px; }
+        .admin-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
+        .card { background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem; color:#aaa;}
+        input, textarea { width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 5px; }
+        .room-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .btn-danger { background: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { color: var(--primary); font-family: 'Syncopate', sans-serif; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav class="scrolled">
+        <div class="logo">Admin<span>Panel</span></div>
+        <ul class="nav-links">
+            <li><a href="/">View Site</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/logout" class="btn-nav">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="admin-container">
+        <h2 style="font-family:'Syncopate', sans-serif; margin-bottom:2rem;">Dashboard Overview</h2>
+        
+        <div class="grid-2">
+            <!-- Add Room Form -->
+            <div class="card">
+                <h3 style="color:var(--primary); margin-bottom:1.5rem;">Add New Room</h3>
+                <form action="/admin/room/add" method="POST">
+                    <div class="form-group">
+                        <label>Room Name</label>
+                        <input type="text" name="name" required placeholder="e.g. Royal Suite">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" rows="3" required placeholder="Room features..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Price Per Night ($)</label>
+                        <input type="number" name="price_per_night" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Image URL</label>
+                        <input type="text" name="image_url" value="/static/images/room1.jpg" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%; margin-top:1rem;">Add Room</button>
+                </form>
+            </div>
+
+            <!-- List Rooms -->
+            <div class="card">
+                <h3 style="color:var(--primary); margin-bottom:1.5rem;">Manage Rooms</h3>
+                <div style="max-height: 400px; overflow-y: auto;">
+                    {% for room in rooms %}
+                    <div class="room-item">
+                        <div>
+                            <strong>{{ room.name }}</strong>
+                            <div style="font-size:0.8rem; color:#aaa;">${{ room.price_per_night }} / night</div>
+                        </div>
+                        <form action="/admin/room/delete/{{ room.id }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this room?');">
+                            <button type="submit" class="btn-danger">Delete</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- All Bookings -->
+        <div class="card" style="margin-top: 2rem;">
+            <h3 style="color:var(--primary); margin-bottom:1.5rem;">All Bookings</h3>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User (Email)</th>
+                            <th>Room</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in bookings %}
+                        <tr>
+                            <td>{{ b.user.email }}</td>
+                            <td>{{ b.room.name }}</td>
+                            <td>{{ b.check_in_date.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ b.check_out_date.strftime('%Y-%m-%d') }}</td>
+                            <td>${{ b.total_price }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% if not bookings %}
+                        <tr><td colspan="5" style="text-align:center; color:#aaa;">No bookings yet.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

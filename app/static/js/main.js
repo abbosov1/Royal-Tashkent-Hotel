@@ -1,0 +1,68 @@
+// Custom Cursor
+const cursor = document.querySelector('.cursor');
+
+document.addEventListener('mousemove', (e) => {
+    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+});
+
+const interactiveElements = document.querySelectorAll('a, button, input, textarea, .logo, .room-card, .service-item');
+
+interactiveElements.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        cursor.style.width = '50px';
+        cursor.style.height = '50px';
+        cursor.style.background = 'rgba(203, 168, 124, 0.2)';
+    });
+    
+    el.addEventListener('mouseleave', () => {
+        cursor.style.width = '20px';
+        cursor.style.height = '20px';
+        cursor.style.background = 'transparent';
+    });
+});
+
+// Scroll Effects
+const nav = document.querySelector('nav');
+const scrollElements = document.querySelectorAll('[data-scroll]');
+const heroBg = document.querySelector('.hero-bg');
+
+window.addEventListener('scroll', () => {
+    // Navbar background
+    if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+    } else {
+        nav.classList.remove('scrolled');
+    }
+
+    // Parallax hero image
+    let offset = window.scrollY;
+    if (heroBg && offset < window.innerHeight) {
+        heroBg.style.transform = `translateY(${offset * 0.4}px) scale(${1 + offset * 0.0005})`;
+    }
+});
+
+// Intersection Observer for scroll reveal mapping
+const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            scrollObserver.unobserve(entry.target);
+        }
+    });
+}, {
+    threshold: 0.15,
+    rootMargin: "0px 0px -50px 0px"
+});
+
+scrollElements.forEach((el) => {
+    scrollObserver.observe(el);
+});
+
+// Initial load animation for hero text
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        document.querySelectorAll('.hero [data-scroll]').forEach(el => {
+            el.classList.add('is-visible');
+        });
+    }, 100);
+});

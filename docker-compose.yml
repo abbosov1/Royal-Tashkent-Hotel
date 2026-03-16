@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: royal_tashkent_hotel_web
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+      - DATABASE_URL=postgresql://abbosov:abbosovm@db:5432/hotel_db
+      - SECRET_KEY=supersecretkey_for_competition_123
+
+  db:
+    image: postgres:15-alpine
+    container_name: royal_tashkent_hotel_db
+    restart: always
+    environment:
+      - POSTGRES_USER=abbosov
+      - POSTGRES_PASSWORD=abbosovm
+      - POSTGRES_DB=hotel_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+

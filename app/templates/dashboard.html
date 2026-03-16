@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Royal Tashkent</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: var(--dark); color: white; padding-top: 100px; }
+        .dashboard-container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 1rem; margin-bottom: 2rem; }
+        .booking-card { background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
+        .booking-info h4 { font-family: 'Syncopate', sans-serif; color: var(--primary); margin-bottom: 0.5rem; }
+        .alert.success { background: rgba(50, 255, 50, 0.2); border: 1px solid rgba(50, 255, 50, 0.5); padding: 1rem; text-align: center; border-radius: 10px; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <nav class="scrolled">
+        <div class="logo"><a href="/" style="color:inherit;text-decoration:none;">Royal<span>Tashkent</span></a></div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            {% if is_admin %}
+            <li><a href="/admin" style="color:var(--primary)">Admin Panel</a></li>
+            {% endif %}
+            <li><a href="/logout" class="btn-nav">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="dashboard-container">
+        <script>
+            const urlParamsIndex = new URLSearchParams(window.location.search);
+            if(urlParamsIndex.get('success') == 'booked') document.write('<div class="alert success">Your room has been successfully booked!</div>');
+        </script>
+        
+        <div class="header-row">
+            <h2>Welcome, {{ user.full_name }}! 👋</h2>
+        </div>
+
+        <h3 style="margin-bottom:1rem; font-family:'Syncopate', sans-serif;">Your Bookings</h3>
+        
+        {% if bookings %}
+            {% for b in bookings %}
+            <div class="booking-card">
+                <div class="booking-info">
+                    <h4>{{ b.room.name }}</h4>
+                    <p>Check-in: {{ b.check_in_date.strftime('%Y-%m-%d') }}</p>
+                    <p>Check-out: {{ b.check_out_date.strftime('%Y-%m-%d') }}</p>
+                </div>
+                <div style="text-align: right;">
+                    <p style="font-size:1.5rem; color:var(--primary)">${{ b.total_price }}</p>
+                    <p style="font-size:0.8rem; color:#aaa;">Status: Confirmed</p>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div style="text-align:center; padding: 3rem; background:rgba(255,255,255,0.02); border-radius:10px;">
+                <p style="margin-bottom:1rem; color:#aaa;">You haven't booked any rooms yet.</p>
+                <a href="/#rooms" class="btn-primary">Browse Rooms</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

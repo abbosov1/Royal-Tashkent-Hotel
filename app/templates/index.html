@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Tashkent Hotel</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="cursor"></div>
+
+    <nav>
+        <div class="logo">Royal<span>Tashkent</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#rooms">Rooms</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+            {% if user %}
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/logout" class="btn-nav">Logout</a></li>
+            {% else %}
+                <li><a href="/login" class="btn-nav">Login / Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <header id="home" class="hero section">
+        <div class="hero-content" data-scroll>
+            <h1 class="reveal-text">Luxury & Comfort<br>in the Heart of the City</h1>
+            <p class="fade-up">Experience unparalleled elegance at Royal Tashkent</p>
+            <a href="#rooms" class="btn-primary fade-up-delay">View Rooms</a>
+        </div>
+        <div class="overlay"></div>
+        <img class="hero-bg" src="/static/images/hero.jpg" alt="Hotel Royal Tashkent">
+    </header>
+
+    <section id="about" class="about section">
+        <div class="container auto-grid">
+            <div class="about-text" data-scroll>
+                <h2 class="section-title">The Royal Experience</h2>
+                <p>Nestled in the vibrating heart of Central Asia, Royal Tashkent Hotel offers an oasis of luxury, blending traditional Uzbek hospitality with world-class modern amenities. From exquisite dining options to state-of-the-art wellbeing centers, we provide an unforgettable stay for leisure and business travelers alike.</p>
+                <a href="#services" class="link-animate">Discover More</a>
+            </div>
+            <div class="about-image" data-scroll>
+                <div class="img-wrapper">
+                    <img src="/static/images/about.jpg" alt="Hotel Lobby">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="rooms" class="rooms section dark">
+        <div class="container">
+            <h2 class="section-title text-center" data-scroll>Exceptional Stays</h2>
+            
+            <script>
+                const urlParamsIndex = new URLSearchParams(window.location.search);
+                if(urlParamsIndex.get('success') == 'booked') document.write('<div style="background:rgba(50,255,50,0.2);color:#fff;padding:1rem;border-radius:10px;text-align:center;margin-bottom:2rem;">Your room has been successfully booked!</div>');
+            </script>
+
+            <div class="cards-grid">
+                {% for room in rooms %}
+                <div class="room-card" data-scroll>
+                    <div class="card-img">
+                        <img src="{{ room.image_url }}" alt="{{ room.name }}">
+                        <div class="price"><span>${{ room.price_per_night }}</span> / night</div>
+                    </div>
+                    <div class="card-info">
+                        <h3>{{ room.name }}</h3>
+                        <p>{{ room.description }}</p>
+                        
+                        <form action="/book/{{ room.id }}" method="POST" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <div style="display: flex; gap: 1rem;">
+                                <input type="date" name="check_in" required style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.1); border:1px solid #555; color:#fff; border-radius:5px;">
+                                <input type="date" name="check_out" required style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.1); border:1px solid #555; color:#fff; border-radius:5px;">
+                            </div>
+                            <button type="submit" class="btn-primary" style="padding: 0.8rem; text-align:center; width: 100%; border:none; cursor:pointer;">Book Now</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services section">
+        <div class="container">
+            <h2 class="section-title text-center" data-scroll>Curated Amenities</h2>
+            <div class="services-track" data-scroll>
+                <div class="service-item">
+                    <div class="service-icon">🌐</div>
+                    <h4>Free Wi-Fi</h4>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🏊‍♂️</div>
+                    <h4>Swimming Pool</h4>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🍽️</div>
+                    <h4>Fine Dining</h4>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🏋️</div>
+                    <h4>Fitness Center</h4>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">💆‍♀️</div>
+                    <h4>Spa & Wellness</h4>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🚙</div>
+                    <h4>Airport Pickup</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact section">
+        <div class="container auto-grid">
+            <div class="contact-info" data-scroll>
+                <h2 class="section-title">Get in Touch</h2>
+                <div class="info-block">
+                    <h3>Address</h3>
+                    <p>12 Amir Temur Avenue<br>Tashkent 100000, Uzbekistan</p>
+                </div>
+                <div class="info-block">
+                    <h3>Contact</h3>
+                    <p>+998 71 234 56 78<br>info@royaltashkent.com</p>
+                </div>
+            </div>
+            <div class="contact-form" data-scroll>
+                <form onsubmit="event.preventDefault();">
+                    <div class="input-group">
+                        <input type="text" id="name" required placeholder=" ">
+                        <label for="name">Your Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="email" required placeholder=" ">
+                        <label for="email">Your Email</label>
+                    </div>
+                    <div class="input-group">
+                        <textarea id="message" required rows="4" placeholder=" "></textarea>
+                        <label for="message">Your Message</label>
+                    </div>
+                    <button type="submit" class="btn-submit">Send Inquiry</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">Royal<span>Tashkent</span></div>
+            <div class="socials">
+                <a href="#">IG</a>
+                <a href="#">FB</a>
+                <a href="#">TW</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Royal Tashkent Hotel. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', path='/js/main.js') }}"></script>
+</body>
+</html>
