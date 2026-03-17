@@ -1,4 +1,5 @@
 import os
+import base64
 from fastapi import FastAPI, Request, Form, Depends, HTTPException, status, Cookie, File, UploadFile
 import shutil
 import uuid
@@ -109,7 +110,7 @@ async def login_post(
     
     access_token = auth.create_access_token(data={"sub": user.email})
     response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
-    response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True)
+    response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True, max_age=2592000)
     return response
 
 @app.post("/register")
@@ -214,20 +215,13 @@ async def admin_add_room(
     
     if image and image.filename:
         contents = await image.read()
-        if len(contents) > 10 * 1024 * 1024:
-            pass
+        if len(contents) <= 5 * 1024 * 1024:  # up to 5MB
+            ext = image.filename.split('.')[-1].lower()
+            mime = "image/png" if ext == "png" else "image/webp" if ext == "webp" else "image/jpeg"
+            encoded = base64.b64encode(contents).decode('utf-8')
+            final_image_url = f"data:{mime};base64,{encoded}"
         else:
-            ext = image.filename.split('.')[-1]
-            unique_filename = f"{uuid.uuid4().hex}.{ext}"
-            save_dir = os.path.join(BASE_DIR, "static", "images")
-            save_path = os.path.join(save_dir, unique_filename)
-            try:
-                with open(save_path, "wb") as f_out:
-                    f_out.write(contents)
-                final_image_url = f"/static/images/{unique_filename}"
-            except Exception as e:
-                print("Upload error:", e)
-                pass
+            print("File too large for Base64 Vercel encoding")
 
     new_room = models.Room(name=name, description=description, price_per_night=price_per_night, image_url=final_image_url)
     db.add(new_room)
@@ -312,15 +306,13 @@ async def admin_edit_room(
         
         if image and image.filename:
             contents = await image.read()
-            if len(contents) <= 10 * 1024 * 1024:
-                ext = image.filename.split('.')[-1]
-                unique_filename = f"{uuid.uuid4().hex}.{ext}"
-                try:
-                    save_path = os.path.join(BASE_DIR, "static", "images", unique_filename)
-                    with open(save_path, "wb") as f_out:
-                        f_out.write(contents)
-                    room.image_url = f"/static/images/{unique_filename}"
-                except: pass
+            if len(contents) <= 5 * 1024 * 1024:
+                ext = image.filename.split('.')[-1].lower()
+                mime = "image/png" if ext == "png" else "image/webp" if ext == "webp" else "image/jpeg"
+                encoded = base64.b64encode(contents).decode('utf-8')
+                room.image_url = f"data:{mime};base64,{encoded}"
+            else:
+                pass
         db.commit()
     return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
 
@@ -390,5 +382,5 @@ async def admin_settings(
     )
     
     response = RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
-    response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True)
+    response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True, max_age=2592000)
     return response
