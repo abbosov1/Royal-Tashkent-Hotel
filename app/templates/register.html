@@ -9,16 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
-<body>
+<body data-auth-page="register">
     <div class="auth-container">
         <div class="auth-overlay"></div>
         <div class="auth-box">
             <h2>Create Account</h2>
 
-            <script>
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('error') == '2') document.write('<div class="alert error">Email already registered</div>');
-            </script>
+            <div id="auth-message"></div>
 
             <div class="auth-switch">Already have an account? <a href="/login">Login</a></div>
 
@@ -49,29 +46,6 @@
         </div>
     </div>
 
-    <script>
-        function setTheme(theme) {
-            document.body.classList.toggle('light-mode', theme === 'light');
-            localStorage.setItem('theme', theme);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            setTheme(savedTheme);
-        });
-
-        function togglePwd(button) {
-            const input = button.previousElementSibling;
-            const icon = button.querySelector('.material-symbols-outlined');
-
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.textContent = 'visibility';
-            } else {
-                input.type = 'password';
-                icon.textContent = 'visibility_off';
-            }
-        }
-    </script>
+    <script src="{{ url_for('static', path='/js/auth.js') }}"></script>
 </body>
 </html>
