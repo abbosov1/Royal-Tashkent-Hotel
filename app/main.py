@@ -96,6 +96,11 @@ async def login_page(request: Request, db: Session = Depends(get_db)):
     
     return templates.TemplateResponse("login.html", {"request": request})
 
+
+@app.get("/register", response_class=HTMLResponse)
+async def register_page(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})
+
 @app.post("/login")
 async def login_post(
     response: RedirectResponse,
@@ -122,7 +127,7 @@ async def register_post(
 ):
     db_user = db.query(models.User).filter(models.User.email == email).first()
     if db_user:
-        return RedirectResponse(url="/login?error=2", status_code=status.HTTP_303_SEE_OTHER)
+        return RedirectResponse(url="/register?error=2", status_code=status.HTTP_303_SEE_OTHER)
     
     hashed_password = auth.get_password_hash(password)
     new_user = models.User(email=email, full_name=full_name, hashed_password=hashed_password)
