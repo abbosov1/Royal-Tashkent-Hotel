@@ -41,8 +41,10 @@
             width: 100%; 
             padding: 1rem 0; 
             background: transparent; 
-            border: none;
-            border-bottom: 2px solid rgba(255,255,255,0.2); 
+            border: none !important;
+            border-bottom: 2px solid rgba(255,255,255,0.2) !important;
+            box-shadow: none !important;
+            outline: none !important; 
             color: var(--light); 
             border-radius: 0; 
             font-family: inherit;
@@ -93,7 +95,7 @@
         /* Light Mode Overrides for these specific elements handled in global stylesheet, but ensure local inputs stay neat */
         body.light-mode .card, body.light-mode .widget { background: #ffffff; border: 1px solid #E8DDD0; box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
         body.light-mode .widget-value, body.light-mode .room-title { color: #1C1008; }
-        body.light-mode input[type="text"], body.light-mode input[type="number"], body.light-mode textarea { background: transparent !important; border: none !important; border-bottom: 2px solid #D4C4B0 !important; color: #1C1008 !important; border-radius: 0 !important; }
+        body.light-mode input[type="text"], body.light-mode input[type="number"], body.light-mode input[type="email"], body.light-mode input[type="password"], body.light-mode textarea { background: transparent !important; border: none !important; border-bottom: 2px solid #D4C4B0 !important; color: #1C1008 !important; border-radius: 0 !important; outline: none !important; box-shadow: none !important; }
         body.light-mode .room-item { background: #fff; border: 1px solid #E8DDD0; }
         body.light-mode .room-item:hover { background: #fdfbf7; border-color: var(--primary); }
         body.light-mode table th { border-bottom: 1px solid #E8DDD0;}
@@ -138,8 +140,10 @@
             width: 100%; 
             padding: 1rem 0; 
             background: transparent; 
-            border: none;
-            border-bottom: 2px solid rgba(255,255,255,0.2); 
+            border: none !important;
+            border-bottom: 2px solid rgba(255,255,255,0.2) !important;
+            box-shadow: none !important;
+            outline: none !important; 
             color: var(--light); 
             border-radius: 0; 
             font-family: inherit;
@@ -190,7 +194,7 @@
         /* Light Mode Overrides for these specific elements handled in global stylesheet, but ensure local inputs stay neat */
         body.light-mode .card, body.light-mode .widget { background: #ffffff; border: 1px solid #E8DDD0; box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
         body.light-mode .widget-value, body.light-mode .room-title { color: #1C1008; }
-        body.light-mode input[type="text"], body.light-mode input[type="number"], body.light-mode textarea { background: transparent !important; border: none !important; border-bottom: 2px solid #D4C4B0 !important; color: #1C1008 !important; border-radius: 0 !important; }
+        body.light-mode input[type="text"], body.light-mode input[type="number"], body.light-mode input[type="email"], body.light-mode input[type="password"], body.light-mode textarea { background: transparent !important; border: none !important; border-bottom: 2px solid #D4C4B0 !important; color: #1C1008 !important; border-radius: 0 !important; outline: none !important; box-shadow: none !important; }
         body.light-mode .room-item { background: #fff; border: 1px solid #E8DDD0; }
         body.light-mode .room-item:hover { background: #fdfbf7; border-color: var(--primary); }
         body.light-mode table th { border-bottom: 1px solid #E8DDD0;}
