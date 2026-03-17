@@ -4,13 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Royal Tashkent Hotel</title>
+    <meta name="description" content="Royal Tashkent Hotel in Tashkent offers luxury rooms, spa, airport transfer, and easy online booking with free Wi-Fi.">
+    <meta property="og:title" content="Royal Tashkent Hotel">
+    <meta property="og:description" content="Luxury and comfort in the heart of Tashkent.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/static/images/hero.jpg">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/responsive.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Hotel",
+            "name": "Royal Tashkent Hotel",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "12 Amir Temur Avenue",
+                "addressLocality": "Tashkent",
+                "postalCode": "100000",
+                "addressCountry": "UZ"
+            },
+            "telephone": "+998908535183",
+            "amenityFeature": [
+                {"@type": "LocationFeatureSpecification", "name": "Free Wi-Fi"},
+                {"@type": "LocationFeatureSpecification", "name": "Airport Transfer"},
+                {"@type": "LocationFeatureSpecification", "name": "Spa"}
+            ]
+        }
+        </script>
 </head>
-<body>
+<body data-page="home">
 
     <div class="cursor"></div>
 
@@ -23,31 +48,38 @@
             <span class="bar" style="width:25px; height:3px; background-color: var(--light); margin:4px 0; transition:0.4s;"></span>
         </div>
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#rooms">Rooms</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#home" data-i18n="nav_home">Home</a></li>
+            <li><a href="#about" data-i18n="nav_about">About</a></li>
+            <li><a href="#rooms" data-i18n="nav_rooms">Rooms</a></li>
+            <li><a href="#services" data-i18n="nav_services">Services</a></li>
+            <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+            <li><a href="/hotel-in-tashkent" data-i18n="nav_city_page">Hotel in Tashkent</a></li>
             {% if user %}
-                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/dashboard" data-i18n="nav_dashboard">Dashboard</a></li>
                 {% if user.email == admin_email %}
-                    <li><a style="color:#d4af37;" href="/admin">Admin Panel</a></li>
+                    <li><a style="color:#d4af37;" href="/admin" data-i18n="nav_admin">Admin Panel</a></li>
                 {% endif %}
-                <li><a href="/logout" class="btn-nav">Logout</a></li>
+                <li><a href="/logout" class="btn-nav" data-i18n="nav_logout">Logout</a></li>
             {% else %}
-                <li><a href="/login" class="btn-nav">Login / Register</a></li>
+                <li><a href="/login" class="btn-nav" data-i18n="nav_login">Login / Register</a></li>
             {% endif %}
-        
-                <li><a href="javascript:void(0)" onclick="toggleTheme()" id="theme-icon" style="cursor:pointer; font-size: 1.2rem;">☀️</a></li>
+            <li class="lang-switcher">
+                <select data-lang-select aria-label="Language switcher">
+                    <option value="en">EN</option>
+                    <option value="ru">RU</option>
+                    <option value="uz">UZ</option>
+                </select>
+            </li>
+            <li><a href="javascript:void(0)" onclick="toggleTheme()" id="theme-icon" style="cursor:pointer; font-size: 1.2rem;">☀️</a></li>
     
             </ul>
     </nav>
 
     <header id="home" class="hero section">
         <div class="hero-content" data-scroll>
-            <h1 class="reveal-text">Luxury & Comfort<br>in the Heart of the City</h1>
-            <p class="fade-up">Experience unparalleled elegance at Royal Tashkent</p>
-            <a href="#rooms" class="btn-primary fade-up-delay">View Rooms</a>
+            <h1 class="reveal-text" data-i18n="hero_title">Luxury & Comfort in the Heart of the City</h1>
+            <p class="fade-up" data-i18n="hero_subtitle">Experience unparalleled elegance at Royal Tashkent</p>
+            <a href="#rooms" class="btn-primary fade-up-delay" data-i18n="hero_cta">View Rooms</a>
         </div>
         <div class="overlay"></div>
         <img class="hero-bg" src="/static/images/hero.jpg" alt="Hotel Royal Tashkent">
@@ -56,9 +88,9 @@
     <section id="about" class="about section">
         <div class="container auto-grid">
             <div class="about-text" data-scroll>
-                <h2 class="section-title">The Royal Experience</h2>
-                <p>Nestled in the vibrating heart of Central Asia, Royal Tashkent Hotel offers an oasis of luxury, blending traditional Uzbek hospitality with world-class modern amenities. From exquisite dining options to state-of-the-art wellbeing centers, we provide an unforgettable stay for leisure and business travelers alike.</p>
-                <a href="#services" class="link-animate">Discover More</a>
+                <h2 class="section-title" data-i18n="about_title">The Royal Experience</h2>
+                <p data-i18n="about_text">Nestled in the vibrating heart of Central Asia, Royal Tashkent Hotel offers an oasis of luxury, blending traditional Uzbek hospitality with world-class modern amenities. From exquisite dining options to state-of-the-art wellbeing centers, we provide an unforgettable stay for leisure and business travelers alike.</p>
+                <a href="#services" class="link-animate" data-i18n="about_link">Discover More</a>
             </div>
             <div class="about-image" data-scroll>
                 <div class="img-wrapper">
@@ -68,21 +100,75 @@
         </div>
     </section>
 
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title text-center" data-i18n="why_title">Why Choose Royal Tashkent</h2>
+            <div class="trust-grid" data-scroll>
+                <div class="trust-card">
+                    <h4 data-i18n="why_1_t">24/7 Concierge</h4>
+                    <p data-i18n="why_1_d">Our team is always available for check-in support, local recommendations, and transport requests.</p>
+                </div>
+                <div class="trust-card">
+                    <h4 data-i18n="why_2_t">Free Cancellation</h4>
+                    <p data-i18n="why_2_d">Flexible policy for most room categories with simple date changes in your dashboard.</p>
+                </div>
+                <div class="trust-card">
+                    <h4 data-i18n="why_3_t">Best Price Guarantee</h4>
+                    <p data-i18n="why_3_d">Direct bookings include priority support and exclusive in-house offers.</p>
+                </div>
+                <div class="trust-card">
+                    <h4 data-i18n="why_4_t">Airport Transfer</h4>
+                    <p data-i18n="why_4_d">Comfortable transfer service for a stress-free arrival and departure.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="rooms" class="rooms section dark">
         <div class="container">
-            <h2 class="section-title text-center" data-scroll>Exceptional Stays</h2>
+            <h2 class="section-title text-center" data-scroll data-i18n="rooms_title">Exceptional Stays</h2>
             
             <script>
                 const urlParamsIndex = new URLSearchParams(window.location.search);
-                if(urlParamsIndex.get('success') == 'booked') document.write('<div style="background:rgba(50,255,50,0.2);color: var(--light);padding:1rem;border-radius:10px;text-align:center;margin-bottom:2rem;">Your room has been successfully booked!</div>');
+                if (urlParamsIndex.get('success') == 'booked') {
+                    document.write('<div class="booking-success-card" data-scroll><strong data-i18n="book_success_t">Booking Confirmed</strong><p data-i18n="book_success_d">Your room has been successfully booked. You can manage dates from Dashboard.</p></div>');
+                }
             </script>
+
+            <div class="rooms-filter" data-scroll>
+                <select id="filterPrice">
+                    <option value="all" data-i18n="filter_price_all">Any Price</option>
+                    <option value="low" data-i18n="filter_price_low">Up to $200</option>
+                    <option value="mid" data-i18n="filter_price_mid">$201 - $500</option>
+                    <option value="high" data-i18n="filter_price_high">$501+</option>
+                </select>
+                <select id="filterType">
+                    <option value="all" data-i18n="filter_type_all">Any Type</option>
+                    <option value="deluxe" data-i18n="filter_type_deluxe">Deluxe</option>
+                    <option value="suite" data-i18n="filter_type_suite">Suite</option>
+                    <option value="penthouse" data-i18n="filter_type_penthouse">Penthouse</option>
+                </select>
+                <select id="filterAmenity">
+                    <option value="all" data-i18n="filter_amenity_all">Any Amenity</option>
+                    <option value="wifi" data-i18n="filter_amenity_wifi">Wi-Fi</option>
+                    <option value="pool" data-i18n="filter_amenity_pool">Pool</option>
+                    <option value="gym" data-i18n="filter_amenity_gym">Gym</option>
+                    <option value="jacuzzi" data-i18n="filter_amenity_jacuzzi">Jacuzzi</option>
+                    <option value="view" data-i18n="filter_amenity_view">City View</option>
+                </select>
+            </div>
 
             <div class="cards-grid">
                 {% for room in rooms %}
-                <div class="room-card" data-scroll>
+                <div class="room-card" data-scroll data-price="{{ room.price_per_night }}" data-name="{{ room.name|lower }}" data-amenities="{{ room.description|lower }}">
                     <div class="card-img">
-                        <img src="{{ room.image_url }}" alt="{{ room.name }}">
+                        <img class="room-main-img" src="{{ room.image_url }}" alt="{{ room.name }}">
                         <div class="price"><span>${{ room.price_per_night }}</span> / night</div>
+                    </div>
+                    <div class="room-gallery">
+                        <button class="room-gallery-thumb active" data-src="{{ room.image_url }}" type="button"></button>
+                        <button class="room-gallery-thumb" data-src="/static/images/about.jpg" type="button"></button>
+                        <button class="room-gallery-thumb" data-src="/static/images/hero.jpg" type="button"></button>
                     </div>
                     <div class="card-info">
                         <h3>{{ room.name }}</h3>
@@ -103,7 +189,7 @@
                                 <input type="date" name="check_in" required style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.1); border:1px solid #555; color: var(--light); border-radius:5px;">
                                 <input type="date" name="check_out" required style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.1); border:1px solid #555; color: var(--light); border-radius:5px;">
                             </div>
-                            <button type="submit" class="btn-primary" style="padding: 0.8rem; text-align:center; width: 100%; border:none; cursor:pointer;">Book Now</button>
+                            <button type="submit" class="btn-primary" style="padding: 0.8rem; text-align:center; width: 100%; border:none; cursor:pointer;" data-i18n="room_book_btn">Book Now</button>
                         </form>
                     </div>
                 </div>
@@ -114,31 +200,31 @@
 
     <section id="services" class="services section">
         <div class="container">
-            <h2 class="section-title text-center" data-scroll>Curated Amenities</h2>
+            <h2 class="section-title text-center" data-scroll data-i18n="services_title">Curated Amenities</h2>
             <div class="services-track" data-scroll>
                 <div class="service-item">
                     <div class="service-icon">🌐</div>
-                    <h4>Free Wi-Fi</h4>
+                    <h4 data-i18n="service_wifi">Free Wi-Fi</h4>
                 </div>
                 <div class="service-item">
                     <div class="service-icon">🏊‍♂️</div>
-                    <h4>Swimming Pool</h4>
+                    <h4 data-i18n="service_pool">Swimming Pool</h4>
                 </div>
                 <div class="service-item">
                     <div class="service-icon">🍽️</div>
-                    <h4>Fine Dining</h4>
+                    <h4 data-i18n="service_dining">Fine Dining</h4>
                 </div>
                 <div class="service-item">
                     <div class="service-icon">🏋️</div>
-                    <h4>Fitness Center</h4>
+                    <h4 data-i18n="service_gym">Fitness Center</h4>
                 </div>
                 <div class="service-item">
                     <div class="service-icon">💆‍♀️</div>
-                    <h4>Spa & Wellness</h4>
+                    <h4 data-i18n="service_spa">Spa & Wellness</h4>
                 </div>
                 <div class="service-item">
                     <div class="service-icon">🚙</div>
-                    <h4>Airport Pickup</h4>
+                    <h4 data-i18n="service_transfer">Airport Pickup</h4>
                 </div>
             </div>
         </div>
@@ -147,7 +233,7 @@
 
     <section id="gallery" class="gallery section dark">
         <div class="container">
-            <h2 class="section-title text-center" data-scroll>The Royal Gallery</h2>
+            <h2 class="section-title text-center" data-scroll data-i18n="gallery_title">The Royal Gallery</h2>
             <div class="masonry-grid" data-scroll>
                 <div class="gallery-item item-1" style="background-image: url('/static/images/hero.jpg');"></div>
                 <div class="gallery-item item-2" style="background-image: url('/static/images/about.jpg');"></div>
@@ -160,56 +246,105 @@
 
     <section id="testimonials" class="testimonials section">
         <div class="container">
-            <h2 class="section-title text-center" data-scroll>Guest Experience</h2>
+            <h2 class="section-title text-center" data-scroll data-i18n="testimonials_title">Guest Experience</h2>
             <div class="testimonials-track" style="display:flex; gap: 2rem; overflow-x: auto; padding-bottom: 2rem; scroll-snap-type: x mandatory;">
-                <div class="testimonial-card" style="min-width: 300px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <h3 style="color:#d4af37;">★★★★★</h3>
+                <article class="testimonial-card" style="min-width: 320px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <div class="guest-head">
+                        <img src="https://i.pravatar.cc/80?img=12" alt="Guest avatar" loading="lazy">
+                        <div>
+                            <strong>Alexander V.</strong>
+                            <small>Germany · Feb 2026</small>
+                        </div>
+                    </div>
+                    <h3 style="color:#d4af37; margin-top: 0.8rem;">★★★★★</h3>
                     <p style="margin: 1rem 0; font-style: italic;">"One of the most beautifully designed hotels in Central Asia. The service was impeccable."</p>
-                    <small>— Alexander V.</small>
-                </div>
-                <div class="testimonial-card" style="min-width: 300px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <h3 style="color:#d4af37;">★★★★★</h3>
+                </article>
+                <article class="testimonial-card" style="min-width: 320px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <div class="guest-head">
+                        <img src="https://i.pravatar.cc/80?img=32" alt="Guest avatar" loading="lazy">
+                        <div>
+                            <strong>Sarah J.</strong>
+                            <small>UK · Jan 2026</small>
+                        </div>
+                    </div>
+                    <h3 style="color:#d4af37; margin-top: 0.8rem;">★★★★★</h3>
                     <p style="margin: 1rem 0; font-style: italic;">"Perfect location, incredibly accommodating staff, and the spa is just out of this world."</p>
-                    <small>— Sarah J.</small>
-                </div>
-                <div class="testimonial-card" style="min-width: 300px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <h3 style="color:#d4af37;">★★★★★</h3>
+                </article>
+                <article class="testimonial-card" style="min-width: 320px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <div class="guest-head">
+                        <img src="https://i.pravatar.cc/80?img=52" alt="Guest avatar" loading="lazy">
+                        <div>
+                            <strong>Timur M.</strong>
+                            <small>Kazakhstan · Mar 2026</small>
+                        </div>
+                    </div>
+                    <h3 style="color:#d4af37; margin-top: 0.8rem;">★★★★★</h3>
                     <p style="margin: 1rem 0; font-style: italic;">"I will definitely return! A perfect place for a honeymoon or a business trip."</p>
-                    <small>— Timur M.</small>
-                </div>
+                </article>
             </div>
         </div>
     </section>
 
-    <section id="contact"
- class="contact section">
+    <section id="faq" class="section dark">
+        <div class="container" style="max-width: 900px;">
+            <h2 class="section-title text-center" data-i18n="faq_title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <details>
+                    <summary data-i18n="faq_1_q">Can I cancel my reservation?</summary>
+                    <p data-i18n="faq_1_a">Yes, most room categories include free cancellation before check-in.</p>
+                </details>
+                <details>
+                    <summary data-i18n="faq_2_q">Do you offer early check-in?</summary>
+                    <p data-i18n="faq_2_a">Subject to room availability. Contact concierge in advance for priority handling.</p>
+                </details>
+                <details>
+                    <summary data-i18n="faq_3_q">Is airport transfer available?</summary>
+                    <p data-i18n="faq_3_a">Yes, we provide transfer from and to Tashkent airport on request.</p>
+                </details>
+                <details>
+                    <summary data-i18n="faq_4_q">Can I reschedule dates after booking?</summary>
+                    <p data-i18n="faq_4_a">Yes. Open your Dashboard and use the reschedule option for your booking.</p>
+                </details>
+                <details>
+                    <summary data-i18n="faq_5_q">Do you have family-friendly rooms?</summary>
+                    <p data-i18n="faq_5_a">Yes, we have spacious categories suitable for families, with additional bedding options upon request.</p>
+                </details>
+                <details>
+                    <summary data-i18n="faq_6_q">Is breakfast included?</summary>
+                    <p data-i18n="faq_6_a">Some room plans include breakfast. You can verify this in room details before completing payment.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact section">
         <div class="container auto-grid">
             <div class="contact-info" data-scroll>
-                <h2 class="section-title">Get in Touch</h2>
+                <h2 class="section-title" data-i18n="contact_title">Get in Touch</h2>
                 <div class="info-block">
-                    <h3>Address</h3>
+                    <h3 data-i18n="contact_address_title">Address</h3>
                     <p>12 Amir Temur Avenue<br>Tashkent 100000, Uzbekistan</p>
                 </div>
                 <div class="info-block">
-                    <h3>Contact</h3>
-                    <p>+998 71 234 56 78<br>info@royaltashkent.com</p>
+                    <h3 data-i18n="contact_contact_title">Contact</h3>
+                    <p>+998 90 853 51 83<br>info@royaltashkent.com</p>
                 </div>
             </div>
             <div class="contact-form" data-scroll>
                 <form onsubmit="event.preventDefault();">
                     <div class="input-group">
                         <input type="text" id="name" required placeholder=" ">
-                        <label for="name">Your Name</label>
+                        <label for="name" data-i18n="contact_name">Your Name</label>
                     </div>
                     <div class="input-group">
                         <input type="email" id="email" required placeholder=" ">
-                        <label for="email">Your Email</label>
+                        <label for="email" data-i18n="contact_email">Your Email</label>
                     </div>
                     <div class="input-group">
                         <textarea id="message" required rows="4" placeholder=" "></textarea>
-                        <label for="message">Your Message</label>
+                        <label for="message" data-i18n="contact_message">Your Message</label>
                     </div>
-                    <button type="submit" class="btn-submit">Send Inquiry</button>
+                    <button type="submit" class="btn-submit" data-i18n="contact_submit">Send Inquiry</button>
                 </form>
             </div>
         </div>
@@ -221,7 +356,8 @@
             <div class="socials">
                 <a href="https://t.me/abbosovmm" target="_blank">Telegram</a>
                 <a href="https://www.instagram.com/_abbosov1_/" target="_blank">Instagram</a>
-                <a href="https://www.linkedin.com/in/abbosovm/" target="_blank">LinkedIn</a>
+                <a href="tel:+998908535183">+998 90 853 51 83</a>
+                <a href="/hotel-in-tashkent" data-i18n="footer_city_page">Hotel in Tashkent</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -229,6 +365,16 @@
         </div>
     </footer>
 
+    <div class="floating-cta">
+        <a href="https://wa.me/998908535183?text=Hello!%20I%20want%20to%20book%20a%20room%20at%20Royal%20Tashkent" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://t.me/abbosovmm" target="_blank" rel="noopener">Telegram</a>
+    </div>
+
+    <div class="mobile-booking-bar">
+        <a href="#rooms" data-i18n="mobile_book">Check Availability</a>
+    </div>
+
+    <script src="{{ url_for('static', path='/js/i18n.js') }}"></script>
     <script src="{{ url_for('static', path='/js/main.js') }}"></script>
 
 

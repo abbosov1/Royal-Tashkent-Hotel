@@ -84,3 +84,63 @@ if(menuToggle && navLinks) {
         });
     });
 }
+
+// Room filters
+const filterPrice = document.getElementById('filterPrice');
+const filterType = document.getElementById('filterType');
+const filterAmenity = document.getElementById('filterAmenity');
+
+function applyRoomFilters() {
+    const cards = document.querySelectorAll('.room-card');
+    if (!cards.length) return;
+
+    const priceVal = filterPrice ? filterPrice.value : 'all';
+    const typeVal = filterType ? filterType.value : 'all';
+    const amenityVal = filterAmenity ? filterAmenity.value : 'all';
+
+    cards.forEach((card) => {
+        const price = Number(card.dataset.price || 0);
+        const name = (card.dataset.name || '').toLowerCase();
+        const amenities = (card.dataset.amenities || '').toLowerCase();
+
+        let matchPrice = true;
+        if (priceVal === 'low') matchPrice = price <= 200;
+        if (priceVal === 'mid') matchPrice = price > 200 && price <= 500;
+        if (priceVal === 'high') matchPrice = price > 500;
+
+        let matchType = true;
+        if (typeVal !== 'all') matchType = name.includes(typeVal);
+
+        let matchAmenity = true;
+        if (amenityVal !== 'all') matchAmenity = amenities.includes(amenityVal);
+
+        card.style.display = (matchPrice && matchType && matchAmenity) ? '' : 'none';
+    });
+}
+
+[filterPrice, filterType, filterAmenity].forEach((el) => {
+    if (el) el.addEventListener('change', applyRoomFilters);
+});
+
+// Room mini-gallery
+document.querySelectorAll('.room-gallery-thumb').forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+        const card = thumb.closest('.room-card');
+        if (!card) return;
+        const mainImg = card.querySelector('.room-main-img');
+        const src = thumb.dataset.src;
+        if (mainImg && src) {
+            mainImg.classList.add('is-switching');
+            setTimeout(() => {
+                mainImg.src = src;
+                mainImg.classList.remove('is-switching');
+            }, 180);
+        }
+
+        card.querySelectorAll('.room-gallery-thumb').forEach((t) => t.classList.remove('active'));
+        thumb.classList.add('active');
+    });
+});
+document.addEventListener('DOMContentLoaded', () => {
+    applyRoomFilters();
+});

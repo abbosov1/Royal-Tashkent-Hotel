@@ -1150,3 +1150,239 @@ body.light-mode input:autofill:active {
   -webkit-text-fill-color: #F4EFEA !important;
   caret-color: #F4EFEA !important;
 }
+
+/* Conversion blocks */
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.trust-card {
+  background: #fff;
+  border: 1px solid #ebe2d7;
+  border-radius: 14px;
+  padding: 1.2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.trust-card h4 {
+  font-family: var(--font-heading);
+  color: #2a1f14;
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+}
+
+.rooms-filter {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.rooms-filter select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--light);
+  border-radius: 8px;
+  padding: 0.75rem 0.8rem;
+}
+
+.rooms-filter select option {
+  color: #f5f5f5;
+  background: #181818;
+}
+
+.room-gallery {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem 0;
+}
+
+.room-main-img {
+  transition: opacity 0.45s ease, transform 0.55s ease;
+}
+
+.room-main-img.is-switching {
+  opacity: 0.35;
+  transform: scale(1.03);
+}
+
+.room-gallery-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(203, 168, 124, 0.8);
+  background: transparent;
+  cursor: pointer;
+}
+
+.room-gallery-thumb.active {
+  background: var(--primary);
+}
+
+.booking-success-card {
+  background: linear-gradient(135deg, rgba(69, 162, 101, 0.25), rgba(32, 90, 56, 0.2));
+  border: 1px solid rgba(119, 221, 147, 0.5);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.5s ease;
+}
+
+.faq-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.faq-list details {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.faq-list summary {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  color: var(--primary);
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding-right: 1.4rem;
+}
+
+.faq-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-list summary::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: var(--primary);
+  transition: transform 0.2s ease;
+}
+
+.faq-list details[open] {
+  border-color: rgba(203, 168, 124, 0.45);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.faq-list details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-list p {
+  margin-top: 0.6rem;
+  color: #ddd;
+  animation: slideDown 0.24s ease;
+}
+
+.guest-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.guest-head img {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.guest-head small {
+  display: block;
+  color: #999;
+}
+
+.floating-cta {
+  position: fixed;
+  right: 16px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  z-index: 1200;
+}
+
+.floating-cta a {
+  display: inline-block;
+  background: #1f6f4f;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.55rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-family: var(--font-heading);
+  letter-spacing: 0.5px;
+}
+
+.floating-cta a:last-child {
+  background: #2a4c8d;
+}
+
+.mobile-booking-bar {
+  display: none;
+}
+
+.mobile-booking-bar a {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  font-family: var(--font-heading);
+  background: var(--primary);
+  color: #141414;
+  padding: 0.95rem 1rem;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.lang-switcher {
+  display: flex;
+  align-items: center;
+}
+
+.lang-switcher select {
+  border: 1px solid rgba(203, 168, 124, 0.5);
+  background: rgba(10, 10, 10, 0.45);
+  color: var(--light);
+  font-size: 0.68rem;
+  padding: 0.28rem 0.38rem;
+  border-radius: 5px;
+  font-family: var(--font-heading);
+  letter-spacing: 0.6px;
+}
+
+body.light-mode .trust-card {
+  background: #fff;
+}
+
+body.light-mode .rooms-filter select {
+  background: #fff;
+  color: #1c1008;
+  border-color: #d4c4b0;
+}
+
+body.light-mode .faq-list details {
+  background: #fff;
+  border-color: #e8ddd0;
+}
+
+body.light-mode .faq-list p {
+  color: #4a3728;
+}
+
+body.light-mode .rooms-filter select option {
+  color: #1c1008;
+  background: #ffffff;
+}
+
+body.light-mode .lang-switcher select {
+  color: #1c1008;
+  background: #fff;
+}

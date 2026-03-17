@@ -54,7 +54,7 @@
     </style>
 
 </head>
-<body>
+<body data-page="dashboard">
     <nav class="scrolled">
         <div class="logo"><a href="/" style="color: var(--light);text-decoration:none;">Royal<span>Tashkent</span></a></div>
         
@@ -64,11 +64,18 @@
             <span class="bar" style="width:25px; height:3px; background-color: var(--light); margin:4px 0; transition:0.4s;"></span>
         </div>
         <ul class="nav-links">
-            <li><a href="/">Home</a></li>
+            <li><a href="/" data-i18n="nav_home">Home</a></li>
             {% if is_admin %}
-            <li><a href="/admin" style="color:var(--primary)">Admin Panel</a></li>
+            <li><a href="/admin" style="color:var(--primary)" data-i18n="nav_admin">Admin Panel</a></li>
             {% endif %}
-            <li><a href="/logout" class="btn-nav">Logout</a></li>
+            <li><a href="/logout" class="btn-nav" data-i18n="nav_logout">Logout</a></li>
+            <li class="lang-switcher">
+                <select data-lang-select aria-label="Language switcher">
+                    <option value="en">EN</option>
+                    <option value="ru">RU</option>
+                    <option value="uz">UZ</option>
+                </select>
+            </li>
         
                 <li><a href="javascript:void(0)" onclick="toggleTheme()" id="theme-icon" style="cursor:pointer; font-size: 1.2rem;">☀️</a></li>
     
@@ -78,40 +85,40 @@
     <div class="dashboard-container">
         <script>
             const urlParamsIndex = new URLSearchParams(window.location.search);
-            if(urlParamsIndex.get('success') == 'booked') document.write('<div class="alert success">Your room has been successfully booked!</div>');
+            if(urlParamsIndex.get('success') == 'booked') document.write('<div class="alert success">Booking confirmed.</div>');
         </script>
         
         <div class="header-row">
-            <h2>Welcome, {{ user.full_name }}! 👋</h2>
+            <h2><span data-i18n="dash_welcome">Welcome,</span> {{ user.full_name }}!</h2>
         </div>
 
-        <h3 style="margin-bottom:1rem; font-family:'Syncopate', sans-serif;">Your Bookings</h3>
+        <h3 style="margin-bottom:1rem; font-family:'Syncopate', sans-serif;" data-i18n="dash_bookings">Your Bookings</h3>
         
         {% if bookings %}
             {% for b in bookings %}
             <div class="booking-card">
                 <div class="booking-info">
                     <h4>{{ b.room.name }}</h4>
-                    <p>Check-in: {{ b.check_in_date.strftime('%Y-%m-%d') }}</p>
-                    <p>Check-out: {{ b.check_out_date.strftime('%Y-%m-%d') }}</p>
+                    <p><span data-i18n="dash_checkin">Check-in:</span> {{ b.check_in_date.strftime('%Y-%m-%d') }}</p>
+                    <p><span data-i18n="dash_checkout">Check-out:</span> {{ b.check_out_date.strftime('%Y-%m-%d') }}</p>
                 </div>
                 
                 <div style="text-align: right;">
                     <div class="price-tag">${{ b.total_price }}</div>
-                    <div class="status-tag">Status: Confirmed</div>
+                    <div class="status-tag" data-i18n="dash_status">Status: Confirmed</div>
                     
                     <div class="action-form">
                         <form action="/dashboard/booking/reschedule/{{ b.id }}" method="POST" style="display:flex; flex-direction:column; gap:1rem; margin-bottom:1.5rem; text-align:left;">
-                            <label class="action-label">Reschedule Stay</label>
+                            <label class="action-label" data-i18n="dash_reschedule">Reschedule Stay</label>
                             <div style="display:flex; gap:0.5rem;">
                                 <input type="date" name="new_check_in" required value="{{ b.check_in_date.strftime('%Y-%m-%d') }}" class="theme-input" title="Check In">
                                 <input type="date" name="new_check_out" required value="{{ b.check_out_date.strftime('%Y-%m-%d') }}" class="theme-input" title="Check Out">
                             </div>
-                            <button type="submit" class="btn-primary" style="width: 100%;">Update Dates</button>
+                            <button type="submit" class="btn-primary" style="width: 100%;" data-i18n="dash_update_dates">Update Dates</button>
                         </form>
                         
                         <form action="/dashboard/booking/cancel/{{ b.id }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
-                            <button type="submit" class="btn-danger">Cancel Booking</button>
+                            <button type="submit" class="btn-danger" data-i18n="dash_cancel">Cancel Booking</button>
                         </form>
                     </div>
                 </div>
@@ -120,8 +127,8 @@
             {% endfor %}
         {% else %}
             <div style="text-align:center; padding: 3rem; background:rgba(255,255,255,0.02); border-radius:10px;">
-                <p style="margin-bottom:1rem; color:#aaa;">You haven't booked any rooms yet.</p>
-                <a href="/#rooms" class="btn-primary">Browse Rooms</a>
+                <p style="margin-bottom:1rem; color:#aaa;" data-i18n="dash_no_bookings">You haven't booked any rooms yet.</p>
+                <a href="/#rooms" class="btn-primary" data-i18n="dash_browse">Browse Rooms</a>
             </div>
         {% endif %}
     </div>
@@ -162,6 +169,7 @@
             }
         });
     </script>
+    <script src="{{ url_for('static', path='/js/i18n.js') }}"></script>
     
 </body>
 

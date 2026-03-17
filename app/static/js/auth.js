@@ -28,19 +28,24 @@ function renderAuthMessage() {
 
   if (page === 'login') {
     if (params.get('error') === '1') {
-      html = '<div class="alert error">Invalid credentials</div>';
+      html = '<div class="alert error" data-i18n="auth_invalid">Invalid credentials</div>';
     } else if (params.get('registered') === '1') {
-      html = '<div class="alert success">Successfully registered. Please sign in.</div>';
+      html = '<div class="alert success" data-i18n="auth_registered">Successfully registered. Please sign in.</div>';
     }
   }
 
   if (page === 'register') {
     if (params.get('error') === '2') {
-      html = '<div class="alert error">Email already registered</div>';
+      html = '<div class="alert error" data-i18n="auth_email_exists">Email already registered</div>';
     }
   }
 
   container.innerHTML = html;
+
+  // Re-apply language after injecting new translatable nodes.
+  if (typeof applyI18n === 'function') {
+    applyI18n(localStorage.getItem('lang') || 'en');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

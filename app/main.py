@@ -75,6 +75,12 @@ async def home_page(request: Request, db: Session = Depends(get_db)):
 
     return templates.TemplateResponse("index.html", {"request": request, "user": user, "rooms": rooms, "admin_email": ADMIN_EMAIL})
 
+
+@app.get("/hotel-in-tashkent", response_class=HTMLResponse)
+async def hotel_in_tashkent_page(request: Request, db: Session = Depends(get_db)):
+    user = get_current_user_from_cookie(request, db)
+    return templates.TemplateResponse("hotel_in_tashkent.html", {"request": request, "user": user, "admin_email": ADMIN_EMAIL})
+
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request, db: Session = Depends(get_db)):
     # Auto-create admin user if not exists

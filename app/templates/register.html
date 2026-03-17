@@ -14,11 +14,19 @@
     <div class="auth-container">
         <div class="auth-overlay"></div>
         <div class="auth-box">
-            <h2>Create Account</h2>
+            <div class="auth-lang">
+                <select data-lang-select aria-label="Language switcher">
+                    <option value="en">EN</option>
+                    <option value="ru">RU</option>
+                    <option value="uz">UZ</option>
+                </select>
+            </div>
+
+            <h2 data-i18n="register_title">Create Account</h2>
 
             <div id="auth-message"></div>
 
-            <div class="auth-switch">Already have an account? <a href="/login">Login</a></div>
+            <div class="auth-switch"><span data-i18n="register_have_account">Already have an account?</span> <a href="/login" data-i18n="register_switch">Login</a></div>
 
             <form action="/register" method="POST" autocomplete="on">
                 <div class="auth-input-group">
@@ -38,15 +46,16 @@
                         </button>
                     </div>
                 </div>
-                <button type="submit" class="auth-btn">Create Account</button>
+                <button type="submit" class="auth-btn" data-i18n="register_submit">Create Account</button>
             </form>
 
             <div class="auth-back">
-                <a href="/">Back to Home</a>
+                <a href="/" data-i18n="login_back">Back to Home</a>
             </div>
         </div>
     </div>
 
+    <script src="{{ url_for('static', path='/js/i18n.js') }}"></script>
     <script src="{{ url_for('static', path='/js/auth.js') }}"></script>
 </body>
 </html>

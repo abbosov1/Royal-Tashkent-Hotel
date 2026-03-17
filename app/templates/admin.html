@@ -206,7 +206,7 @@
 
 
 </head>
-<body>
+<body data-page="admin">
     <nav class="scrolled">
         <div class="logo">Admin<span>Panel</span></div>
         
@@ -216,9 +216,16 @@
             <span class="bar" style="width:25px; height:3px; background-color: var(--light); margin:4px 0; transition:0.4s;"></span>
         </div>
         <ul class="nav-links">
-            <li><a href="/">View Site</a></li>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/logout" class="btn-nav">Logout</a></li>
+            <li><a href="/" data-i18n="nav_view_site">View Site</a></li>
+            <li><a href="/dashboard" data-i18n="nav_dashboard">Dashboard</a></li>
+            <li><a href="/logout" class="btn-nav" data-i18n="nav_logout">Logout</a></li>
+            <li class="lang-switcher">
+                <select data-lang-select aria-label="Language switcher">
+                    <option value="en">EN</option>
+                    <option value="ru">RU</option>
+                    <option value="uz">UZ</option>
+                </select>
+            </li>
         
                 <li><a href="javascript:void(0)" onclick="toggleTheme()" id="theme-icon" style="cursor:pointer; font-size: 1.2rem;">☀️</a></li>
     
@@ -226,23 +233,23 @@
     </nav>
 
     <div class="admin-container">
-        <h2 style="font-family:'Syncopate', sans-serif; margin-bottom:2rem;">Admin Dashboard</h2>
+        <h2 style="font-family:'Syncopate', sans-serif; margin-bottom:2rem;" data-i18n="admin_title">Admin Dashboard</h2>
 
         <div class="admin-overview">
             <div class="widget">
-                <div class="widget-title">Total Rooms</div>
+                <div class="widget-title" data-i18n="admin_total_rooms">Total Rooms</div>
                 <div class="widget-value">{{ rooms|length }}</div>
             </div>
             <div class="widget">
-                <div class="widget-title">Total Bookings</div>
+                <div class="widget-title" data-i18n="admin_total_bookings">Total Bookings</div>
                 <div class="widget-value">{{ bookings|length }}</div>
             </div>
             <div class="widget">
-                <div class="widget-title">Registered Users</div>
+                <div class="widget-title" data-i18n="admin_users">Registered Users</div>
                 <div class="widget-value">{{ users|length }}</div>
             </div>
             <div class="widget">
-                <div class="widget-title">Revenue</div>
+                <div class="widget-title" data-i18n="admin_revenue">Revenue</div>
                 <div class="widget-value">${{ bookings|sum(attribute='total_price') }}</div>
             </div>
         </div>
@@ -251,7 +258,7 @@
         <div class="grid-2">
             <!-- Add Room Form -->
             <div class="card">
-                <h3 style="color:var(--primary); margin-bottom:1.5rem;">Add New Room</h3>
+                <h3 style="color:var(--primary); margin-bottom:1.5rem;" data-i18n="admin_add_room">Add New Room</h3>
                 <form action="/admin/room/add" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>Room Name</label>
@@ -274,11 +281,11 @@
         </div>
                         <input type="text" name="image_url" placeholder="/static/images/room1.jpg (Fallback URL)" style="margin-top:5px;">
                     </div>
-                    <button type="submit" class="btn-primary" style="width:100%; margin-top:1rem;">Add Room</button>
+                    <button type="submit" class="btn-primary" style="width:100%; margin-top:1rem;" data-i18n="admin_add_btn">Add Room</button>
                 </form>
             </div>
             <div class="card" style="margin-top:2rem;">
-                <h3 style="color:var(--primary); margin-bottom:1.5rem;">Update Admin Login</h3>
+                <h3 style="color:var(--primary); margin-bottom:1.5rem;" data-i18n="admin_update_login">Update Admin Login</h3>
                 <form action="/admin/settings" method="POST">
                     <div class="form-group">
                         <label>Admin Email</label>
@@ -291,14 +298,14 @@
                             <span onclick="togglePwd(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; color:#666; font-size:1.2rem;">👁️</span>
                         </div>
                     </div>
-                    <button type="submit" class="btn-primary" style="width:100%; margin-top:1rem;">Update Profile</button>
+                    <button type="submit" class="btn-primary" style="width:100%; margin-top:1rem;" data-i18n="admin_update_profile">Update Profile</button>
                 </form>
             </div>
 
 
             <!-- List Rooms -->
             <div class="card">
-                <h3 style="color:var(--primary); margin-bottom:1.5rem;">Manage Rooms</h3>
+                <h3 style="color:var(--primary); margin-bottom:1.5rem;" data-i18n="admin_manage_rooms">Manage Rooms</h3>
                 <div style="max-height: 400px; overflow-y: auto;">
                     {% for room in rooms %}
                     <div class="room-item">
@@ -320,7 +327,7 @@
 
         <!-- All Bookings -->
         <div class="card" style="margin-top: 2rem;">
-            <h3 style="color:var(--primary); margin-bottom:1.5rem;">All Bookings</h3>
+            <h3 style="color:var(--primary); margin-bottom:1.5rem;" data-i18n="admin_all_bookings">All Bookings</h3>
             <div style="overflow-x: auto;">
                 <table>
                     <thead>
@@ -357,7 +364,7 @@
 
         <!-- Users Management -->
         <div class="card" style="margin-top: 2rem;">
-            <h3 style="color:var(--primary); margin-bottom:1.5rem;">Registered Users</h3>
+            <h3 style="color:var(--primary); margin-bottom:1.5rem;" data-i18n="admin_registered_users">Registered Users</h3>
             <div style="overflow-x: auto;">
                 <table>
                     <thead>
@@ -427,6 +434,7 @@
             }
         });
     </script>
+    <script src="{{ url_for('static', path='/js/i18n.js') }}"></script>
     
 
     <!-- Edit Modal -->
