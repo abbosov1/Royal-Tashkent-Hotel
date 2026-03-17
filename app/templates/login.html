@@ -5,42 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Royal Tashkent</title>
     <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/auth.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        .auth-container { display: flex; min-height: 100vh; align-items: center; justify-content: center; background: url('/static/images/hero.jpg') center/cover; position: relative; }
-        .auth-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
-        .auth-box { position: relative; z-index: 10; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(15px); padding: 4rem; border-radius: 20px; width: 100%; max-width: 500px; color: var(--light); box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
-        .auth-box h2 { font-family: 'Syncopate', sans-serif; font-size: 2rem; margin-bottom: 2rem; text-align: center; }
-        .auth-switch { text-align: center; margin-bottom: 2rem; font-family: 'Syncopate', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(244,239,234,0.75); }
-        .auth-switch a { color: var(--primary); text-decoration: none; border-bottom: 1px solid rgba(203,168,124,0.4); }
-        .auth-input-group { margin-bottom: 1.5rem; }
-        .auth-input-group label { color: #F4EFEA !important; display: block; font-family: 'Syncopate', sans-serif; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 0.5rem; text-transform: uppercase; }
-        .auth-input-group input { width: 100%; padding: 1rem 0; background: transparent !important; border: none !important; border-bottom: 2px solid rgba(255,255,255,0.2) !important; box-shadow: none !important; outline: none !important; color: #F4EFEA !important; border-radius: 0; font-family: 'Playfair Display', serif; font-size: 1rem; transition: border 0.3s; }
-        .auth-input-group input:focus { border-bottom-color: var(--primary) !important; }
-        .auth-container .auth-input-group input:-webkit-autofill,
-        .auth-container .auth-input-group input:-webkit-autofill:hover,
-        .auth-container .auth-input-group input:-webkit-autofill:focus,
-        .auth-container .auth-input-group input:-webkit-autofill:active,
-        .auth-container .auth-input-group input:autofill,
-        .auth-container .auth-input-group input:autofill:hover,
-        .auth-container .auth-input-group input:autofill:focus,
-        .auth-container .auth-input-group input:autofill:active,
-        .auth-container .auth-input-group input:-internal-autofill-selected {
-            background: transparent !important;
-            background-color: transparent !important;
-            background-image: none !important;
-            -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
-            box-shadow: 0 0 0 1000px transparent inset !important;
-            -webkit-text-fill-color: #F4EFEA !important;
-            color: #F4EFEA !important;
-            caret-color: #F4EFEA !important;
-        }
-        .auth-btn { width: 100%; padding: 1rem; background: var(--primary); color: #000; border: none; font-family: 'Syncopate', sans-serif; font-size: 1rem; text-transform: uppercase; border-radius: 30px; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; margin-top: 1rem; }
-        .auth-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(203,168,124,0.4); }
-        .alert { padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; font-family: sans-serif; font-size: 0.9rem; text-align: center; }
-        .alert.error { background: rgba(255,50,50,0.2); border: 1px solid rgba(255,50,50,0.5); color: #ffd5d5; }
-        .alert.success { background: rgba(50,255,50,0.2); border: 1px solid rgba(50,255,50,0.5); color: #d7ffd7; }
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
 <body>
     <div class="auth-container">
@@ -63,16 +30,18 @@
                 </div>
                 <div class="auth-input-group">
                     <label>Password</label>
-                    <div style="position:relative;">
-                        <input type="password" name="password" autocomplete="current-password" required style="padding-right:40px;">
-                        <span onclick="togglePwd(this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; color:#cba87c; font-size:1.1rem;">o</span>
+                    <div class="password-field">
+                        <input type="password" name="password" autocomplete="current-password" required>
+                        <button type="button" class="password-toggle" onclick="togglePwd(this)" aria-label="Toggle password visibility">
+                            <span class="material-symbols-outlined">visibility_off</span>
+                        </button>
                     </div>
                 </div>
                 <button type="submit" class="auth-btn">Sign In</button>
             </form>
 
-            <div style="text-align:center; margin-top:2rem;">
-                <a href="/" style="color: var(--light); font-family:'Playfair Display', serif; text-decoration:none; border-bottom:1px solid var(--primary);">Back to Home</a>
+            <div class="auth-back">
+                <a href="/">Back to Home</a>
             </div>
         </div>
     </div>
@@ -88,14 +57,16 @@
             setTheme(savedTheme);
         });
 
-        function togglePwd(el) {
-            var x = el.previousElementSibling;
-            if (x.type === 'password') {
-                x.type = 'text';
-                el.innerText = '*';
+        function togglePwd(button) {
+            const input = button.previousElementSibling;
+            const icon = button.querySelector('.material-symbols-outlined');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility';
             } else {
-                x.type = 'password';
-                el.innerText = 'o';
+                input.type = 'password';
+                icon.textContent = 'visibility_off';
             }
         }
     </script>
