@@ -16,8 +16,8 @@ from email.message import EmailMessage
 from . import models, database, auth
 from .database import engine, get_db
 
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "royalthotel@gmail.com")
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "abbosov0605.")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "").strip()
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "").strip()
 
 SMTP_HOST = os.getenv("SMTP_HOST", "")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
@@ -25,13 +25,11 @@ SMTP_USER = os.getenv("SMTP_USER", os.getenv("MAIL_USERNAME", ""))
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", os.getenv("MAIL_PASSWORD", ""))
 SMTP_FROM = os.getenv("SMTP_FROM", SMTP_USER or "no-reply@royaltashkent.local")
 SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
+EMAIL_INLINE_SEND = (
+    os.getenv("EMAIL_INLINE_SEND", "").lower() == "true"
+    or os.getenv("VERCEL", "").lower() == "1"
+)
 CODE_ATTEMPT_LIMIT = 6
-
-PROMO_CODES = {
-    "ROYAL10": 10,
-    "VIP15": 15,
-    "WELCOME7": 7,
-}
 
 LOYALTY_TIERS = [
     ("Bronze", 0),
@@ -121,8 +119,22 @@ def normalize_promo_code(raw_code: str) -> str:
     return (raw_code or "").strip().upper()
 
 
-def get_discount_percent(promo_code: str) -> int:
-    return PROMO_CODES.get(normalize_promo_code(promo_code), 0)
+def get_discount_percent(db: Session, promo_code: str) -> int:
+    normalized = normalize_promo_code(promo_code)
+    if not normalized:
+        return 0
+    promo = (
+        db.query(models.PromoCode)
+        .filter(models.PromoCode.code == normalized, models.PromoCode.is_active == True)
+        .first()
+    )
+    if not promo:
+        return 0
+    return int(promo.discount_percent or 0)
+
+
+def is_admin_user(user: models.User | None) -> bool:
+    return bool(user and getattr(user, "is_admin", False))
 
 
 def loyalty_tier(points: int) -> str:
@@ -180,8 +192,19 @@ def generate_verification_code() -> str:
 
 
 def send_email(to_email: str, subject: str, body: str, html_body: str | None = None) -> None:
-    if not SMTP_HOST or not SMTP_USER or not SMTP_PASSWORD:
-        print("Email skipped: SMTP is not configured")
+    smtp_host = (SMTP_HOST or "").strip()
+    smtp_user = (SMTP_USER or "").strip()
+    smtp_password = (SMTP_PASSWORD or "").replace(" ", "")
+
+    if not smtp_host or not smtp_user or not smtp_password:
+        missing = []
+        if not smtp_host:
+            missing.append("SMTP_HOST")
+        if not smtp_user:
+            missing.append("SMTP_USER/MAIL_USERNAME")
+        if not smtp_password:
+            missing.append("SMTP_PASSWORD/MAIL_PASSWORD")
+        print(f"Email skipped: SMTP is not configured (missing: {', '.join(missing)})")
         return
 
     message = EmailMessage()
@@ -192,14 +215,53 @@ def send_email(to_email: str, subject: str, body: str, html_body: str | None = N
     if html_body:
         message.add_alternative(html_body, subtype="html")
 
-    try:
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=15) as server:
-            if SMTP_USE_TLS:
-                server.starttls()
-            server.login(SMTP_USER, SMTP_PASSWORD)
-            server.send_message(message)
-    except Exception as exc:
-        print(f"Email send failed: {exc}")
+    errors: list[str] = []
+
+    # Try configured mode first, then fallback to maximize delivery on restrictive hosts.
+    try_modes: list[str] = []
+    preferred_mode = "ssl" if SMTP_PORT == 465 and not SMTP_USE_TLS else "tls"
+    try_modes.append(preferred_mode)
+    if preferred_mode == "tls":
+        try_modes.append("ssl")
+    else:
+        try_modes.append("tls")
+
+    for mode in try_modes:
+        try:
+            if mode == "ssl":
+                ssl_port = 465 if SMTP_PORT == 587 else SMTP_PORT
+                with smtplib.SMTP_SSL(smtp_host, ssl_port, timeout=20) as server:
+                    server.login(smtp_user, smtp_password)
+                    server.send_message(message)
+            else:
+                with smtplib.SMTP(smtp_host, SMTP_PORT, timeout=20) as server:
+                    server.ehlo()
+                    server.starttls()
+                    server.ehlo()
+                    server.login(smtp_user, smtp_password)
+                    server.send_message(message)
+
+            print(f"Email sent successfully to {to_email} via {mode.upper()}")
+            return
+        except Exception as exc:
+            errors.append(f"{mode.upper()}: {exc}")
+
+    print(f"Email send failed to {to_email}: {' | '.join(errors)}")
+
+
+def dispatch_email(
+    background_tasks: BackgroundTasks,
+    to_email: str,
+    subject: str,
+    body: str,
+    html_body: str | None = None,
+) -> None:
+    # Serverless platforms may terminate immediately after response,
+    # so inline send is more reliable for critical OTP delivery.
+    if EMAIL_INLINE_SEND:
+        send_email(to_email, subject, body, html_body)
+        return
+    background_tasks.add_task(send_email, to_email, subject, body, html_body)
 
 
 def queue_booking_email(background_tasks: BackgroundTasks, user: models.User, booking: models.Booking, room: models.Room):
@@ -231,7 +293,7 @@ def queue_booking_email(background_tasks: BackgroundTasks, user: models.User, bo
             </div>
         </body></html>
     """
-    background_tasks.add_task(send_email, user.email, subject, body, html_body)
+    dispatch_email(background_tasks, user.email, subject, body, html_body)
 
 
 def queue_payment_email(background_tasks: BackgroundTasks, user: models.User, booking: models.Booking, room: models.Room):
@@ -260,7 +322,7 @@ def queue_payment_email(background_tasks: BackgroundTasks, user: models.User, bo
             </div>
         </body></html>
     """
-    background_tasks.add_task(send_email, user.email, subject, body, html_body)
+    dispatch_email(background_tasks, user.email, subject, body, html_body)
 
 
 def queue_cancellation_email(background_tasks: BackgroundTasks, user: models.User, booking: models.Booking, room: models.Room):
@@ -290,7 +352,7 @@ def queue_cancellation_email(background_tasks: BackgroundTasks, user: models.Use
             </div>
         </body></html>
     """
-    background_tasks.add_task(send_email, user.email, subject, body, html_body)
+    dispatch_email(background_tasks, user.email, subject, body, html_body)
 
 
 def queue_verification_email(background_tasks: BackgroundTasks, user: models.User):
@@ -301,7 +363,7 @@ def queue_verification_email(background_tasks: BackgroundTasks, user: models.Use
         f"This code expires in 10 minutes.\n\n"
         f"If you did not create this account, you can ignore this message."
     )
-    background_tasks.add_task(send_email, user.email, subject, body)
+    dispatch_email(background_tasks, user.email, subject, body)
 
 
 def queue_reset_password_email(background_tasks: BackgroundTasks, user: models.User):
@@ -313,24 +375,20 @@ def queue_reset_password_email(background_tasks: BackgroundTasks, user: models.U
         f"You have up to {CODE_ATTEMPT_LIMIT} attempts.\n\n"
         f"If you did not request password reset, please ignore this message."
     )
-    background_tasks.add_task(send_email, user.email, subject, body)
+    dispatch_email(background_tasks, user.email, subject, body)
 
 
 @app.get("/", response_class=HTMLResponse)
 async def home_page(request: Request, db: Session = Depends(get_db)):
     user = get_current_user_from_cookie(request, db)
     rooms = db.query(models.Room).all()
-    
-    # Init some rooms if empty (for demo)
-    if not rooms:
-        demo_rooms = [
-            models.Room(name="Deluxe Oasis", description="Plush king-size bed, city view.", price_per_night=120, image_url="/static/images/room1.jpg"),
-            models.Room(name="Executive Suite", description="Panoramic views, exclusive lounge access.", price_per_night=250, image_url="/static/images/room2.jpg"),
-            models.Room(name="Royal Penthouse", description="Ultimate luxury. Private terrace, jacuzzi.", price_per_night=800, image_url="/static/images/room3.jpg"),
-        ]
-        db.add_all(demo_rooms)
-        db.commit()
-        rooms = db.query(models.Room).all()
+
+    promo_codes = (
+        db.query(models.PromoCode)
+        .filter(models.PromoCode.is_active == True)
+        .order_by(models.PromoCode.discount_percent.desc())
+        .all()
+    )
 
     for room in rooms:
         gallery = normalize_room_gallery(
@@ -348,7 +406,8 @@ async def home_page(request: Request, db: Session = Depends(get_db)):
             "user": user,
             "rooms": rooms,
             "admin_email": ADMIN_EMAIL,
-            "promo_codes": PROMO_CODES,
+            "promo_codes": promo_codes,
+            "promo_codes_json": json.dumps({item.code: int(item.discount_percent) for item in promo_codes}),
         },
     )
 
@@ -361,6 +420,9 @@ async def hotel_in_tashkent_page(request: Request, db: Session = Depends(get_db)
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request, db: Session = Depends(get_db)):
     # Auto-create admin user if not exists
+    if not ADMIN_EMAIL or not ADMIN_PASSWORD:
+        return templates.TemplateResponse("login.html", {"request": request})
+
     admin_user = db.query(models.User).filter(models.User.email == ADMIN_EMAIL).first()
     if not admin_user:
         hashed_password = auth.get_password_hash(ADMIN_PASSWORD)
@@ -655,7 +717,7 @@ async def book_room(
         subtotal_price = days * room.price_per_night
 
         normalized_promo = normalize_promo_code(promo_code)
-        discount_percent = get_discount_percent(normalized_promo)
+        discount_percent = get_discount_percent(db, normalized_promo)
         discount_amount = subtotal_price * (discount_percent / 100)
         total_price = round(subtotal_price - discount_amount, 2)
     except:
@@ -699,7 +761,7 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
         .all()
     )
     # Simple check if current user is admin
-    is_admin = (getattr(user, 'is_admin', False) or (getattr(user, 'is_admin', False) or user.email == ADMIN_EMAIL)) 
+    is_admin = is_admin_user(user)
     points = user.loyalty_points or 0
     
     return templates.TemplateResponse(
@@ -718,7 +780,7 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_page(request: Request, payment_status: str = "all", db: Session = Depends(get_db)):
     user = get_current_user_from_cookie(request, db)
-    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
+    if not is_admin_user(user):
         return RedirectResponse(url="/")
         
     rooms = db.query(models.Room).all()
@@ -752,7 +814,7 @@ async def admin_add_room(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
+    if not is_admin_user(user):
         return RedirectResponse(url="/")
         
     final_image_url = image_url if image_url else "/static/images/room1.jpg"
@@ -787,7 +849,7 @@ async def admin_delete_room(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
+    if not is_admin_user(user):
         return RedirectResponse(url="/")
         
     room = db.query(models.Room).filter(models.Room.id == room_id).first()
@@ -809,7 +871,7 @@ async def admin_delete_booking(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
+    if not is_admin_user(user):
         return RedirectResponse(url="/")
         
     booking = db.query(models.Booking).filter(models.Booking.id == booking_id).first()
@@ -825,7 +887,7 @@ async def admin_delete_user(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
+    if not is_admin_user(user):
         return RedirectResponse(url="/")
         
     target_user = db.query(models.User).filter(models.User.id == user_id).first()
@@ -848,7 +910,7 @@ async def admin_edit_room(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or not getattr(user, 'is_admin', False) and not getattr(user, 'is_admin', False) and user.email != ADMIN_EMAIL:
+    if not is_admin_user(user):
         return RedirectResponse(url="/")
         
     room = db.query(models.Room).filter(models.Room.id == room_id).first()
@@ -928,7 +990,7 @@ async def admin_settings(
     db: Session = Depends(get_db)
 ):
     user = get_current_user_from_cookie(request, db)
-    if not user or not (getattr(user, "is_admin", False) or (getattr(user, 'is_admin', False) or user.email == ADMIN_EMAIL)):
+    if not is_admin_user(user):
         return RedirectResponse(url="/")
         
     user.email = email
