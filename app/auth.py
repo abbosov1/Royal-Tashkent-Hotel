@@ -3,7 +3,9 @@ from datetime import datetime, timedelta
 from jose import jwt
 from passlib.context import CryptContext
 
-SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkey_for_competition_123")
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY environment variable is required")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days
 

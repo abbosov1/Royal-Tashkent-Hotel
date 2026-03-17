@@ -57,3 +57,12 @@ class Booking(Base):
 
     user = relationship("User", back_populates="bookings")
     room = relationship("Room", back_populates="bookings")
+
+
+class PromoCode(Base):
+    __tablename__ = "promo_codes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    code = Column(String, unique=True, index=True)
+    discount_percent = Column(Float, default=0)
+    is_active = Column(Boolean, default=True)

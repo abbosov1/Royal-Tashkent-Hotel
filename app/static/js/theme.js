@@ -75,7 +75,30 @@ function initNavbarLayoutWatcher() {
   window.addEventListener('resize', refreshNavbarLayout);
 }
 
+function initGlobalLoader() {
+  const loader = document.createElement('div');
+  loader.className = 'global-loader active';
+  loader.innerHTML = '<div class="global-loader-spinner"></div>';
+  document.body.appendChild(loader);
+
+  const showLoader = () => loader.classList.add('active');
+  const hideLoader = () => loader.classList.remove('active');
+
+  window.addEventListener('load', hideLoader);
+  document.querySelectorAll('a[href]').forEach((anchor) => {
+    anchor.addEventListener('click', () => {
+      const href = anchor.getAttribute('href') || '';
+      if (href.startsWith('#') || href.startsWith('javascript:')) return;
+      showLoader();
+    });
+  });
+  document.querySelectorAll('form').forEach((form) => {
+    form.addEventListener('submit', showLoader);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  initGlobalLoader();
   initThemeControls();
   initMobileMenu();
   initNavbarLayoutWatcher();

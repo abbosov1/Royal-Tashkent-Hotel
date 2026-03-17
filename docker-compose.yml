@@ -14,17 +14,19 @@ services:
     environment:
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1
-      - DATABASE_URL=postgresql://abbosov:abbosovm@db:5432/hotel_db
-      - SECRET_KEY=supersecretkey_for_competition_123
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
 
   db:
     image: postgres:15-alpine
     container_name: royal_tashkent_hotel_db
     restart: always
     environment:
-      - POSTGRES_USER=abbosov
-      - POSTGRES_PASSWORD=abbosovm
-      - POSTGRES_DB=hotel_db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

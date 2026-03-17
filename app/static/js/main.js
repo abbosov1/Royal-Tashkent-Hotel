@@ -131,11 +131,17 @@ if (contactForm) {
     });
 }
 
-const PROMO_DISCOUNTS = {
-    ROYAL10: 10,
-    VIP15: 15,
-    WELCOME7: 7,
-};
+function getPromoDiscountMap() {
+    const config = document.getElementById('promo-config');
+    if (!config) return {};
+    try {
+        return JSON.parse(config.textContent || '{}');
+    } catch {
+        return {};
+    }
+}
+
+const PROMO_DISCOUNTS = getPromoDiscountMap();
 
 function calculateNights(checkIn, checkOut) {
     if (!checkIn || !checkOut) return 0;

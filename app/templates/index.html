@@ -57,7 +57,7 @@
             <li><a href="/hotel-in-tashkent" data-i18n="nav_city_page">Hotel in Tashkent</a></li>
             {% if user %}
                 <li><a href="/dashboard" data-i18n="nav_dashboard">Dashboard</a></li>
-                {% if user.email == admin_email %}
+                {% if user.is_admin %}
                     <li><a class="nav-admin-link" href="/admin" data-i18n="nav_admin">Admin Panel</a></li>
                 {% endif %}
                 <li><a href="/logout" class="btn-nav" data-i18n="nav_logout">Logout</a></li>
@@ -193,7 +193,11 @@
                                 <div class="quote-line"><span data-i18n="room_quote_discount">Discount</span><strong data-quote-discount>$0</strong></div>
                                 <div class="quote-line quote-total"><span data-i18n="room_quote_total">Estimated total</span><strong data-quote-total>$0</strong></div>
                             </div>
-                            <div class="promo-hint" data-i18n="room_promo_hint">Try ROYAL10, VIP15, or WELCOME7</div>
+                            <div class="promo-hint">
+                                {% if promo_codes %}
+                                Try {% for promo in promo_codes %}{{ promo.code }}{% if not loop.last %}, {% endif %}{% endfor %}
+                                {% endif %}
+                            </div>
                             <button type="submit" class="btn-primary room-book-btn" data-i18n="room_book_btn">Book Now</button>
                         </form>
                     </div>
@@ -386,6 +390,7 @@
 
     <script src="{{ url_for('static', path='/js/i18n.js') }}"></script>
     <script src="{{ url_for('static', path='/js/theme.js') }}"></script>
+    <script id="promo-config" type="application/json">{{ promo_codes_json|safe }}</script>
     <script src="{{ url_for('static', path='/js/main.js') }}"></script>
     <script src="{{ url_for('static', path='/js/index.js') }}"></script>
     
