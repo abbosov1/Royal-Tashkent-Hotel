@@ -134,7 +134,7 @@ document.querySelectorAll('.room-gallery-thumb').forEach((thumb) => {
             setTimeout(() => {
                 mainImg.src = src;
                 mainImg.classList.remove('is-switching');
-            }, 180);
+            }, 320);
         }
 
         card.querySelectorAll('.room-gallery-thumb').forEach((t) => t.classList.remove('active'));

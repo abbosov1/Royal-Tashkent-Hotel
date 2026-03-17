@@ -313,13 +313,20 @@ nav.scrolled .logo, nav.scrolled .nav-links a {
 .img-wrapper img {
     width: 100%;
     height: auto;
-    transition: transform 0.8s filter 0.8s;
+  transition: transform 1.6s ease, filter 1.3s ease;
     display: block;
+  animation: aboutFloat 9s ease-in-out infinite;
 }
 
 .img-wrapper:hover img {
-    transform: scale(1.05);
+  transform: scale(1.08);
     filter: brightness(0.9);
+}
+
+@keyframes aboutFloat {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-7px) scale(1.015); }
+  100% { transform: translateY(0) scale(1); }
 }
 
 /* Rooms */
@@ -1164,6 +1171,13 @@ body.light-mode input:autofill:active {
   border-radius: 14px;
   padding: 1.2rem;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease;
+}
+
+.trust-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.12);
+  border-color: rgba(203, 168, 124, 0.85);
 }
 
 .trust-card h4 {
@@ -1201,12 +1215,12 @@ body.light-mode input:autofill:active {
 }
 
 .room-main-img {
-  transition: opacity 0.45s ease, transform 0.55s ease;
+  transition: opacity 0.95s ease, transform 1.2s ease;
 }
 
 .room-main-img.is-switching {
-  opacity: 0.35;
-  transform: scale(1.03);
+  opacity: 0.25;
+  transform: scale(1.055);
 }
 
 .room-gallery-thumb {
@@ -1241,7 +1255,7 @@ body.light-mode input:autofill:active {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 10px;
   padding: 0.9rem 1rem;
-  transition: border-color 0.25s ease, background 0.25s ease;
+  transition: border-color 0.55s ease, background 0.55s ease, transform 0.55s ease;
 }
 
 .faq-list summary {
@@ -1270,6 +1284,7 @@ body.light-mode input:autofill:active {
 .faq-list details[open] {
   border-color: rgba(203, 168, 124, 0.45);
   background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
 }
 
 .faq-list details[open] summary::after {
@@ -1279,7 +1294,7 @@ body.light-mode input:autofill:active {
 .faq-list p {
   margin-top: 0.6rem;
   color: #ddd;
-  animation: slideDown 0.24s ease;
+  animation: slideDown 0.7s ease;
 }
 
 .guest-head {
@@ -1293,6 +1308,16 @@ body.light-mode input:autofill:active {
   height: 42px;
   border-radius: 999px;
   object-fit: cover;
+}
+
+.testimonial-card {
+  transition: transform 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22) !important;
+  border-top-color: #efc38e !important;
 }
 
 .guest-head small {
@@ -1347,15 +1372,51 @@ body.light-mode input:autofill:active {
   align-items: center;
 }
 
-.lang-switcher select {
-  border: 1px solid rgba(203, 168, 124, 0.5);
-  background: rgba(10, 10, 10, 0.45);
-  color: var(--light);
-  font-size: 0.68rem;
-  padding: 0.28rem 0.38rem;
-  border-radius: 5px;
+.lang-pill {
+  display: inline-flex;
+  gap: 0.22rem;
+  border: 1px solid rgba(203, 168, 124, 0.35);
+  border-radius: 999px;
+  padding: 0.2rem;
+  background: rgba(14, 14, 14, 0.5);
+  backdrop-filter: blur(6px);
+}
+
+.lang-pill button {
+  border: none;
+  background: transparent;
+  color: #ded6c7;
+  font-size: 0.64rem;
   font-family: var(--font-heading);
   letter-spacing: 0.6px;
+  padding: 0.2rem 0.42rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.22s ease, color 0.22s ease;
+}
+
+.lang-pill button.active {
+  background: var(--primary);
+  color: #111;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(203, 168, 124, 0.5);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.8px;
+  text-decoration: none;
+}
+
+.social-icon:hover {
+  background: var(--primary);
+  color: #131313 !important;
 }
 
 body.light-mode .trust-card {
@@ -1382,7 +1443,15 @@ body.light-mode .rooms-filter select option {
   background: #ffffff;
 }
 
-body.light-mode .lang-switcher select {
-  color: #1c1008;
+body.light-mode .lang-pill {
   background: #fff;
+  border-color: #d4c4b0;
+}
+
+body.light-mode .lang-pill button {
+  color: #1c1008;
+}
+
+body.light-mode .social-icon {
+  border-color: #caa16f;
 }

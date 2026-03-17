@@ -22,11 +22,11 @@
                 <li><a href="/login" class="btn-nav" data-i18n="nav_login">Login / Register</a></li>
             {% endif %}
             <li class="lang-switcher">
-                <select data-lang-select aria-label="Language switcher">
-                    <option value="en">EN</option>
-                    <option value="ru">RU</option>
-                    <option value="uz">UZ</option>
-                </select>
+                <div class="lang-pill" role="group" aria-label="Language switcher">
+                    <button type="button" data-lang-btn="en">EN</button>
+                    <button type="button" data-lang-btn="ru">RU</button>
+                    <button type="button" data-lang-btn="uz">UZ</button>
+                </div>
             </li>
         </ul>
     </nav>

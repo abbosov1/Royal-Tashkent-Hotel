@@ -42,14 +42,29 @@
   margin-bottom: 0.8rem;
 }
 
-.auth-lang select {
-  border: 1px solid rgba(203, 168, 124, 0.55);
-  background: rgba(12, 12, 12, 0.5);
+.auth-lang .lang-pill {
+  display: inline-flex;
+  gap: 0.2rem;
+  border: 1px solid rgba(203, 168, 124, 0.5);
+  border-radius: 999px;
+  background: rgba(12, 12, 12, 0.55);
+  padding: 0.2rem;
+}
+
+.auth-lang .lang-pill button {
+  border: none;
+  background: transparent;
   color: #f4efea;
-  border-radius: 6px;
-  padding: 0.25rem 0.35rem;
-  font-size: 0.72rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
   font-family: 'Syncopate', sans-serif;
+  padding: 0.2rem 0.45rem;
+  cursor: pointer;
+}
+
+.auth-lang .lang-pill button.active {
+  background: var(--primary);
+  color: #131313;
 }
 
 .auth-switch {

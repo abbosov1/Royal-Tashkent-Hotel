@@ -64,11 +64,11 @@
                 <li><a href="/login" class="btn-nav" data-i18n="nav_login">Login / Register</a></li>
             {% endif %}
             <li class="lang-switcher">
-                <select data-lang-select aria-label="Language switcher">
-                    <option value="en">EN</option>
-                    <option value="ru">RU</option>
-                    <option value="uz">UZ</option>
-                </select>
+                <div class="lang-pill" role="group" aria-label="Language switcher">
+                    <button type="button" data-lang-btn="en">EN</button>
+                    <button type="button" data-lang-btn="ru">RU</button>
+                    <button type="button" data-lang-btn="uz">UZ</button>
+                </div>
             </li>
             <li><a href="javascript:void(0)" onclick="toggleTheme()" id="theme-icon" style="cursor:pointer; font-size: 1.2rem;">☀️</a></li>
     
@@ -354,9 +354,9 @@
         <div class="footer-content">
             <div class="logo" style="display:flex; align-items:center;"><svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;"><path d="M2 20h20"/><path d="m8 20 4-13 4 13"/><path d="m10 14 4-13 4 13"/><path d="M3 11l4-6 4 6"/><path d="M21 11l-4-6-4 6"/></svg><span>Royal</span>Tashkent</div>
             <div class="socials">
-                <a href="https://t.me/abbosovmm" target="_blank">Telegram</a>
-                <a href="https://www.instagram.com/_abbosov1_/" target="_blank">Instagram</a>
-                <a href="tel:+998908535183">+998 90 853 51 83</a>
+                <a class="social-icon" href="https://t.me/abbosovmm" target="_blank" aria-label="Telegram" title="Telegram">TG</a>
+                <a class="social-icon" href="https://www.instagram.com/_abbosov1_/" target="_blank" aria-label="Instagram" title="Instagram">IG</a>
+                <a class="social-icon" href="https://www.linkedin.com/in/abbosovm/" target="_blank" aria-label="LinkedIn" title="LinkedIn">IN</a>
                 <a href="/hotel-in-tashkent" data-i18n="footer_city_page">Hotel in Tashkent</a>
             </div>
         </div>

@@ -414,12 +414,17 @@ function applyI18n(lang) {
     select.value = lang;
   }
 
+  document.querySelectorAll('[data-lang-btn]').forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.langBtn === lang);
+  });
+
   document.documentElement.lang = lang;
   localStorage.setItem('lang', lang);
 }
 
 function initI18n() {
   const select = document.querySelector('[data-lang-select]');
+  const buttons = document.querySelectorAll('[data-lang-btn]');
   const savedLang = localStorage.getItem('lang') || 'en';
 
   if (select) {
@@ -427,6 +432,12 @@ function initI18n() {
       applyI18n(select.value);
     });
   }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      applyI18n(btn.dataset.langBtn);
+    });
+  });
 
   applyI18n(savedLang);
 }
