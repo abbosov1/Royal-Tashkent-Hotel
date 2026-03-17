@@ -25,10 +25,7 @@ SMTP_USER = os.getenv("SMTP_USER", os.getenv("MAIL_USERNAME", ""))
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", os.getenv("MAIL_PASSWORD", ""))
 SMTP_FROM = os.getenv("SMTP_FROM", SMTP_USER or "no-reply@royaltashkent.local")
 SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
-EMAIL_INLINE_SEND = (
-    os.getenv("EMAIL_INLINE_SEND", "").lower() == "true"
-    or os.getenv("VERCEL", "").lower() == "1"
-)
+EMAIL_INLINE_SEND = os.getenv("EMAIL_INLINE_SEND", "").lower() == "true"
 CODE_ATTEMPT_LIMIT = 6
 
 LOYALTY_TIERS = [
@@ -207,46 +204,49 @@ def send_email(to_email: str, subject: str, body: str, html_body: str | None = N
         print(f"Email skipped: SMTP is not configured (missing: {', '.join(missing)})")
         return
 
-    message = EmailMessage()
-    message["Subject"] = subject
-    message["From"] = SMTP_FROM
-    message["To"] = to_email
-    message.set_content(body)
-    if html_body:
-        message.add_alternative(html_body, subtype="html")
+    try:
+        message = EmailMessage()
+        message["Subject"] = subject
+        message["From"] = SMTP_FROM
+        message["To"] = to_email
+        message.set_content(body)
+        if html_body:
+            message.add_alternative(html_body, subtype="html")
 
-    errors: list[str] = []
+        errors = []
 
-    # Try configured mode first, then fallback to maximize delivery on restrictive hosts.
-    try_modes: list[str] = []
-    preferred_mode = "ssl" if SMTP_PORT == 465 and not SMTP_USE_TLS else "tls"
-    try_modes.append(preferred_mode)
-    if preferred_mode == "tls":
-        try_modes.append("ssl")
-    else:
-        try_modes.append("tls")
+        # Try configured mode first, then fallback to maximize delivery on restrictive hosts.
+        try_modes = []
+        preferred_mode = "ssl" if SMTP_PORT == 465 and not SMTP_USE_TLS else "tls"
+        try_modes.append(preferred_mode)
+        if preferred_mode == "tls":
+            try_modes.append("ssl")
+        else:
+            try_modes.append("tls")
 
-    for mode in try_modes:
-        try:
-            if mode == "ssl":
-                ssl_port = 465 if SMTP_PORT == 587 else SMTP_PORT
-                with smtplib.SMTP_SSL(smtp_host, ssl_port, timeout=20) as server:
-                    server.login(smtp_user, smtp_password)
-                    server.send_message(message)
-            else:
-                with smtplib.SMTP(smtp_host, SMTP_PORT, timeout=20) as server:
-                    server.ehlo()
-                    server.starttls()
-                    server.ehlo()
-                    server.login(smtp_user, smtp_password)
-                    server.send_message(message)
+        for mode in try_modes:
+            try:
+                if mode == "ssl":
+                    ssl_port = 465 if SMTP_PORT == 587 else SMTP_PORT
+                    with smtplib.SMTP_SSL(smtp_host, ssl_port, timeout=10) as server:
+                        server.login(smtp_user, smtp_password)
+                        server.send_message(message)
+                else:
+                    with smtplib.SMTP(smtp_host, SMTP_PORT, timeout=10) as server:
+                        server.ehlo()
+                        server.starttls()
+                        server.ehlo()
+                        server.login(smtp_user, smtp_password)
+                        server.send_message(message)
 
-            print(f"Email sent successfully to {to_email} via {mode.upper()}")
-            return
-        except Exception as exc:
-            errors.append(f"{mode.upper()}: {exc}")
+                print(f"Email sent successfully to {to_email} via {mode.upper()}")
+                return
+            except Exception as exc:
+                errors.append(f"{mode.upper()}: {exc}")
 
-    print(f"Email send failed to {to_email}: {' | '.join(errors)}")
+        print(f"Email send failed to {to_email}: {' | '.join(errors)}")
+    except Exception as exc:
+        print(f"Email build/send unexpected failure to {to_email}: {exc}")
 
 
 def dispatch_email(
@@ -256,10 +256,12 @@ def dispatch_email(
     body: str,
     html_body: str | None = None,
 ) -> None:
-    # Serverless platforms may terminate immediately after response,
-    # so inline send is more reliable for critical OTP delivery.
+    # Use inline mode only when explicitly enabled; never let email failures crash requests.
     if EMAIL_INLINE_SEND:
-        send_email(to_email, subject, body, html_body)
+        try:
+            send_email(to_email, subject, body, html_body)
+        except Exception as exc:
+            print(f"Inline email dispatch failed for {to_email}: {exc}")
         return
     background_tasks.add_task(send_email, to_email, subject, body, html_body)
 
