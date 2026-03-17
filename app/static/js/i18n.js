@@ -266,16 +266,16 @@ const I18N = {
     city_cta: 'Проверить доступность'
   },
   uz: {
-    nav_home: 'Bosh',
-    nav_about: 'Biz',
+    nav_home: 'Bosh sahifa',
+    nav_about: 'Biz haqimizda',
     nav_rooms: 'Xonalar',
-    nav_services: 'Xizmat',
-    nav_contact: 'Aloqa',
-    nav_city_page: 'Toshkent hotel',
+    nav_services: 'Xizmatlar',
+    nav_contact: 'Kontakt',
+    nav_city_page: 'Toshkentdagi mehmonxona',
     nav_dashboard: 'Kabinet',
-    nav_admin: 'Admin',
+    nav_admin: 'Admin panel',
     nav_logout: 'Chiqish',
-    nav_login: 'Kirish',
+    nav_login: 'Kirish / Royxatdan otish',
     nav_view_site: 'Sayt',
 
     hero_title: 'Shahar markazida hashamat va qulaylik',
@@ -285,17 +285,17 @@ const I18N = {
     about_text: 'Royal Tashkent ananaviy ozbek mehmondostligi va zamonaviy premium qulayliklarni birlashtiradi.',
     about_link: 'Batafsil',
 
-    why_title: 'Nega Royal Tashkent',
+    why_title: 'Nega aynan Royal Tashkent',
     why_1_t: '24/7 Concierge',
-    why_1_d: 'Jamoamiz royxatdan otish, transfer va maslahat bo yicha doim yordam beradi.',
+    why_1_d: 'Jamoamiz royxatdan otish, transfer va mahalliy maslahatlar boyicha doim yordam beradi.',
     why_2_t: 'Bepul bekor qilish',
-    why_2_d: 'Kop xonalar uchun bekor qilish va sanani ozgartirish moslashuvchan.',
+    why_2_d: 'Kop xona toifalarida bekor qilish va sanani ozgartirish uchun qulay shartlar mavjud.',
     why_3_t: 'Eng yaxshi narx',
-    why_3_d: 'Togridan togri bron qilishda maxsus imkoniyatlar beriladi.',
-    why_4_t: 'Aeroport transfer',
+    why_3_d: 'To gridan to gri bron qilgan mehmonlarga maxsus takliflar va ustuvor yordam beriladi.',
+    why_4_t: 'Aeroport transferi',
     why_4_d: 'Qulay transfer bilan xavotirsiz kelish va ketish.',
 
-    rooms_title: 'Alohida xonalar',
+    rooms_title: 'Ajoyib xonalar',
     filter_price_all: 'Har qanday narx',
     filter_price_low: '$200 gacha',
     filter_price_mid: '$201 - $500',
@@ -307,7 +307,7 @@ const I18N = {
     filter_amenity_all: 'Har qanday qulaylik',
     filter_amenity_wifi: 'Wi-Fi',
     filter_amenity_pool: 'Hovuz',
-    filter_amenity_gym: 'Gym',
+    filter_amenity_gym: 'Fitnes zali',
     filter_amenity_jacuzzi: 'Jacuzzi',
     filter_amenity_view: 'Shahar manzarasi',
     room_book_btn: 'Bron qilish',
@@ -315,34 +315,34 @@ const I18N = {
     room_date_out: 'Chiqish',
 
     book_success_t: 'Bron tasdiqlandi',
-    book_success_d: 'Bron muvaffaqiyatli yaratildi. Sanalarni kabinetda boshqaring.',
+    book_success_d: 'Bron muvaffaqiyatli yaratildi. Sanalarni kabinet orqali boshqaring.',
 
-    services_title: 'Xizmatlar',
+    services_title: 'Tanlangan qulayliklar',
     service_wifi: 'Bepul Wi-Fi',
     service_pool: 'Hovuz',
     service_dining: 'Restoran',
-    service_gym: 'Fitness',
+    service_gym: 'Fitnes markazi',
     service_spa: 'Spa va Wellness',
     service_transfer: 'Aeroport transferi',
 
-    gallery_title: 'Royal galereya',
+    gallery_title: 'Royal galereyasi',
     testimonials_title: 'Mehmonlar fikri',
 
-    faq_title: 'Kop soraladigan savollar',
+    faq_title: 'Kop beriladigan savollar',
     faq_1_q: 'Bronni bekor qilish mumkinmi?',
-    faq_1_a: 'Ha. Kop xonalar uchun kelishdan oldin bepul bekor qilish mavjud. Aniq shartlar bron tasdiqlanganda korsatiladi.',
+    faq_1_a: 'Ha. Kop xona toifalarida kelishdan oldin bepul bekor qilish mavjud. Aniq shartlar bron tasdigida korsatiladi.',
     faq_2_q: 'Erta check-in bormi?',
     faq_2_a: 'Ha, bosh xona mavjud bolsa. Concierge bagajni qabul qilib, xonani tezroq tayyorlashga yordam beradi.',
     faq_3_q: 'Aeroport transferi bormi?',
-    faq_3_a: 'Ha. Tashkent aeroportiga borish va kelish transferi oldindan sorov bilan mavjud.',
+    faq_3_a: 'Ha. Toshkent aeroportidan va aeroportga transfer oldindan sorov boyicha mavjud.',
     faq_4_q: 'Bron sanasini keyin ozgartirish mumkinmi?',
-    faq_4_a: 'Ha. Kabinetda aktiv bron uchun sanani ozgartirish tugmasini ishlating. Narx avtomatik qayta hisoblanadi.',
+    faq_4_a: 'Ha. Kabinetdagi aktiv bron uchun sanani ozgartirish funksiyasidan foydalaning. Narx avtomatik qayta hisoblanadi.',
     faq_5_q: 'Oilaviy xonalar bormi?',
-    faq_5_a: 'Ha, oilalar uchun keng xonalar va qo shimcha joylar mavjud.',
+    faq_5_a: 'Ha, oilalar uchun keng xona toifalari va qoshimcha yotoq variantlari mavjud.',
     faq_6_q: 'Nonushta kiradimi?',
-    faq_6_a: 'Ba zi tariflarda nonushta mavjud. To lovdan oldin xona tafsilotida tekshiring.',
+    faq_6_a: 'Bazi tariflarda nonushta kiritilgan. Tolovdan oldin xona tafsilotida tekshiring.',
 
-    contact_title: 'Boglanish',
+    contact_title: 'Biz bilan boglaning',
     contact_address_title: 'Manzil',
     contact_contact_title: 'Kontakt',
     contact_name: 'Ismingiz',
@@ -350,36 +350,36 @@ const I18N = {
     contact_message: 'Xabaringiz',
     contact_submit: 'Yuborish',
 
-    footer_city_page: 'Toshkent hotel',
+    footer_city_page: 'Toshkentdagi mehmonxona',
     mobile_book: 'Mavjudlikni tekshirish',
 
     dash_welcome: 'Xush kelibsiz,',
     dash_bookings: 'Bronlaringiz',
     dash_checkin: 'Kirish:',
     dash_checkout: 'Chiqish:',
-    dash_status: 'Status: Tasdiqlandi',
+    dash_status: 'Holat: Tasdiqlandi',
     dash_reschedule: 'Sanani ozgartirish',
     dash_update_dates: 'Sanani yangilash',
     dash_cancel: 'Bronni bekor qilish',
     dash_no_bookings: 'Hozircha bronlar yoq.',
     dash_browse: 'Xonalarni korish',
 
-    admin_title: 'Admin panel',
+    admin_title: 'Admin boshqaruv paneli',
     admin_total_rooms: 'Xonalar soni',
     admin_total_bookings: 'Bronlar soni',
     admin_users: 'Foydalanuvchilar',
     admin_revenue: 'Daromad',
     admin_add_room: 'Yangi xona',
-    admin_update_login: 'Admin login yangilash',
+    admin_update_login: 'Admin login ma lumotlarini yangilash',
     admin_manage_rooms: 'Xonalarni boshqarish',
     admin_all_bookings: 'Barcha bronlar',
-    admin_registered_users: 'Royxatdan otganlar',
+    admin_registered_users: 'Royxatdan otgan foydalanuvchilar',
     admin_add_btn: 'Xona qoshish',
     admin_update_profile: 'Profilni yangilash',
 
     login_title: 'Qaytganingiz bilan',
-    login_no_account: 'Akkaunt yoqmi?',
-    login_switch: 'Royxatdan otish',
+    login_no_account: 'Akkauntingiz yoqmi?',
+    login_switch: 'Royxatdan oting',
     login_signin: 'Kirish',
     login_back: 'Bosh sahifaga qaytish',
 
@@ -389,13 +389,13 @@ const I18N = {
     register_submit: 'Akkaunt yaratish',
 
     auth_invalid: 'Login yoki parol notogri',
-    auth_registered: 'Royxatdan otish muvaffaqiyatli. Endi kiring.',
-    auth_email_exists: 'Bu email oldin royxatdan otgan',
+    auth_registered: 'Royxatdan otish muvaffaqiyatli yakunlandi. Endi tizimga kiring.',
+    auth_email_exists: 'Bu email allaqachon royxatdan otgan',
 
-    city_title: 'Toshkentdagi premium hotel',
-    city_desc_1: 'Royal Tashkent markazda joylashgan bolib, qulay xonalar, premium restoran va spa xizmatlarini taklif qiladi.',
-    city_desc_2: 'Mehmonlar bizni joylashuv, qulaylik va 24/7 professional xizmat uchun tanlaydi.',
-    city_desc_3: 'Biznes, oilaviy dam olish yoki romantik safar uchun Royal Tashkent ideal tanlov.',
+    city_title: 'Toshkentdagi premium mehmonxona',
+    city_desc_1: 'Royal Tashkent mehmonxonasi Toshkent markazida joylashgan bolib, zamonaviy xonalar, premium taomnoma, spa va shaxsiy concierge xizmatini taklif qiladi.',
+    city_desc_2: 'Mehmonlar bizni qulay joylashuv, qulay yotoqlar, xavfsiz bron va 24/7 ishlaydigan professional jamoa uchun tanlaydi.',
+    city_desc_3: 'Agar siz Toshkentda biznes safari, oilaviy dam olish yoki romantik sayohat uchun mehmonxona izlayotgan bolsangiz, Royal Tashkent ideal tanlovdir.',
     city_cta: 'Mavjudlikni tekshirish'
   }
 };
@@ -420,6 +420,10 @@ function applyI18n(lang) {
 
   document.documentElement.lang = lang;
   localStorage.setItem('lang', lang);
+
+  if (typeof window.refreshNavbarLayout === 'function') {
+    window.refreshNavbarLayout();
+  }
 }
 
 function initI18n() {

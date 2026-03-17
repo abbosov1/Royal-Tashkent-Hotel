@@ -51,5 +51,10 @@ function renderAuthMessage() {
 document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('theme') || 'dark';
   setTheme(savedTheme);
+
+  document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+    button.addEventListener('click', () => togglePwd(button));
+  });
+
   renderAuthMessage();
 });

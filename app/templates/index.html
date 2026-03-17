@@ -10,6 +10,7 @@
     <meta property="og:type" content="website">
     <meta property="og:image" content="/static/images/hero.jpg">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/responsive.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,12 +41,12 @@
     <div class="cursor"></div>
 
     <nav>
-        <div class="logo" style="display:flex; align-items:center;"><svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;"><path d="M2 20h20"/><path d="m8 20 4-13 4 13"/><path d="m10 14 4-13 4 13"/><path d="M3 11l4-6 4 6"/><path d="M21 11l-4-6-4 6"/></svg><span>Royal</span>Tashkent</div>
+        <div class="logo logo-inline"><svg class="logo-icon logo-icon-inline" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="m8 20 4-13 4 13"/><path d="m10 14 4-13 4 13"/><path d="M3 11l4-6 4 6"/><path d="M21 11l-4-6-4 6"/></svg><span>Royal</span>Tashkent</div>
         
-        <div class="menu-toggle" id="mobile-menu" style="display:none; flex-direction:column; cursor:pointer; z-index:1001;">
-            <span class="bar" style="width:25px; height:3px; background-color: var(--light); margin:4px 0; transition:0.4s;"></span>
-            <span class="bar" style="width:25px; height:3px; background-color: var(--light); margin:4px 0; transition:0.4s;"></span>
-            <span class="bar" style="width:25px; height:3px; background-color: var(--light); margin:4px 0; transition:0.4s;"></span>
+        <div class="menu-toggle mobile-toggle-inline" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
         </div>
         <ul class="nav-links">
             <li><a href="#home" data-i18n="nav_home">Home</a></li>
@@ -57,7 +58,7 @@
             {% if user %}
                 <li><a href="/dashboard" data-i18n="nav_dashboard">Dashboard</a></li>
                 {% if user.email == admin_email %}
-                    <li><a style="color:#d4af37;" href="/admin" data-i18n="nav_admin">Admin Panel</a></li>
+                    <li><a class="nav-admin-link" href="/admin" data-i18n="nav_admin">Admin Panel</a></li>
                 {% endif %}
                 <li><a href="/logout" class="btn-nav" data-i18n="nav_logout">Logout</a></li>
             {% else %}
@@ -70,7 +71,7 @@
                     <button type="button" data-lang-btn="uz">UZ</button>
                 </div>
             </li>
-            <li><a href="javascript:void(0)" onclick="toggleTheme()" id="theme-icon" style="cursor:pointer; font-size: 1.2rem;">☀️</a></li>
+            <li><a href="#" id="theme-icon" class="theme-toggle">☀️</a></li>
     
             </ul>
     </nav>
@@ -128,12 +129,7 @@
         <div class="container">
             <h2 class="section-title text-center" data-scroll data-i18n="rooms_title">Exceptional Stays</h2>
             
-            <script>
-                const urlParamsIndex = new URLSearchParams(window.location.search);
-                if (urlParamsIndex.get('success') == 'booked') {
-                    document.write('<div class="booking-success-card" data-scroll><strong data-i18n="book_success_t">Booking Confirmed</strong><p data-i18n="book_success_d">Your room has been successfully booked. You can manage dates from Dashboard.</p></div>');
-                }
-            </script>
+            <div id="booking-success-container"></div>
 
             <div class="rooms-filter" data-scroll>
                 <select id="filterPrice">
@@ -173,7 +169,7 @@
                     <div class="card-info">
                         <h3>{{ room.name }}</h3>
                         <p>{{ room.description }}</p>
-                        <div style="font-size:0.8rem; margin:1rem 0; color:var(--primary); display:flex; flex-wrap:wrap; gap:10px;">
+                        <div class="room-amenities">
                             {% if 'wifi' in room.description.lower() or 'wi-fi' in room.description.lower() %}<span>📶 Free Wi-Fi</span>{% endif %}
                             {% if 'pool' in room.description.lower() %}<span>🏊 Private Pool</span>{% endif %}
                             {% if 'gym' in room.description.lower() %}<span>🏋️ Gym Access</span>{% endif %}
@@ -184,12 +180,12 @@
                             {% if 'terrace' in room.description.lower() %}<span>🌅 Terrace</span>{% endif %}
                         </div>
                         
-                        <form action="/book/{{ room.id }}" method="POST" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                            <div style="display: flex; gap: 1rem;">
-                                <input type="date" name="check_in" required style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.1); border:1px solid #555; color: var(--light); border-radius:5px;">
-                                <input type="date" name="check_out" required style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.1); border:1px solid #555; color: var(--light); border-radius:5px;">
+                        <form action="/book/{{ room.id }}" method="POST" class="room-booking-form">
+                            <div class="room-booking-dates">
+                                <input type="date" name="check_in" required>
+                                <input type="date" name="check_out" required>
                             </div>
-                            <button type="submit" class="btn-primary" style="padding: 0.8rem; text-align:center; width: 100%; border:none; cursor:pointer;" data-i18n="room_book_btn">Book Now</button>
+                            <button type="submit" class="btn-primary room-book-btn" data-i18n="room_book_btn">Book Now</button>
                         </form>
                     </div>
                 </div>
@@ -235,11 +231,11 @@
         <div class="container">
             <h2 class="section-title text-center" data-scroll data-i18n="gallery_title">The Royal Gallery</h2>
             <div class="masonry-grid" data-scroll>
-                <div class="gallery-item item-1" style="background-image: url('/static/images/hero.jpg');"></div>
-                <div class="gallery-item item-2" style="background-image: url('/static/images/about.jpg');"></div>
-                <div class="gallery-item item-3" style="background-image: url('https://images.pexels.com/photos/103566/pexels-photo-103566.jpeg?auto=compress&cs=tinysrgb&w=800');"></div>
-                <div class="gallery-item item-4" style="background-image: url('https://images.pexels.com/photos/1134176/pexels-photo-1134176.jpeg?auto=compress&cs=tinysrgb&w=800');"></div>
-                <div class="gallery-item item-5" style="background-image: url('https://images.pexels.com/photos/189296/pexels-photo-189296.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
+                <div class="gallery-item item-1"></div>
+                <div class="gallery-item item-2"></div>
+                <div class="gallery-item item-3"></div>
+                <div class="gallery-item item-4"></div>
+                <div class="gallery-item item-5"></div>
             </div>
         </div>
     </section>
@@ -247,8 +243,8 @@
     <section id="testimonials" class="testimonials section">
         <div class="container">
             <h2 class="section-title text-center" data-scroll data-i18n="testimonials_title">Guest Experience</h2>
-            <div class="testimonials-track" style="display:flex; gap: 2rem; overflow-x: auto; padding-bottom: 2rem; scroll-snap-type: x mandatory;">
-                <article class="testimonial-card" style="min-width: 320px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <div class="testimonials-track">
+                <article class="testimonial-card">
                     <div class="guest-head">
                         <img src="https://i.pravatar.cc/80?img=12" alt="Guest avatar" loading="lazy">
                         <div>
@@ -256,10 +252,10 @@
                             <small>Germany · Feb 2026</small>
                         </div>
                     </div>
-                    <h3 style="color:#d4af37; margin-top: 0.8rem;">★★★★★</h3>
-                    <p style="margin: 1rem 0; font-style: italic;">"One of the most beautifully designed hotels in Central Asia. The service was impeccable."</p>
+                    <h3 class="testimonial-stars">★★★★★</h3>
+                    <p class="testimonial-quote">"One of the most beautifully designed hotels in Central Asia. The service was impeccable."</p>
                 </article>
-                <article class="testimonial-card" style="min-width: 320px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <article class="testimonial-card">
                     <div class="guest-head">
                         <img src="https://i.pravatar.cc/80?img=32" alt="Guest avatar" loading="lazy">
                         <div>
@@ -267,10 +263,10 @@
                             <small>UK · Jan 2026</small>
                         </div>
                     </div>
-                    <h3 style="color:#d4af37; margin-top: 0.8rem;">★★★★★</h3>
-                    <p style="margin: 1rem 0; font-style: italic;">"Perfect location, incredibly accommodating staff, and the spa is just out of this world."</p>
+                    <h3 class="testimonial-stars">★★★★★</h3>
+                    <p class="testimonial-quote">"Perfect location, incredibly accommodating staff, and the spa is just out of this world."</p>
                 </article>
-                <article class="testimonial-card" style="min-width: 320px; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px; border-top: 3px solid #d4af37; scroll-snap-align: start; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <article class="testimonial-card">
                     <div class="guest-head">
                         <img src="https://i.pravatar.cc/80?img=52" alt="Guest avatar" loading="lazy">
                         <div>
@@ -278,15 +274,15 @@
                             <small>Kazakhstan · Mar 2026</small>
                         </div>
                     </div>
-                    <h3 style="color:#d4af37; margin-top: 0.8rem;">★★★★★</h3>
-                    <p style="margin: 1rem 0; font-style: italic;">"I will definitely return! A perfect place for a honeymoon or a business trip."</p>
+                    <h3 class="testimonial-stars">★★★★★</h3>
+                    <p class="testimonial-quote">"I will definitely return! A perfect place for a honeymoon or a business trip."</p>
                 </article>
             </div>
         </div>
     </section>
 
     <section id="faq" class="section dark">
-        <div class="container" style="max-width: 900px;">
+        <div class="container faq-container">
             <h2 class="section-title text-center" data-i18n="faq_title">Frequently Asked Questions</h2>
             <div class="faq-list">
                 <details>
@@ -331,7 +327,7 @@
                 </div>
             </div>
             <div class="contact-form" data-scroll>
-                <form onsubmit="event.preventDefault();">
+                <form id="contact-form">
                     <div class="input-group">
                         <input type="text" id="name" required placeholder=" ">
                         <label for="name" data-i18n="contact_name">Your Name</label>
@@ -352,11 +348,17 @@
 
     <footer>
         <div class="footer-content">
-            <div class="logo" style="display:flex; align-items:center;"><svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;"><path d="M2 20h20"/><path d="m8 20 4-13 4 13"/><path d="m10 14 4-13 4 13"/><path d="M3 11l4-6 4 6"/><path d="M21 11l-4-6-4 6"/></svg><span>Royal</span>Tashkent</div>
+            <div class="logo footer-logo"><svg class="logo-icon logo-icon-inline" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="m8 20 4-13 4 13"/><path d="m10 14 4-13 4 13"/><path d="M3 11l4-6 4 6"/><path d="M21 11l-4-6-4 6"/></svg><span>Royal</span>Tashkent</div>
             <div class="socials">
-                <a class="social-icon" href="https://t.me/abbosovmm" target="_blank" aria-label="Telegram" title="Telegram">TG</a>
-                <a class="social-icon" href="https://www.instagram.com/_abbosov1_/" target="_blank" aria-label="Instagram" title="Instagram">IG</a>
-                <a class="social-icon" href="https://www.linkedin.com/in/abbosovm/" target="_blank" aria-label="LinkedIn" title="LinkedIn">IN</a>
+                <a href="https://t.me/abbosovmm" class="social-icon" target="_blank" rel="noopener" aria-label="Telegram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.9 4.6c.2-.9-.7-1.6-1.5-1.3L2.9 10.1c-.9.4-.8 1.7.2 1.9l4.7 1.5 1.8 5.5c.3.9 1.4 1.1 2 .4l2.6-3 4.6 3.4c.8.6 1.9.1 2.1-.9zM9.5 12.9l8.1-5.3-6.3 6.8-.3 3.3z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/_abbosov1_/" class="social-icon" target="_blank" rel="noopener" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m0 1.8A4 4 0 0 0 3.8 7.8v8.4a4 4 0 0 0 4 4h8.4a4 4 0 0 0 4-4V7.8a4 4 0 0 0-4-4zm8.9 1.5a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/abbosovm/" class="social-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.369-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
                 <a href="/hotel-in-tashkent" data-i18n="footer_city_page">Hotel in Tashkent</a>
             </div>
         </div>
@@ -375,32 +377,9 @@
     </div>
 
     <script src="{{ url_for('static', path='/js/i18n.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/theme.js') }}"></script>
     <script src="{{ url_for('static', path='/js/main.js') }}"></script>
-
-
-
-
-    <script>
-        function setTheme(theme) {
-            document.body.classList.toggle('light-mode', theme === 'light');
-            localStorage.setItem('theme', theme);
-            const icon = document.getElementById('theme-icon');
-            if(icon) {
-                icon.innerText = theme === 'light' ? '🌙' : '☀️';
-            }
-        }
-
-        function toggleTheme() {
-            const currentTheme = localStorage.getItem('theme') || 'dark';
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            setTheme(newTheme);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            setTheme(savedTheme);
-        });
-    </script>
+    <script src="{{ url_for('static', path='/js/index.js') }}"></script>
     
 </body>
 

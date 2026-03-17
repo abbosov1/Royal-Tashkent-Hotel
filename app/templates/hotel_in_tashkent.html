@@ -6,11 +6,12 @@
     <title>Hotel in Tashkent | Royal Tashkent Hotel</title>
     <meta name="description" content="Royal Tashkent Hotel is a luxury hotel in Tashkent with premium rooms, airport transfer, spa, and fast online booking.">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/city.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/responsive.css') }}">
 </head>
 <body data-page="city">
     <nav class="scrolled">
-        <div class="logo"><a href="/" style="color: var(--light); text-decoration: none;"><span>Royal</span>Tashkent</a></div>
+        <div class="logo"><a href="/" class="city-logo-link"><span>Royal</span>Tashkent</a></div>
         <ul class="nav-links">
             <li><a href="/" data-i18n="nav_home">Home</a></li>
             <li><a href="/#rooms" data-i18n="nav_rooms">Rooms</a></li>
@@ -31,15 +32,16 @@
         </ul>
     </nav>
 
-    <section class="section" style="padding-top: 8rem;">
-        <div class="container" style="max-width: 900px;">
+    <section class="section city-content">
+        <div class="container city-container">
             <h1 class="section-title" data-i18n="city_title">Luxury Hotel In Tashkent</h1>
-            <p style="margin-bottom: 1rem;" data-i18n="city_desc_1">Royal Tashkent Hotel offers elegant rooms, premium dining, a modern spa, and personalized concierge service in the center of Tashkent.</p>
-            <p style="margin-bottom: 1rem;" data-i18n="city_desc_2">Guests choose us for our prime location, comfortable beds, secure booking, and professional hospitality team available 24/7.</p>
-            <p style="margin-bottom: 2rem;" data-i18n="city_desc_3">If you are searching for a hotel in Tashkent for business travel, family vacation, or a romantic stay, Royal Tashkent Hotel is your ideal choice.</p>
+            <p class="city-paragraph" data-i18n="city_desc_1">Royal Tashkent Hotel offers elegant rooms, premium dining, a modern spa, and personalized concierge service in the center of Tashkent.</p>
+            <p class="city-paragraph" data-i18n="city_desc_2">Guests choose us for our prime location, comfortable beds, secure booking, and professional hospitality team available 24/7.</p>
+            <p class="city-paragraph last" data-i18n="city_desc_3">If you are searching for a hotel in Tashkent for business travel, family vacation, or a romantic stay, Royal Tashkent Hotel is your ideal choice.</p>
             <a href="/#rooms" class="btn-primary" data-i18n="city_cta">Check Availability</a>
         </div>
     </section>
     <script src="{{ url_for('static', path='/js/i18n.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/theme.js') }}"></script>
 </body>
 </html>

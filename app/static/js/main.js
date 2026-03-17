@@ -67,24 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 100);
 });
 
-// Mobile menu toggle
-const menuToggle = document.querySelector('#mobile-menu');
-const navLinks = document.querySelector('.nav-links');
-
-if(menuToggle && navLinks) {
-    menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
-    
-    // Close menu when clicking a link
-    const links = navLinks.querySelectorAll('a');
-    links.forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-        });
-    });
-}
-
 // Room filters
 const filterPrice = document.getElementById('filterPrice');
 const filterType = document.getElementById('filterType');
@@ -141,6 +123,14 @@ document.querySelectorAll('.room-gallery-thumb').forEach((thumb) => {
         thumb.classList.add('active');
     });
 });
+
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     applyRoomFilters();
 });

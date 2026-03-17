@@ -80,10 +80,35 @@ nav.scrolled {
     color: var(--primary);
 }
 
+.logo-link {
+  color: var(--light);
+  text-decoration: none;
+}
+
+.mobile-toggle-inline {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.mobile-toggle-inline .bar {
+  width: 25px;
+  height: 3px;
+  background-color: var(--light);
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+.theme-toggle {
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 3rem;
+    gap: 2.4rem;
     align-items: center;
 }
 
@@ -91,12 +116,26 @@ nav.scrolled {
     text-decoration: none;
     color: var(--light);
     font-family: var(--font-heading);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     position: relative;
     padding: 0.5rem 0;
     transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+nav.nav-compact .nav-links {
+    gap: 1.55rem;
+}
+
+nav.nav-compact .nav-links a {
+    font-size: 0.72rem;
+    letter-spacing: 0.62px;
+}
+
+nav.nav-compact .btn-nav {
+    padding: 0.6rem 1.02rem !important;
 }
 
 .nav-links a::after {

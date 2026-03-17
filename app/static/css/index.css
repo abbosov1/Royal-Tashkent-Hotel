@@ -1,0 +1,134 @@
+nav .logo.logo-inline {
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon-inline {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.mobile-toggle-inline {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.mobile-toggle-inline .bar {
+  width: 25px;
+  height: 3px;
+  background-color: var(--light);
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+.nav-admin-link {
+  color: #d4af37;
+}
+
+.theme-toggle {
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.room-amenities {
+  font-size: 0.8rem;
+  margin: 1rem 0;
+  color: var(--primary);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.room-booking-form {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.room-booking-dates {
+  display: flex;
+  gap: 1rem;
+}
+
+.room-booking-dates input[type='date'] {
+  width: 100%;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #555;
+  color: var(--light);
+  border-radius: 5px;
+}
+
+.room-book-btn {
+  padding: 0.8rem;
+  text-align: center;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+}
+
+.gallery-item.item-1 {
+  background-image: url('/static/images/hero.jpg');
+}
+
+.gallery-item.item-2 {
+  background-image: url('/static/images/about.jpg');
+}
+
+.gallery-item.item-3 {
+  background-image: url('https://images.pexels.com/photos/103566/pexels-photo-103566.jpeg?auto=compress&cs=tinysrgb&w=800');
+}
+
+.gallery-item.item-4 {
+  background-image: url('https://images.pexels.com/photos/1134176/pexels-photo-1134176.jpeg?auto=compress&cs=tinysrgb&w=800');
+}
+
+.gallery-item.item-5 {
+  background-image: url('https://images.pexels.com/photos/189296/pexels-photo-189296.jpeg?auto=compress&cs=tinysrgb&w=1200');
+}
+
+.testimonials-track {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  padding-bottom: 2rem;
+  scroll-snap-type: x mandatory;
+}
+
+.testimonial-card {
+  min-width: 320px;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border-top: 3px solid #d4af37;
+  scroll-snap-align: start;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-stars {
+  color: #d4af37;
+  margin-top: 0.8rem;
+}
+
+.testimonial-quote {
+  margin: 1rem 0;
+  font-style: italic;
+}
+
+.faq-container {
+  max-width: 900px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+}
+
+.social-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}

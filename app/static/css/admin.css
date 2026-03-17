@@ -1,0 +1,399 @@
+body[data-page='admin'] {
+  background: radial-gradient(circle at top right, #2a1e14 0%, #151515 42%, #0e0e0e 100%);
+  color: var(--light);
+  padding-top: 100px;
+  font-family: 'Playfair Display', serif;
+}
+
+body.light-mode[data-page='admin'] {
+  background: #f5f0e8;
+  color: #1c1008;
+}
+
+.admin-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+h2,
+h3,
+h4 {
+  font-family: 'Syncopate', sans-serif;
+  letter-spacing: 1px;
+  color: var(--primary);
+}
+
+.admin-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.widget {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 3px solid var(--primary);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.widget-title {
+  color: #888;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-family: 'Syncopate', sans-serif;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.widget-value {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: var(--light);
+  font-family: 'Playfair Display', serif;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+label {
+  display: block;
+  font-size: 0.75rem;
+  font-family: 'Syncopate', sans-serif;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  letter-spacing: 1px;
+}
+
+input[type='text'],
+input[type='number'],
+input[type='email'],
+input[type='password'],
+textarea {
+  width: 100%;
+  padding: 1rem 0;
+  background: transparent;
+  border: none !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: var(--light);
+  border-radius: 0;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-bottom-color: var(--primary) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th,
+td {
+  padding: 1.2rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+th {
+  color: #888;
+  font-family: 'Syncopate', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+tr {
+  transition: background 0.3s;
+}
+
+tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.room-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.room-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--primary);
+}
+
+.room-title {
+  font-size: 1.2rem;
+  font-family: 'Playfair Display', serif;
+  color: var(--light);
+}
+
+.room-price {
+  font-size: 0.9rem;
+  color: var(--primary);
+  font-family: 'Syncopate', sans-serif;
+  margin-top: 0.3rem;
+}
+
+#editModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: var(--dark);
+  padding: 3rem;
+  border-radius: 16px;
+  border: 1px solid rgba(203, 168, 124, 0.3);
+  width: 100%;
+  max-width: 550px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.3s;
+}
+
+.close-btn:hover {
+  color: var(--primary);
+}
+
+button.action-btn {
+  background: transparent;
+  color: var(--light);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Syncopate', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+button.action-btn:hover {
+  background: var(--primary);
+  color: var(--dark);
+  border-color: var(--primary);
+}
+
+.btn-danger {
+  background: #5a1e1e !important;
+  color: #fff !important;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'Syncopate', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+.btn-danger:hover {
+  background: #e74c3c !important;
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+.admin-title {
+  font-family: 'Syncopate', sans-serif;
+  margin-bottom: 2rem;
+}
+
+.admin-card-title {
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.top-gap {
+  margin-top: 2rem;
+}
+
+.full-width-btn {
+  width: 100%;
+}
+
+.password-wrap {
+  position: relative;
+}
+
+.password-wrap input {
+  padding-right: 40px;
+}
+
+.password-visibility {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.rooms-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.inline-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.table-action-btn {
+  padding: 0.3rem 0.5rem;
+  background: #5a1e1e;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.table-empty {
+  text-align: center;
+  color: #aaa;
+}
+
+.admin-badge {
+  color: #aaa;
+  font-size: 0.8rem;
+}
+
+.modal-title {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.modal-submit {
+  width: 100%;
+  margin-top: 1.5rem;
+  border-radius: 8px;
+  padding: 1.2rem;
+}
+
+.add-room-url {
+  margin-top: 5px;
+}
+
+body.light-mode .card,
+body.light-mode .widget {
+  background: #fff;
+  border: 1px solid #e8ddd0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+body.light-mode[data-page='admin'] .admin-title,
+body.light-mode[data-page='admin'] .admin-card-title {
+  color: #2a1f14;
+}
+
+body.light-mode .widget-value,
+body.light-mode .room-title {
+  color: #1c1008;
+}
+
+body.light-mode input[type='text'],
+body.light-mode input[type='number'],
+body.light-mode input[type='email'],
+body.light-mode input[type='password'],
+body.light-mode textarea {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid #d4c4b0 !important;
+  color: #1c1008 !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+body.light-mode .room-item {
+  background: #fff;
+  border: 1px solid #e8ddd0;
+}
+
+body.light-mode .room-item:hover {
+  background: #fdfbf7;
+  border-color: var(--primary);
+}
+
+body.light-mode table th {
+  border-bottom: 1px solid #e8ddd0;
+}
+
+body.light-mode td {
+  border-bottom: 1px solid #e8ddd0;
+  color: #1c1008;
+}
+
+body.light-mode tr:hover {
+  background: #fdfbf7;
+}
+
+body.light-mode .modal-content {
+  background: #fff;
+  border: 1px solid var(--primary);
+}
