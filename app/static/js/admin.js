@@ -76,7 +76,9 @@ function bindPasswordToggles() {
 function bindFileInputLabels() {
   const mappings = [
     { input: 'fileInput_add', text: 'fileText_add' },
-    { input: 'fileInput_edit', text: 'fileText_edit' }
+    { input: 'fileInput_edit', text: 'fileText_edit' },
+    { input: 'fileInput_add_extra', text: 'fileText_add_extra', multiple: true },
+    { input: 'fileInput_edit_extra', text: 'fileText_edit_extra', multiple: true }
   ];
 
   mappings.forEach((mapping) => {
@@ -87,6 +89,10 @@ function bindFileInputLabels() {
     }
 
     input.addEventListener('change', () => {
+      if (mapping.multiple) {
+        text.textContent = input.files.length ? `${input.files.length} files selected` : 'No files chosen';
+        return;
+      }
       text.textContent = input.files[0] ? input.files[0].name : 'No file chosen';
     });
   });

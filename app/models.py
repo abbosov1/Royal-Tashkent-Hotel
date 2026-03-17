@@ -12,6 +12,14 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     is_admin = Column(Boolean, default=False)
+    loyalty_points = Column(Integer, default=0)
+    email_verified = Column(Boolean, default=False)
+    email_verification_code = Column(String, nullable=True)
+    email_verification_expires_at = Column(DateTime, nullable=True)
+    email_verification_attempts = Column(Integer, default=0)
+    password_reset_code = Column(String, nullable=True)
+    password_reset_expires_at = Column(DateTime, nullable=True)
+    password_reset_attempts = Column(Integer, default=0)
 
     bookings = relationship("Booking", back_populates="user")
 
@@ -23,6 +31,7 @@ class Room(Base):
     description = Column(String)
     price_per_night = Column(Float)
     image_url = Column(String)
+    image_gallery = Column(String, nullable=True)
     
     bookings = relationship("Booking", back_populates="room")
 
@@ -35,6 +44,15 @@ class Booking(Base):
     check_in_date = Column(DateTime)
     check_out_date = Column(DateTime)
     total_price = Column(Float)
+    guest_count = Column(Integer, default=1)
+    promo_code = Column(String, nullable=True)
+    discount_percent = Column(Float, default=0)
+    needs_transfer = Column(Boolean, default=False)
+    special_request = Column(String, nullable=True)
+    booking_reference = Column(String, unique=True, index=True)
+    payment_status = Column(String, default="pending")
+    payment_reference = Column(String, nullable=True)
+    paid_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="bookings")

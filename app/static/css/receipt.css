@@ -1,0 +1,101 @@
+body[data-page='receipt'] {
+  background: radial-gradient(circle at 20% 0%, #20150f 0%, #101010 55%, #0a0a0a 100%);
+  color: var(--light);
+  min-height: 100vh;
+  padding-top: 92px;
+}
+
+.receipt-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.receipt-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.receipt-card h1 {
+  color: var(--primary);
+  margin-bottom: 0.45rem;
+}
+
+.receipt-note {
+  color: #e5ddcf;
+  margin-bottom: 1.1rem;
+}
+
+.receipt-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.receipt-grid div {
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.24);
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+}
+
+.receipt-grid span {
+  display: block;
+  color: #bba781;
+  font-size: 0.75rem;
+}
+
+.receipt-grid strong {
+  color: #fff8ec;
+}
+
+.receipt-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
+.btn-print {
+  background: transparent;
+  color: #f2e0b5;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+}
+
+@media (max-width: 760px) {
+  .receipt-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .receipt-actions {
+    flex-direction: column;
+  }
+}
+
+@media print {
+  nav,
+  .receipt-actions {
+    display: none !important;
+  }
+
+  body[data-page='receipt'] {
+    background: #fff;
+    color: #111;
+    padding-top: 0;
+  }
+
+  .receipt-card {
+    border: 1px solid #ddd;
+    box-shadow: none;
+    background: #fff;
+    color: #111;
+  }
+
+  .receipt-grid strong,
+  .receipt-card h1,
+  .receipt-note {
+    color: #111;
+  }
+}

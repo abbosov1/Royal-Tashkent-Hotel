@@ -215,6 +215,77 @@
   border-bottom: 1px solid var(--primary);
 }
 
+.verify-copy {
+  text-align: center;
+  color: rgba(244, 239, 234, 0.9);
+  margin: 0.2rem 0 1.3rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.resend-form {
+  margin-top: 0.7rem;
+}
+
+.resend-btn {
+  background: transparent;
+  color: #f2deba;
+  border: 1px solid rgba(203, 168, 124, 0.45);
+}
+
+.code-inputs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.55rem;
+  margin-top: 0.4rem;
+}
+
+.code-inputs input {
+  text-align: center;
+  font-size: 1.15rem !important;
+  font-family: 'Syncopate', sans-serif;
+  letter-spacing: 0;
+  padding: 0.65rem 0 !important;
+  border: 1px solid rgba(203, 168, 124, 0.55) !important;
+  border-radius: 10px;
+  background: rgba(16, 16, 16, 0.45) !important;
+  color: #f9f1e3 !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.code-inputs input:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(203, 168, 124, 0.2);
+  transform: translateY(-1px);
+}
+
+.auth-forgot-link {
+  margin-top: 0.8rem;
+  margin-bottom: 0.2rem;
+}
+
+body[data-auth-page='verify-email'] .auth-box,
+body[data-auth-page='reset-password'] .auth-box,
+body[data-auth-page='forgot-password'] .auth-box {
+  max-width: 520px;
+}
+
+body[data-auth-page='verify-email'] .auth-box h2,
+body[data-auth-page='reset-password'] .auth-box h2,
+body[data-auth-page='forgot-password'] .auth-box h2 {
+  margin-bottom: 0.7rem;
+}
+
+@media (max-width: 420px) {
+  .code-inputs {
+    gap: 0.3rem;
+  }
+
+  .code-inputs input {
+    font-size: 1rem !important;
+  }
+}
+
 @media (max-width: 640px) {
   .auth-box {
     margin: 1rem;

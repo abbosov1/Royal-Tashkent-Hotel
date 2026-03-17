@@ -25,6 +25,35 @@ body.light-mode[data-page='dashboard'] {
   margin-bottom: 3rem;
 }
 
+.loyalty-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.loyalty-card {
+  border: 1px solid rgba(203, 168, 124, 0.3);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.loyalty-label {
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #b9b1a7;
+  font-family: 'Syncopate', sans-serif;
+}
+
+.loyalty-value {
+  margin-top: 0.35rem;
+  font-size: 1.4rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+
 .dashboard-heading {
   font-size: 2.5rem;
   letter-spacing: 1px;
@@ -198,6 +227,31 @@ button.btn-primary:hover {
   width: 100%;
 }
 
+.pay-now-link {
+  display: block;
+  margin-top: 0.8rem;
+  text-align: center;
+}
+
+.pay-badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.18rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.pay-badge.pending {
+  background: rgba(212, 175, 55, 0.2);
+  color: #f5df9b;
+}
+
+.pay-badge.paid {
+  background: rgba(46, 190, 110, 0.2);
+  color: #c1f7d7;
+}
+
 .empty-bookings {
   text-align: center;
   padding: 3rem;
@@ -234,6 +288,11 @@ body.light-mode .action-form {
   border-color: #e8ddd0;
 }
 
+body.light-mode .loyalty-card {
+  background: #fff;
+  border-color: #dbcdbb;
+}
+
 body.light-mode .btn-danger {
   background: #1c1008 !important;
 }
@@ -247,4 +306,14 @@ body.light-mode .btn-danger:hover {
 body.light-mode .btn-primary {
   color: #fff;
   background: var(--primary);
+}
+
+body.light-mode .pay-badge.pending {
+  background: #f3ead2;
+  color: #6f5015;
+}
+
+body.light-mode .pay-badge.paid {
+  background: #d9f2e4;
+  color: #17643b;
 }

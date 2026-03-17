@@ -76,13 +76,21 @@
                         <input type="number" name="price_per_night" required>
                     </div>
                     <div class="form-group">
-                        <label>Image Upload (Max 10MB)</label>
+                        <label>Main Image Upload (Max 5MB)</label>
                         <div class="file-upload-wrapper">
             <label class="file-upload-btn" for="fileInput_add">Choose Image</label>
             <span class="file-upload-text" id="fileText_add">No file chosen</span>
             <input type="file" name="image" id="fileInput_add" class="file-upload-input" accept="image/*">
         </div>
                         <input type="text" name="image_url" placeholder="/static/images/room1.jpg (Fallback URL)" class="add-room-url">
+                    </div>
+                    <div class="form-group">
+                        <label>Additional Gallery Images (up to 5)</label>
+                        <div class="file-upload-wrapper">
+                            <label class="file-upload-btn" for="fileInput_add_extra">Choose Images</label>
+                            <span class="file-upload-text" id="fileText_add_extra">No files chosen</span>
+                            <input type="file" name="extra_images" id="fileInput_add_extra" class="file-upload-input" accept="image/*" multiple>
+                        </div>
                     </div>
                     <button type="submit" class="btn-primary full-width-btn top-gap" data-i18n="admin_add_btn">Add Room</button>
                 </form>
@@ -131,24 +139,39 @@
         <!-- All Bookings -->
         <div class="card top-gap">
             <h3 class="admin-card-title" data-i18n="admin_all_bookings">All Bookings</h3>
+            <form action="/admin" method="GET" class="admin-payment-filter">
+                <label for="payment_status_filter">Payment Status</label>
+                <select id="payment_status_filter" name="payment_status">
+                    <option value="all" {% if payment_status == 'all' %}selected{% endif %}>All</option>
+                    <option value="pending" {% if payment_status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="paid" {% if payment_status == 'paid' %}selected{% endif %}>Paid</option>
+                </select>
+                <button type="submit" class="btn-primary table-filter-btn">Filter</button>
+            </form>
             <div class="table-scroll">
                 <table>
                     <thead>
                         <tr>
+                            <th>Reference</th>
                             <th>User (Email)</th>
                             <th>Room</th>
                             <th>Check In</th>
                             <th>Check Out</th>
+                            <th>Promo</th>
+                            <th>Payment</th>
                             <th>Total Price</th><th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for b in bookings %}
                         <tr>
+                            <td>{{ b.booking_reference or ('RT-' ~ b.id) }}</td>
                             <td>{{ b.user.email }}</td>
                             <td>{{ b.room.name }}</td>
                             <td>{{ b.check_in_date.strftime('%Y-%m-%d') }}</td>
                             <td>{{ b.check_out_date.strftime('%Y-%m-%d') }}</td>
+                            <td>{% if b.promo_code %}{{ b.promo_code }} ({{ b.discount_percent|int }}%){% else %}-{% endif %}</td>
+                            <td>{% if b.payment_status == 'paid' %}Paid{% else %}Pending{% endif %}</td>
                             <td>${{ b.total_price }}</td>
                             <td>
                                 <form action="/admin/booking/delete/{{ b.id }}" method="POST" data-confirm="Delete this booking?">
@@ -158,7 +181,7 @@
                         </tr>
                         {% endfor %}
                         {% if not bookings %}
-                        <tr><td colspan="5" class="table-empty">No bookings yet.</td></tr>
+                        <tr><td colspan="9" class="table-empty">No bookings yet.</td></tr>
                         {% endif %}
                     </tbody>
                 </table>
@@ -174,6 +197,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Email</th>
+                            <th>Points</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -182,6 +206,7 @@
                         <tr>
                             <td>{{ u.id }}</td>
                             <td>{{ u.email }}</td>
+                            <td>{{ u.loyalty_points or 0 }}</td>
                             <td>
                                 {% if u.email != admin_email %}
                                 <form action="/admin/user/delete/{{ u.id }}" method="POST" data-confirm="Delete user and all their bookings?">
@@ -230,6 +255,14 @@
                         <label class="file-upload-btn" for="fileInput_edit">Choose Image</label>
                         <span class="file-upload-text" id="fileText_edit">No file chosen</span>
                         <input type="file" name="image" id="fileInput_edit" class="file-upload-input" accept="image/*">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Add More Gallery Images (up to 5)</label>
+                    <div class="file-upload-wrapper">
+                        <label class="file-upload-btn" for="fileInput_edit_extra">Choose Images</label>
+                        <span class="file-upload-text" id="fileText_edit_extra">No files chosen</span>
+                        <input type="file" name="extra_images" id="fileInput_edit_extra" class="file-upload-input" accept="image/*" multiple>
                     </div>
                 </div>
                 <button type="submit" class="btn-primary modal-submit">Update Room Details</button>

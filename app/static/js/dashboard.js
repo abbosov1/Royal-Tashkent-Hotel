@@ -8,6 +8,9 @@ function renderDashboardBookingSuccess() {
   if (params.get('success') === 'booked') {
     target.innerHTML = '<div class="alert success">Booking confirmed.</div>';
   }
+  if (params.get('success') === 'paid') {
+    target.innerHTML = '<div class="alert success">Payment successful. Your booking is now paid.</div>';
+  }
 }
 
 function bindDashboardConfirmForms() {

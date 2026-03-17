@@ -62,6 +62,80 @@ nav .logo.logo-inline {
   border-radius: 5px;
 }
 
+.room-booking-dates input[type='text'],
+.room-booking-dates input[type='number'],
+.room-booking-form textarea {
+  width: 100%;
+  padding: 0.55rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #555;
+  color: var(--light);
+  border-radius: 5px;
+  font-family: inherit;
+}
+
+.room-booking-form textarea {
+  resize: vertical;
+  min-height: 64px;
+}
+
+.booking-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #d9d9d9;
+  font-size: 0.85rem;
+}
+
+.live-quote {
+  border: 1px solid rgba(203, 168, 124, 0.35);
+  border-radius: 8px;
+  padding: 0.65rem 0.8rem;
+  background: rgba(203, 168, 124, 0.08);
+}
+
+.quote-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #efe7da;
+}
+
+.quote-total {
+  margin-top: 0.3rem;
+  padding-top: 0.3rem;
+  border-top: 1px dashed rgba(203, 168, 124, 0.5);
+  font-size: 0.9rem;
+}
+
+.promo-hint {
+  color: rgba(212, 175, 55, 0.95);
+  font-size: 0.78rem;
+}
+
+body.light-mode .room-booking-dates input[type='date'],
+body.light-mode .room-booking-dates input[type='text'],
+body.light-mode .room-booking-dates input[type='number'],
+body.light-mode .room-booking-form textarea {
+  background: #fff;
+  border: 1px solid #d8c9b5;
+  color: #1c1008;
+}
+
+body.light-mode .room-booking-dates input[type='text']::placeholder,
+body.light-mode .room-booking-form textarea::placeholder {
+  color: #7a6a58;
+}
+
+body.light-mode .live-quote {
+  background: #f8f2e8;
+  border-color: rgba(203, 168, 124, 0.55);
+}
+
+body.light-mode .quote-line {
+  color: #2b1b10;
+}
+
 .room-book-btn {
   padding: 0.8rem;
   text-align: center;

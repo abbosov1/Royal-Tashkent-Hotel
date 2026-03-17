@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email | Royal Tashkent</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/auth.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body data-auth-page="verify-email">
+    <div class="auth-container">
+        <div class="auth-overlay"></div>
+        <div class="auth-box">
+            <div class="auth-lang">
+                <div class="lang-pill" role="group" aria-label="Language switcher">
+                    <button type="button" data-lang-btn="en">EN</button>
+                    <button type="button" data-lang-btn="ru">RU</button>
+                    <button type="button" data-lang-btn="uz">UZ</button>
+                </div>
+            </div>
+
+            <h2 data-i18n="verify_title">Verify Your Email</h2>
+            <p class="verify-copy" data-i18n="verify_copy">Enter the 6-digit code sent to your email address.</p>
+
+            <div id="auth-message"></div>
+
+            <form action="/verify-email" method="POST" autocomplete="off">
+                <input type="hidden" name="email" value="{{ email }}">
+                <input type="hidden" name="code" id="verify-code-hidden">
+                <div class="auth-input-group">
+                    <label data-i18n="verify_code_label">Verification Code</label>
+                    <div class="code-inputs" data-code-inputs>
+                        <input type="text" name="code_1" maxlength="1" inputmode="numeric" pattern="[0-9]" data-code-cell required>
+                        <input type="text" name="code_2" maxlength="1" inputmode="numeric" pattern="[0-9]" data-code-cell required>
+                        <input type="text" name="code_3" maxlength="1" inputmode="numeric" pattern="[0-9]" data-code-cell required>
+                        <input type="text" name="code_4" maxlength="1" inputmode="numeric" pattern="[0-9]" data-code-cell required>
+                        <input type="text" name="code_5" maxlength="1" inputmode="numeric" pattern="[0-9]" data-code-cell required>
+                        <input type="text" name="code_6" maxlength="1" inputmode="numeric" pattern="[0-9]" data-code-cell required>
+                    </div>
+                </div>
+                <button type="submit" class="auth-btn" data-i18n="verify_submit" data-code-submit>Verify Email</button>
+            </form>
+
+            <form action="/verify-email/resend" method="POST" class="resend-form" data-resend-form data-resend-seconds="60" data-resend-key="verify:{{ email }}">
+                <input type="hidden" name="email" value="{{ email }}">
+                <button type="submit" class="auth-btn resend-btn" data-i18n="verify_resend" data-resend-button>Resend Code</button>
+            </form>
+
+            <div class="auth-back">
+                <a href="/login" data-i18n="login_back">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', path='/js/i18n.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/auth.js') }}"></script>
+</body>
+</html>

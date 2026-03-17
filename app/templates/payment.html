@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Payment | Royal Tashkent</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/payment.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/responsive.css') }}">
+</head>
+<body data-page="payment">
+    <nav class="scrolled">
+        <div class="logo"><a href="/" class="logo-link">Royal<span>Tashkent</span></a></div>
+        <ul class="nav-links nav-links-desktop">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/logout" class="btn-nav">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main class="payment-wrap">
+        <section class="payment-card">
+            <h1>Demo Payment</h1>
+            <p class="payment-subtitle">This is a presentation-safe payment simulation. No real card charge is made.</p>
+
+            {% if request.query_params.get('error') %}
+            <div class="pay-alert">Invalid card details. Please try again.</div>
+            {% endif %}
+
+            <div class="booking-summary">
+                <div><span>Booking:</span> <strong>{{ booking.booking_reference or ('RT-' ~ booking.id) }}</strong></div>
+                <div><span>Room:</span> <strong>{{ booking.room.name }}</strong></div>
+                <div><span>Total:</span> <strong>${{ booking.total_price }}</strong></div>
+            </div>
+
+            <form method="POST" action="/payment/{{ booking.id }}" class="payment-form">
+                <label>Card Holder</label>
+                <input type="text" name="card_holder" placeholder="John Doe" required>
+
+                <label>Card Number</label>
+                <input type="text" name="card_number" inputmode="numeric" maxlength="19" placeholder="4242 4242 4242 4242" required>
+
+                <div class="inline-grid">
+                    <div>
+                        <label>Expiry</label>
+                        <input type="text" name="expiry" maxlength="5" placeholder="12/29" required>
+                    </div>
+                    <div>
+                        <label>CVV</label>
+                        <input type="password" name="cvv" maxlength="4" placeholder="123" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary full-pay-btn">Pay ${{ booking.total_price }}</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

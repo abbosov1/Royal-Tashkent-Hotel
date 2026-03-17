@@ -162,9 +162,9 @@
                         <div class="price"><span>${{ room.price_per_night }}</span> / night</div>
                     </div>
                     <div class="room-gallery">
-                        <button class="room-gallery-thumb active" data-src="{{ room.image_url }}" type="button"></button>
-                        <button class="room-gallery-thumb" data-src="/static/images/about.jpg" type="button"></button>
-                        <button class="room-gallery-thumb" data-src="/static/images/hero.jpg" type="button"></button>
+                        {% for image_src in room.gallery_images %}
+                        <button class="room-gallery-thumb{% if loop.first %} active{% endif %}" data-src="{{ image_src }}" type="button"></button>
+                        {% endfor %}
                     </div>
                     <div class="card-info">
                         <h3>{{ room.name }}</h3>
@@ -180,11 +180,20 @@
                             {% if 'terrace' in room.description.lower() %}<span>🌅 Terrace</span>{% endif %}
                         </div>
                         
-                        <form action="/book/{{ room.id }}" method="POST" class="room-booking-form">
+                        <form action="/book/{{ room.id }}" method="POST" class="room-booking-form" data-room-price="{{ room.price_per_night }}">
                             <div class="room-booking-dates">
                                 <input type="date" name="check_in" required>
                                 <input type="date" name="check_out" required>
                             </div>
+                            <div class="room-booking-dates">
+                                <input type="text" name="promo_code" maxlength="15" data-i18n-placeholder="room_promo_placeholder" placeholder="Promo code (optional)">
+                            </div>
+                            <div class="live-quote" data-live-quote>
+                                <div class="quote-line"><span data-i18n="room_quote_nights">Nights</span><strong data-quote-nights>0</strong></div>
+                                <div class="quote-line"><span data-i18n="room_quote_discount">Discount</span><strong data-quote-discount>$0</strong></div>
+                                <div class="quote-line quote-total"><span data-i18n="room_quote_total">Estimated total</span><strong data-quote-total>$0</strong></div>
+                            </div>
+                            <div class="promo-hint" data-i18n="room_promo_hint">Try ROYAL10, VIP15, or WELCOME7</div>
                             <button type="submit" class="btn-primary room-book-btn" data-i18n="room_book_btn">Book Now</button>
                         </form>
                     </div>
@@ -369,7 +378,6 @@
 
     <div class="floating-cta">
         <a href="https://wa.me/998908535183?text=Hello!%20I%20want%20to%20book%20a%20room%20at%20Royal%20Tashkent" target="_blank" rel="noopener">WhatsApp</a>
-        <a href="https://t.me/abbosovmm" target="_blank" rel="noopener">Telegram</a>
     </div>
 
     <div class="mobile-booking-bar">

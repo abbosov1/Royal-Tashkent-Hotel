@@ -45,6 +45,17 @@
             <h2 class="dashboard-heading"><span data-i18n="dash_welcome">Welcome,</span> {{ user.full_name }}!</h2>
         </div>
 
+        <div class="loyalty-strip">
+            <div class="loyalty-card">
+                <div class="loyalty-label" data-i18n="dash_loyalty_points">Loyalty Points</div>
+                <div class="loyalty-value">{{ loyalty_points }}</div>
+            </div>
+            <div class="loyalty-card">
+                <div class="loyalty-label" data-i18n="dash_loyalty_tier">Tier</div>
+                <div class="loyalty-value">{{ loyalty_tier }}</div>
+            </div>
+        </div>
+
         <h3 class="dashboard-bookings-title" data-i18n="dash_bookings">Your Bookings</h3>
         
         {% if bookings %}
@@ -52,8 +63,13 @@
             <div class="booking-card">
                 <div class="booking-info">
                     <h4>{{ b.room.name }}</h4>
+                    <p><span data-i18n="dash_reference">Booking Ref:</span> {{ b.booking_reference or ('RT-' ~ b.id) }}</p>
                     <p><span data-i18n="dash_checkin">Check-in:</span> {{ b.check_in_date.strftime('%Y-%m-%d') }}</p>
                     <p><span data-i18n="dash_checkout">Check-out:</span> {{ b.check_out_date.strftime('%Y-%m-%d') }}</p>
+                    {% if b.promo_code %}
+                    <p><span data-i18n="dash_promo">Promo:</span> {{ b.promo_code }} ({{ b.discount_percent|int }}%)</p>
+                    {% endif %}
+                    <p><span data-i18n="dash_payment">Payment:</span> {% if b.payment_status == 'paid' %}<span class="pay-badge paid" data-i18n="dash_paid">Paid</span>{% else %}<span class="pay-badge pending" data-i18n="dash_pending">Pending</span>{% endif %}</p>
                 </div>
                 
                 <div class="booking-right">
@@ -73,6 +89,11 @@
                         <form action="/dashboard/booking/cancel/{{ b.id }}" method="POST" data-confirm="Are you sure you want to cancel this booking?">
                             <button type="submit" class="btn-danger" data-i18n="dash_cancel">Cancel Booking</button>
                         </form>
+                        {% if b.payment_status != 'paid' %}
+                        <a href="/payment/{{ b.id }}" class="btn-primary full-width-btn pay-now-link" data-i18n="dash_pay_now">Pay Now</a>
+                        {% else %}
+                        <a href="/receipt/{{ b.id }}" class="btn-primary full-width-btn pay-now-link">View Receipt</a>
+                        {% endif %}
                     </div>
                 </div>
 

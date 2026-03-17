@@ -131,6 +131,69 @@ if (contactForm) {
     });
 }
 
+const PROMO_DISCOUNTS = {
+    ROYAL10: 10,
+    VIP15: 15,
+    WELCOME7: 7,
+};
+
+function calculateNights(checkIn, checkOut) {
+    if (!checkIn || !checkOut) return 0;
+    const start = new Date(checkIn);
+    const end = new Date(checkOut);
+    const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    return diff > 0 ? diff : 0;
+}
+
+function updateLiveQuote(form) {
+    const pricePerNight = Number(form.dataset.roomPrice || 0);
+    const checkIn = form.querySelector('input[name="check_in"]')?.value;
+    const checkOut = form.querySelector('input[name="check_out"]')?.value;
+    const promoInput = form.querySelector('input[name="promo_code"]');
+    const quoteBox = form.querySelector('[data-live-quote]');
+    if (!quoteBox) return;
+
+    const nights = calculateNights(checkIn, checkOut);
+    const subtotal = nights * pricePerNight;
+    const promoCode = (promoInput?.value || '').trim().toUpperCase();
+    const discountPercent = PROMO_DISCOUNTS[promoCode] || 0;
+    const discountValue = subtotal * discountPercent / 100;
+    const total = Math.max(0, subtotal - discountValue);
+
+    const nightsEl = quoteBox.querySelector('[data-quote-nights]');
+    const discountEl = quoteBox.querySelector('[data-quote-discount]');
+    const totalEl = quoteBox.querySelector('[data-quote-total]');
+
+    if (nightsEl) nightsEl.textContent = String(nights);
+    if (discountEl) discountEl.textContent = `-$${discountValue.toFixed(2)}`;
+    if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+}
+
+function initBookingEnhancements() {
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelectorAll('.room-booking-form').forEach((form) => {
+        const checkIn = form.querySelector('input[name="check_in"]');
+        const checkOut = form.querySelector('input[name="check_out"]');
+        if (checkIn) checkIn.min = today;
+        if (checkOut) checkOut.min = today;
+
+        [
+            'input[name="check_in"]',
+            'input[name="check_out"]',
+            'input[name="promo_code"]',
+        ].forEach((selector) => {
+            const field = form.querySelector(selector);
+            if (field) {
+                field.addEventListener('input', () => updateLiveQuote(form));
+                field.addEventListener('change', () => updateLiveQuote(form));
+            }
+        });
+
+        updateLiveQuote(form);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     applyRoomFilters();
+    initBookingEnhancements();
 });

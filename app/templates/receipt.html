@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Receipt | Royal Tashkent</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/receipt.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/responsive.css') }}">
+</head>
+<body data-page="receipt">
+    <nav class="scrolled">
+        <div class="logo"><a href="/" class="logo-link">Royal<span>Tashkent</span></a></div>
+        <ul class="nav-links nav-links-desktop">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/logout" class="btn-nav">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main class="receipt-wrap">
+        <section class="receipt-card" id="receipt-card">
+            <h1>Payment Receipt</h1>
+            <p class="receipt-note">Transaction is successfully marked as paid.</p>
+
+            <div class="receipt-grid">
+                <div><span>Booking Ref</span><strong>{{ booking.booking_reference or ('RT-' ~ booking.id) }}</strong></div>
+                <div><span>Payment Ref</span><strong>{{ booking.payment_reference or 'N/A' }}</strong></div>
+                <div><span>Guest</span><strong>{{ user.full_name }}</strong></div>
+                <div><span>Room</span><strong>{{ booking.room.name }}</strong></div>
+                <div><span>Check-in</span><strong>{{ booking.check_in_date.strftime('%Y-%m-%d') }}</strong></div>
+                <div><span>Check-out</span><strong>{{ booking.check_out_date.strftime('%Y-%m-%d') }}</strong></div>
+                <div><span>Status</span><strong>Paid</strong></div>
+                <div><span>Amount</span><strong>${{ booking.total_price }}</strong></div>
+            </div>
+
+            <div class="receipt-actions">
+                <a class="btn-primary" href="/dashboard">Back to Dashboard</a>
+                <button type="button" class="btn-primary btn-print" onclick="window.print()">Print Receipt</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
