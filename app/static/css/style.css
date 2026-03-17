@@ -1097,64 +1097,53 @@ body.light-mode ::-webkit-calendar-picker-indicator {
 
 
 /* Autofill Background Override */
-/* Unbeatable transparent autofill override */
+/* Stable autofill override: keep transparent background in every state */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active {
-    -webkit-transition-delay: 9999s !important;
-    -webkit-transition: color 9999s ease-out, background-color 9999s ease-out !important;
-    -webkit-text-fill-color: var(--light) !important;
-    caret-color: var(--light) !important;
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:autofill,
+input:autofill:hover,
+input:autofill:focus,
+input:autofill:active {
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  transition: background-color 999999s ease-in-out 0s !important;
+  -webkit-text-fill-color: var(--light) !important;
+  caret-color: var(--light) !important;
 }
 
 body.light-mode input:-webkit-autofill,
-body.light-mode input:-webkit-autofill:hover, 
-body.light-mode input:-webkit-autofill:focus, 
-body.light-mode input:-webkit-autofill:active {
-    -webkit-transition-delay: 9999s !important;
-    -webkit-transition: color 9999s ease-out, background-color 9999s ease-out !important;
-    -webkit-text-fill-color: #1C1008 !important;
-    caret-color: #1C1008 !important;
+body.light-mode input:-webkit-autofill:hover,
+body.light-mode input:-webkit-autofill:focus,
+body.light-mode input:-webkit-autofill:active,
+body.light-mode input:autofill,
+body.light-mode input:autofill:hover,
+body.light-mode input:autofill:focus,
+body.light-mode input:autofill:active {
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: #1C1008 !important;
+  caret-color: #1C1008 !important;
 }
 
-/* Fallback for overriding autofill styles in standard modern CSS if Webkit tricks fail */
-input:-webkit-autofill::first-line {
-    font-family: 'Playfair Display', serif;
-}
-input:-internal-autofill-selected {
-    background-color: transparent !important;
-}
-
-
+/* Login/Register page always stays on dark glass card, even when theme is light */
 .auth-container input:-webkit-autofill,
-.auth-container input:-webkit-autofill:hover, 
-.auth-container input:-webkit-autofill:focus, 
-.auth-container input:-webkit-autofill:active {
-    -webkit-transition-delay: 9999s !important;
-    -webkit-transition: color 9999s ease-out, background-color 9999s ease-out !important;
-    -webkit-text-fill-color: var(--light) !important;
-    caret-color: var(--light) !important;
-}
-
-/* THE ULTIMATE ZERO-FLASH AUTOFILL OVERRIDE */
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active {
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: #F4EFEA !important;
-    transition: background-color 50000s ease-in-out 0s !important;
-    box-shadow: inset 0 0 20px 20px transparent !important;
-    caret-color: #F4EFEA !important;
-}
-
-body.light-mode input:-webkit-autofill,
-body.light-mode input:-webkit-autofill:hover, 
-body.light-mode input:-webkit-autofill:focus, 
-body.light-mode input:-webkit-autofill:active {
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: #F4EFEA !important; 
-    transition: background-color 50000s ease-in-out 0s !important;
-    caret-color: #F4EFEA !important;
+.auth-container input:-webkit-autofill:hover,
+.auth-container input:-webkit-autofill:focus,
+.auth-container input:-webkit-autofill:active,
+.auth-container input:autofill,
+.auth-container input:autofill:hover,
+.auth-container input:autofill:focus,
+.auth-container input:autofill:active {
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: #F4EFEA !important;
+  caret-color: #F4EFEA !important;
 }
