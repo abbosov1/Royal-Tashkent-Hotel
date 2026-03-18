@@ -259,9 +259,9 @@ body.light-mode .quote-line {
 }
 
 .contact-alert.success {
-  background: rgba(46, 164, 113, 0.16);
-  border-color: rgba(46, 164, 113, 0.45);
-  color: #b8f2d7;
+  background: rgba(40, 130, 94, 0.28);
+  border-color: rgba(86, 197, 151, 0.55);
+  color: #e5fff3;
 }
 
 .contact-alert.error {
@@ -280,6 +280,31 @@ body.light-mode .contact-alert.error {
   background: #fdecec;
   border-color: #e5a3a3;
   color: #8f2b2b;
+}
+
+/* Keep browser autofill values readable in both themes */
+body:not(.light-mode) .input-group input:-webkit-autofill,
+body:not(.light-mode) .input-group input:-webkit-autofill:hover,
+body:not(.light-mode) .input-group input:-webkit-autofill:focus,
+body:not(.light-mode) .room-booking-dates input:-webkit-autofill,
+body:not(.light-mode) .room-booking-dates input:-webkit-autofill:hover,
+body:not(.light-mode) .room-booking-dates input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #f3e9db;
+  caret-color: #f3e9db;
+  box-shadow: 0 0 0 1000px rgba(28, 28, 28, 0.95) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+body.light-mode .input-group input:-webkit-autofill,
+body.light-mode .input-group input:-webkit-autofill:hover,
+body.light-mode .input-group input:-webkit-autofill:focus,
+body.light-mode .room-booking-dates input:-webkit-autofill,
+body.light-mode .room-booking-dates input:-webkit-autofill:hover,
+body.light-mode .room-booking-dates input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #1f140c;
+  caret-color: #1f140c;
+  box-shadow: 0 0 0 1000px #fff inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 body.lightbox-open {
