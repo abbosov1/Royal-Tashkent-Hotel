@@ -289,9 +289,11 @@ body:not(.light-mode) .input-group input:-webkit-autofill:focus,
 body:not(.light-mode) .room-booking-dates input:-webkit-autofill,
 body:not(.light-mode) .room-booking-dates input:-webkit-autofill:hover,
 body:not(.light-mode) .room-booking-dates input:-webkit-autofill:focus {
-  -webkit-text-fill-color: #f3e9db;
+  -webkit-text-fill-color: #f3e9db !important;
+  color: #f3e9db !important;
   caret-color: #f3e9db;
-  box-shadow: 0 0 0 1000px rgba(28, 28, 28, 0.95) inset;
+  box-shadow: 0 0 0 1000px rgba(28, 28, 28, 0.95) inset !important;
+  -webkit-box-shadow: 0 0 0 1000px rgba(28, 28, 28, 0.95) inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -301,10 +303,25 @@ body.light-mode .input-group input:-webkit-autofill:focus,
 body.light-mode .room-booking-dates input:-webkit-autofill,
 body.light-mode .room-booking-dates input:-webkit-autofill:hover,
 body.light-mode .room-booking-dates input:-webkit-autofill:focus {
-  -webkit-text-fill-color: #1f140c;
+  -webkit-text-fill-color: #1f140c !important;
+  color: #1f140c !important;
   caret-color: #1f140c;
-  box-shadow: 0 0 0 1000px #fff inset;
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+/* When autofill value is preselected/highlighted, keep contrast readable. */
+body:not(.light-mode) .input-group input::selection,
+body:not(.light-mode) .room-booking-dates input::selection {
+  background: rgba(203, 168, 124, 0.45);
+  color: #0f0d0b;
+}
+
+body.light-mode .input-group input::selection,
+body.light-mode .room-booking-dates input::selection {
+  background: rgba(203, 168, 124, 0.35);
+  color: #1f140c;
 }
 
 body.lightbox-open {
