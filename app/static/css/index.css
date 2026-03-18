@@ -265,9 +265,9 @@ body.light-mode .quote-line {
 }
 
 .contact-alert.error {
-  background: rgba(218, 74, 74, 0.16);
-  border-color: rgba(218, 74, 74, 0.45);
-  color: #ffd6d6;
+  background: rgba(180, 48, 48, 0.26);
+  border-color: rgba(246, 131, 131, 0.62);
+  color: #ffeaea;
 }
 
 body.light-mode .contact-alert.success {
@@ -277,18 +277,32 @@ body.light-mode .contact-alert.success {
 }
 
 body.light-mode .contact-alert.error {
-  background: #fdecec;
-  border-color: #e5a3a3;
-  color: #8f2b2b;
+  background: #f9dede;
+  border-color: #de8f8f;
+  color: #7d1f1f;
 }
 
-/* Keep browser autofill values readable in both themes */
-body:not(.light-mode) .input-group input:-webkit-autofill,
-body:not(.light-mode) .input-group input:-webkit-autofill:hover,
-body:not(.light-mode) .input-group input:-webkit-autofill:focus,
-body:not(.light-mode) .room-booking-dates input:-webkit-autofill,
-body:not(.light-mode) .room-booking-dates input:-webkit-autofill:hover,
-body:not(.light-mode) .room-booking-dates input:-webkit-autofill:focus {
+/* Contact form stays on light card in both themes: keep autofill dark text on light bg. */
+.contact-form .input-group input:-webkit-autofill,
+.contact-form .input-group input:-webkit-autofill:hover,
+.contact-form .input-group input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #1f140c !important;
+  color: #1f140c !important;
+  caret-color: #1f140c;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.contact-form .input-group input::selection {
+  background: rgba(203, 168, 124, 0.35);
+  color: #1f140c;
+}
+
+/* Booking form fields are dark by default, so force high-contrast autofill there. */
+.room-booking-form .room-booking-dates input:-webkit-autofill,
+.room-booking-form .room-booking-dates input:-webkit-autofill:hover,
+.room-booking-form .room-booking-dates input:-webkit-autofill:focus {
   -webkit-text-fill-color: #f3e9db !important;
   color: #f3e9db !important;
   caret-color: #f3e9db;
@@ -297,31 +311,20 @@ body:not(.light-mode) .room-booking-dates input:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-body.light-mode .input-group input:-webkit-autofill,
-body.light-mode .input-group input:-webkit-autofill:hover,
-body.light-mode .input-group input:-webkit-autofill:focus,
-body.light-mode .room-booking-dates input:-webkit-autofill,
-body.light-mode .room-booking-dates input:-webkit-autofill:hover,
-body.light-mode .room-booking-dates input:-webkit-autofill:focus {
+.room-booking-form .room-booking-dates input::selection {
+  background: rgba(203, 168, 124, 0.45);
+  color: #111;
+}
+
+/* In light mode booking form becomes light too. */
+body.light-mode .room-booking-form .room-booking-dates input:-webkit-autofill,
+body.light-mode .room-booking-form .room-booking-dates input:-webkit-autofill:hover,
+body.light-mode .room-booking-form .room-booking-dates input:-webkit-autofill:focus {
   -webkit-text-fill-color: #1f140c !important;
   color: #1f140c !important;
   caret-color: #1f140c;
   box-shadow: 0 0 0 1000px #fff inset !important;
   -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-/* When autofill value is preselected/highlighted, keep contrast readable. */
-body:not(.light-mode) .input-group input::selection,
-body:not(.light-mode) .room-booking-dates input::selection {
-  background: rgba(203, 168, 124, 0.45);
-  color: #0f0d0b;
-}
-
-body.light-mode .input-group input::selection,
-body.light-mode .room-booking-dates input::selection {
-  background: rgba(203, 168, 124, 0.35);
-  color: #1f140c;
 }
 
 body.lightbox-open {
