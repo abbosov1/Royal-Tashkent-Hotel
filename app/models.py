@@ -67,3 +67,15 @@ class PromoCode(Base):
     code = Column(String, unique=True, index=True)
     discount_percent = Column(Float, default=0)
     is_active = Column(Boolean, default=True)
+
+
+class ContactMessage(Base):
+    __tablename__ = "contact_messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    email = Column(String, index=True)
+    message = Column(String)
+    source = Column(String, default="website")
+    status = Column(String, default="new")
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

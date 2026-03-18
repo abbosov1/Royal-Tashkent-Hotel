@@ -11,6 +11,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from datetime import datetime, timedelta
 import smtplib
+import urllib.request
+import urllib.error
 from email.message import EmailMessage
 
 from . import models, database, auth
@@ -26,6 +28,9 @@ SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", os.getenv("MAIL_PASSWORD", ""))
 SMTP_FROM = os.getenv("SMTP_FROM", SMTP_USER or "no-reply@royaltashkent.local")
 SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
 EMAIL_INLINE_SEND = os.getenv("EMAIL_INLINE_SEND", "").lower() == "true"
+CONTACT_DELIVERY = os.getenv("CONTACT_DELIVERY", "db").lower()
+CONTACT_EMAIL_TO = os.getenv("CONTACT_EMAIL_TO", ADMIN_EMAIL or SMTP_USER).strip()
+CONTACT_WEBHOOK_URL = os.getenv("CONTACT_WEBHOOK_URL", "").strip()
 CODE_ATTEMPT_LIMIT = 6
 
 LOYALTY_TIERS = [
@@ -383,6 +388,38 @@ def queue_reset_password_email(background_tasks: BackgroundTasks, user: models.U
         f"If you did not request password reset, please ignore this message."
     )
     dispatch_email(background_tasks, user.email, subject, body)
+
+
+def queue_contact_email(background_tasks: BackgroundTasks, name: str, email: str, message: str):
+    recipient = CONTACT_EMAIL_TO or ADMIN_EMAIL or SMTP_USER
+    if not recipient:
+        return
+    subject = f"New Contact Message from {name}"
+    body = (
+        "A new contact form message was submitted.\n\n"
+        f"Name: {name}\n"
+        f"Email: {email}\n\n"
+        "Message:\n"
+        f"{message}\n"
+    )
+    dispatch_email(background_tasks, recipient, subject, body)
+
+
+def send_contact_webhook(url: str, payload: dict) -> None:
+    if not url:
+        return
+    try:
+        encoded = json.dumps(payload).encode("utf-8")
+        request = urllib.request.Request(
+            url,
+            data=encoded,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(request, timeout=8) as response:
+            response.read()
+    except urllib.error.URLError as exc:
+        print(f"Contact webhook failed: {exc}")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -796,6 +833,12 @@ async def admin_page(request: Request, payment_status: str = "all", db: Session 
         booking_query = booking_query.filter(models.Booking.payment_status == payment_status)
     bookings = booking_query.order_by(models.Booking.created_at.desc()).all()
     users = db.query(models.User).all()
+    contact_messages = (
+        db.query(models.ContactMessage)
+        .order_by(models.ContactMessage.created_at.desc())
+        .limit(100)
+        .all()
+    )
     return templates.TemplateResponse(
         "admin.html",
         {
@@ -804,10 +847,62 @@ async def admin_page(request: Request, payment_status: str = "all", db: Session 
             "rooms": rooms,
             "bookings": bookings,
             "users": users,
+            "contact_messages": contact_messages,
             "admin_email": ADMIN_EMAIL,
             "payment_status": payment_status,
         },
     )
+
+
+@app.post("/contact")
+async def contact_submit(
+    background_tasks: BackgroundTasks,
+    name: str = Form(...),
+    email: str = Form(...),
+    message: str = Form(...),
+    db: Session = Depends(get_db),
+):
+    clean_name = (name or "").strip()
+    clean_email = (email or "").strip()
+    clean_message = (message or "").strip()
+
+    if len(clean_name) < 2 or "@" not in clean_email or len(clean_message) < 6:
+        return RedirectResponse(url="/?contact=error#contact", status_code=status.HTTP_303_SEE_OTHER)
+
+    mode = CONTACT_DELIVERY or "db"
+    save_to_db = mode in {"db", "db+email", "email+db", "db+webhook", "webhook+db", "all"}
+    send_to_email = mode in {"email", "db+email", "email+db", "email+webhook", "webhook+email", "all"}
+    send_to_webhook = mode in {"webhook", "db+webhook", "webhook+db", "email+webhook", "webhook+email", "all"}
+
+    if save_to_db:
+        db.add(
+            models.ContactMessage(
+                name=clean_name,
+                email=clean_email,
+                message=clean_message,
+                source="website",
+                status="new",
+            )
+        )
+        db.commit()
+
+    if send_to_email:
+        queue_contact_email(background_tasks, clean_name, clean_email, clean_message)
+
+    if send_to_webhook and CONTACT_WEBHOOK_URL:
+        background_tasks.add_task(
+            send_contact_webhook,
+            CONTACT_WEBHOOK_URL,
+            {
+                "name": clean_name,
+                "email": clean_email,
+                "message": clean_message,
+                "source": "website",
+                "created_at": datetime.utcnow().isoformat(),
+            },
+        )
+
+    return RedirectResponse(url="/?contact=sent#contact", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.post("/admin/room/add")
 async def admin_add_room(

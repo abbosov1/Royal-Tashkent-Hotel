@@ -226,6 +226,37 @@
                 </table>
             </div>
         </div>
+
+        <div class="card top-gap">
+            <h3 class="admin-card-title">Contact Messages</h3>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Message</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for m in contact_messages %}
+                        <tr>
+                            <td>{{ m.id }}</td>
+                            <td>{{ m.name }}</td>
+                            <td>{{ m.email }}</td>
+                            <td>{{ m.message }}</td>
+                            <td>{% if m.created_at %}{{ m.created_at.strftime('%Y-%m-%d %H:%M') }}{% else %}-{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                        {% if not contact_messages %}
+                        <tr><td colspan="5" class="table-empty">No contact messages yet.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     

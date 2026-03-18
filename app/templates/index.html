@@ -355,17 +355,22 @@
                 </div>
             </div>
             <div class="contact-form" data-scroll>
-                <form id="contact-form">
+                {% if request.query_params.get('contact') == 'sent' %}
+                <div class="contact-alert success">Thank you. Your message has been sent.</div>
+                {% elif request.query_params.get('contact') == 'error' %}
+                <div class="contact-alert error">Please check your data and try again.</div>
+                {% endif %}
+                <form id="contact-form" action="/contact" method="POST">
                     <div class="input-group">
-                        <input type="text" id="name" required placeholder=" ">
+                        <input type="text" id="name" name="name" required placeholder=" ">
                         <label for="name" data-i18n="contact_name">Your Name</label>
                     </div>
                     <div class="input-group">
-                        <input type="email" id="email" required placeholder=" ">
+                        <input type="email" id="email" name="email" required placeholder=" ">
                         <label for="email" data-i18n="contact_email">Your Email</label>
                     </div>
                     <div class="input-group">
-                        <textarea id="message" required rows="4" placeholder=" "></textarea>
+                        <textarea id="message" name="message" required rows="4" placeholder=" "></textarea>
                         <label for="message" data-i18n="contact_message">Your Message</label>
                     </div>
                     <button type="submit" class="btn-submit" data-i18n="contact_submit">Send Inquiry</button>

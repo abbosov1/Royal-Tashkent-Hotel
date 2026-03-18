@@ -250,6 +250,38 @@ body.light-mode .quote-line {
   fill: currentColor;
 }
 
+.contact-alert {
+  margin-bottom: 1rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+}
+
+.contact-alert.success {
+  background: rgba(46, 164, 113, 0.16);
+  border-color: rgba(46, 164, 113, 0.45);
+  color: #b8f2d7;
+}
+
+.contact-alert.error {
+  background: rgba(218, 74, 74, 0.16);
+  border-color: rgba(218, 74, 74, 0.45);
+  color: #ffd6d6;
+}
+
+body.light-mode .contact-alert.success {
+  background: #e5f8ee;
+  border-color: #8fd3b0;
+  color: #1f5f45;
+}
+
+body.light-mode .contact-alert.error {
+  background: #fdecec;
+  border-color: #e5a3a3;
+  color: #8f2b2b;
+}
+
 body.lightbox-open {
   overflow: hidden;
 }

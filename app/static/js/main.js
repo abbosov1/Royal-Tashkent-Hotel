@@ -208,13 +208,6 @@ function initRoomImageLightbox() {
     }, { passive: true });
 }
 
-const contactForm = document.getElementById('contact-form');
-if (contactForm) {
-    contactForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-    });
-}
-
 function getPromoDiscountMap() {
     const config = document.getElementById('promo-config');
     if (!config) return {};
