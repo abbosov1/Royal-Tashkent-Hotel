@@ -76,25 +76,58 @@ function initNavbarLayoutWatcher() {
 }
 
 function initGlobalLoader() {
-  const loader = document.createElement('div');
-  loader.className = 'global-loader active';
-  loader.innerHTML = '<div class="global-loader-spinner"></div>';
-  document.body.appendChild(loader);
+  let loader = document.querySelector('.global-loader');
+  if (!loader) {
+    loader = document.createElement('div');
+    loader.className = 'global-loader active';
+    loader.innerHTML = '<div class="global-loader-spinner"></div>';
+    document.body.appendChild(loader);
+  }
 
   const showLoader = () => loader.classList.add('active');
   const hideLoader = () => loader.classList.remove('active');
 
+  const shouldShowForAnchor = (anchor, event) => {
+    const href = (anchor.getAttribute('href') || '').trim();
+    if (!href || href.startsWith('#') || href.startsWith('javascript:')) return false;
+    if (href.startsWith('mailto:') || href.startsWith('tel:')) return false;
+    if (anchor.hasAttribute('download')) return false;
+
+    const target = (anchor.getAttribute('target') || '_self').toLowerCase();
+    if (target !== '_self') return false;
+
+    if (event.defaultPrevented) return false;
+    if (event.button !== 0) return false;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return false;
+
+    return true;
+  };
+
+  // Back/forward cache restores pages without full load; always hide loader on restore.
+  window.addEventListener('pageshow', hideLoader);
   window.addEventListener('load', hideLoader);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') hideLoader();
+  });
+
   document.querySelectorAll('a[href]').forEach((anchor) => {
-    anchor.addEventListener('click', () => {
-      const href = anchor.getAttribute('href') || '';
-      if (href.startsWith('#') || href.startsWith('javascript:')) return;
+    anchor.addEventListener('click', (event) => {
+      if (!shouldShowForAnchor(anchor, event)) return;
       showLoader();
     });
   });
+
   document.querySelectorAll('form').forEach((form) => {
-    form.addEventListener('submit', showLoader);
+    form.addEventListener('submit', () => {
+      showLoader();
+      setTimeout(() => {
+        if (document.visibilityState === 'visible') hideLoader();
+      }, 1500);
+    });
   });
+
+  // Ensure first render does not leave overlay stuck.
+  setTimeout(hideLoader, 0);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

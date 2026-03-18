@@ -105,3 +105,45 @@ body[data-page='payment'] {
     grid-template-columns: 1fr;
   }
 }
+
+body.light-mode[data-page='payment'] {
+  background: radial-gradient(circle at 18% 0%, #f7ecdd 0%, #f4efe8 52%, #efe8de 100%);
+  color: #2b2017;
+}
+
+body.light-mode[data-page='payment'] .payment-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(167, 122, 60, 0.35);
+  box-shadow: 0 18px 34px rgba(93, 63, 28, 0.15);
+}
+
+body.light-mode[data-page='payment'] .payment-card h1 {
+  color: #7a4d1f;
+}
+
+body.light-mode[data-page='payment'] .payment-subtitle {
+  color: #6c4f36;
+}
+
+body.light-mode[data-page='payment'] .booking-summary {
+  background: rgba(195, 145, 80, 0.16);
+}
+
+body.light-mode[data-page='payment'] .booking-summary span {
+  color: #6f5338;
+}
+
+body.light-mode[data-page='payment'] .payment-form label {
+  color: #5f452f;
+  font-weight: 600;
+}
+
+body.light-mode[data-page='payment'] .payment-form input {
+  background: #fff;
+  color: #2b2017;
+  border: 1px solid rgba(138, 106, 72, 0.35);
+}
+
+body.light-mode[data-page='payment'] .payment-form input::placeholder {
+  color: #8e775f;
+}
