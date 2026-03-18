@@ -397,8 +397,6 @@ async def home_page(request: Request, db: Session = Depends(get_db)):
             room.image_url,
             getattr(room, "image_gallery", None),
         )
-        if len(gallery) < 3:
-            gallery.extend(["/static/images/about.jpg", "/static/images/hero.jpg"])
         room.gallery_images = gallery[:6]
 
     return templates.TemplateResponse(
