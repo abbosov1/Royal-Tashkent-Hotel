@@ -72,6 +72,10 @@
                         <textarea name="description" rows="5" required placeholder="Room features..."></textarea>
                     </div>
                     <div class="form-group">
+                        <label>Amenities (comma separated)</label>
+                        <input type="text" name="amenities" placeholder="Wi-Fi, Pool, Gym, City View">
+                    </div>
+                    <div class="form-group">
                         <label>Price Per Night ($)</label>
                         <input type="number" name="price_per_night" required>
                     </div>
@@ -125,7 +129,7 @@
                             <div class="room-price">${{ room.price_per_night }} / night</div>
                         </div>
                         <div class="inline-actions">
-                            <button type="button" class="btn-primary action-btn edit-room-btn" data-room-id="{{ room.id }}" data-room-name="{{ room.name }}" data-room-desc="{{ room.description|replace("\n", " ") }}" data-room-price="{{ room.price_per_night }}">Edit</button>
+                            <button type="button" class="btn-primary action-btn edit-room-btn" data-room-id="{{ room.id }}" data-room-name="{{ room.name }}" data-room-desc="{{ room.description|replace("\n", " ") }}" data-room-amenities="{{ (room.amenities or '')|replace("\n", " ") }}" data-room-price="{{ room.price_per_night }}">Edit</button>
                                 <form action="/admin/room/delete/{{ room.id }}" method="POST" data-confirm="Are you sure you want to delete this room?">
                             <button type="submit" class="btn-danger">Delete</button>
                         </form>
@@ -244,6 +248,10 @@
                 <div class="form-group">
                     <label>Description</label>
                     <textarea name="description" id="editDesc" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Amenities (comma separated)</label>
+                    <input type="text" name="amenities" id="editAmenities" placeholder="Wi-Fi, Pool, Gym, City View">
                 </div>
                 <div class="form-group">
                     <label>Price Per Night ($)</label>

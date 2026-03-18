@@ -1,11 +1,12 @@
-function editRoom(id, name, desc, price) {
+function editRoom(id, name, desc, amenities, price) {
   const modal = document.getElementById('editModal');
   const form = document.getElementById('editForm');
   const nameInput = document.getElementById('editName');
   const descInput = document.getElementById('editDesc');
+  const amenitiesInput = document.getElementById('editAmenities');
   const priceInput = document.getElementById('editPrice');
 
-  if (!modal || !form || !nameInput || !descInput || !priceInput) {
+  if (!modal || !form || !nameInput || !descInput || !amenitiesInput || !priceInput) {
     return;
   }
 
@@ -13,6 +14,7 @@ function editRoom(id, name, desc, price) {
   form.action = '/admin/room/edit/' + id;
   nameInput.value = name;
   descInput.value = desc;
+  amenitiesInput.value = amenities || '';
   priceInput.value = price;
 }
 
@@ -45,6 +47,7 @@ function bindRoomEditButtons() {
         button.dataset.roomId,
         button.dataset.roomName,
         button.dataset.roomDesc,
+        button.dataset.roomAmenities,
         button.dataset.roomPrice
       );
     });

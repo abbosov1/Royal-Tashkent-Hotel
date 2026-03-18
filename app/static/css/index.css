@@ -53,6 +53,20 @@ nav .logo.logo-inline {
   gap: 1rem;
 }
 
+.date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.date-label {
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #cab8a3;
+}
+
 .room-booking-dates input[type='date'] {
   width: 100%;
   padding: 0.5rem;
@@ -60,6 +74,19 @@ nav .logo.logo-inline {
   border: 1px solid #555;
   color: var(--light);
   border-radius: 5px;
+}
+
+.room-booking-dates input[type='date']::-webkit-datetime-edit,
+.room-booking-dates input[type='date']::-webkit-datetime-edit-text,
+.room-booking-dates input[type='date']::-webkit-datetime-edit-month-field,
+.room-booking-dates input[type='date']::-webkit-datetime-edit-day-field,
+.room-booking-dates input[type='date']::-webkit-datetime-edit-year-field {
+  color: #efe8dd;
+}
+
+.room-booking-dates input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(0.95);
+  opacity: 0.85;
 }
 
 .room-booking-dates input[type='text'],
@@ -120,6 +147,22 @@ body.light-mode .room-booking-form textarea {
   background: #fff;
   border: 1px solid #d8c9b5;
   color: #1c1008;
+}
+
+body.light-mode .date-label {
+  color: #7a6650;
+}
+
+body.light-mode .room-booking-dates input[type='date']::-webkit-datetime-edit,
+body.light-mode .room-booking-dates input[type='date']::-webkit-datetime-edit-text,
+body.light-mode .room-booking-dates input[type='date']::-webkit-datetime-edit-month-field,
+body.light-mode .room-booking-dates input[type='date']::-webkit-datetime-edit-day-field,
+body.light-mode .room-booking-dates input[type='date']::-webkit-datetime-edit-year-field {
+  color: #2b1b10;
+}
+
+body.light-mode .room-booking-dates input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(0.25);
 }
 
 body.light-mode .room-booking-dates input[type='text']::placeholder,
@@ -205,4 +248,81 @@ body.light-mode .quote-line {
   width: 16px;
   height: 16px;
   fill: currentColor;
+}
+
+body.lightbox-open {
+  overflow: hidden;
+}
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.88);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.image-lightbox.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#lightbox-image {
+  max-width: min(92vw, 1100px);
+  max-height: 84vh;
+  border-radius: 12px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+}
+
+.lightbox-close,
+.lightbox-nav {
+  position: absolute;
+  border: none;
+  color: #fff;
+  background: rgba(20, 20, 20, 0.55);
+  cursor: pointer;
+}
+
+.lightbox-close {
+  top: 18px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.lightbox-nav {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 64px;
+  font-size: 1.7rem;
+  border-radius: 10px;
+}
+
+.lightbox-prev {
+  left: 14px;
+}
+
+.lightbox-next {
+  right: 14px;
+}
+
+@media (max-width: 768px) {
+  .lightbox-nav {
+    width: 38px;
+    height: 52px;
+  }
+
+  .lightbox-close {
+    top: 10px;
+    right: 12px;
+  }
 }

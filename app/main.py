@@ -71,6 +71,7 @@ MIGRATIONS = [
     "ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_reference VARCHAR",
     "ALTER TABLE bookings ADD COLUMN IF NOT EXISTS paid_at TIMESTAMP",
     "ALTER TABLE rooms ADD COLUMN IF NOT EXISTS image_gallery VARCHAR",
+    "ALTER TABLE rooms ADD COLUMN IF NOT EXISTS amenities VARCHAR",
     "CREATE UNIQUE INDEX IF NOT EXISTS ix_bookings_booking_reference ON bookings (booking_reference)",
 ]
 
@@ -181,6 +182,10 @@ def normalize_room_gallery(main_image_url: str, existing_gallery_raw: str | None
             deduped.append(image)
             seen.add(image)
     return deduped[:6]
+
+
+def normalize_amenities(raw: str | None) -> str:
+    return ", ".join([item.strip() for item in (raw or "").split(",") if item.strip()])
 
 
 def generate_verification_code() -> str:
@@ -441,6 +446,8 @@ async def login_page(request: Request, db: Session = Depends(get_db)):
     else:
         admin_user.is_admin = True
         admin_user.email_verified = True
+        if ADMIN_PASSWORD:
+            admin_user.hashed_password = auth.get_password_hash(ADMIN_PASSWORD)
         try:
             db.commit()
         except:
@@ -807,6 +814,7 @@ async def admin_add_room(
     request: Request,
     name: str = Form(...),
     description: str = Form(...),
+    amenities: str = Form(""),
     price_per_night: float = Form(...),
     image: UploadFile = File(None),
     extra_images: List[UploadFile] = File(default=[]),
@@ -834,6 +842,7 @@ async def admin_add_room(
     new_room = models.Room(
         name=name,
         description=description,
+        amenities=normalize_amenities(amenities),
         price_per_night=price_per_night,
         image_url=final_image_url,
         image_gallery=json.dumps(gallery_images[:6]),
@@ -904,6 +913,7 @@ async def admin_edit_room(
     room_id: int,
     name: str = Form(...),
     description: str = Form(...),
+    amenities: str = Form(""),
     price_per_night: float = Form(...),
     image: UploadFile = File(None),
     extra_images: List[UploadFile] = File(default=[]),
@@ -917,6 +927,7 @@ async def admin_edit_room(
     if room:
         room.name = name
         room.description = description
+        room.amenities = normalize_amenities(amenities)
         room.price_per_night = price_per_night
         
         encoded_main = await encode_upload_image(image)

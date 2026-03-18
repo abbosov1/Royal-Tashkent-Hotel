@@ -28,20 +28,34 @@ function initThemeControls() {
 }
 
 function initMobileMenu() {
+  const nav = document.querySelector('nav');
   const menuToggle = document.getElementById('mobile-menu');
   const navLinks = document.querySelector('.nav-links');
-  if (!menuToggle || !navLinks) {
+  if (!menuToggle || !navLinks || !nav) {
     return;
   }
 
-  menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-  });
+  const closeMenu = () => navLinks.classList.remove('active');
+  const toggleMenu = () => navLinks.classList.toggle('active');
+
+  menuToggle.addEventListener('click', toggleMenu);
 
   navLinks.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
-      navLinks.classList.remove('active');
+      closeMenu();
     });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!navLinks.classList.contains('active')) return;
+    if (nav.contains(event.target)) return;
+    closeMenu();
   });
 }
 
